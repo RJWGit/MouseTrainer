@@ -7,11 +7,11 @@ class Canvas extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            width: 800,
-            height: 600,
-            radius: 5,
-            radiusChange: 1,
-            difficulty: 'easy',
+            width: this.props.width,
+            height: this.props.height,
+            radius: this.props.radius,
+            radiusChange: this.props.radiusChange,
+            difficulty: this.props.difficulty,
             seconds: 50,
             list: [],
             fps: 0,
@@ -91,7 +91,7 @@ class Canvas extends React.Component {
         const newList = [...this.state.list];
 
         for (let i of newList) {
-            if (i.r > 20 || i.r < 1) {
+            if (i.r > 50 || i.r < 1) {
                 i.polarity = i.polarity * -1;
             }
             i.r += this.state.radiusChange * i.polarity;
@@ -141,7 +141,7 @@ class Canvas extends React.Component {
     gameLoop = () => {
         if (!this.isRunning) return;
 
-        //this.updateCircleList();
+        this.updateCircleList();
         this.myFrames++;
         if (this.state.seconds == 0) {
             this.isRunning = false;
@@ -151,7 +151,7 @@ class Canvas extends React.Component {
 
     render() {
         return (
-            <div className="container canvasBoard">
+            <div className="container canvas-board">
                 <div className="row">
                     <div className="col d-flex justify-content-center">
                         <b>Seconds: {this.state.seconds}</b>

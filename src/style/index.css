@@ -1,6 +1,44 @@
-body {
+#root {
+    background-color: #1f2025;
+    height: 100vh;
 }
 
 #canvas {
     border: 1px solid black;
+    background-image: url('../images/grid1.png');
+    background-color: rgb(255, 255, 255);
+    background-size: cover; /* <------ */
+    background-repeat: no-repeat;
+}
+.canvas-board {
+}
+
+.home-page-row {
+}
+
+.home-button-styling {
+    width: 15vw;
+    height: 12vh;
+    margin: 10px;
+    font-size: 2em;
+    background-color: #ff003a;
+    color: white;
+    border-radius: 12px;
+    border: 3px solid rgb(0, 0, 0);
+}
+
+.home-page-container {
+    margin-top: 8em;
+    height: 60vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* border: 1px solid rgb(51, 78, 55); */
+    background-color: #111217;
+}
+.home-page-title {
+    font-family: 'Lucida Console', Courier, monospace;
+    font-size: 2.5em;
+    font-weight: 900;
+    color: #ff003a;
 }
