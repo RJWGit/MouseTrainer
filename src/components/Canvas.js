@@ -44,16 +44,8 @@ class Canvas extends React.Component {
         if (this.isRunning) {
             const newList = [...this.state.list];
             let circle = {
-                x:
-                    Math.floor(
-                        Math.random() *
-                            (this.state.width - this.state.radius - this.state.radius + 1)
-                    ) + this.state.radius,
-                y:
-                    Math.floor(
-                        Math.random() *
-                            (this.state.height - this.state.radius - this.state.radius + 1)
-                    ) + this.state.radius,
+                x: Math.floor(Math.random() * (this.state.width - this.state.radius - this.state.radius + 1)) + this.state.radius,
+                y: Math.floor(Math.random() * (this.state.height - this.state.radius - this.state.radius + 1)) + this.state.radius,
                 r: this.state.radius,
                 polarity: 1,
             };
@@ -77,8 +69,7 @@ class Canvas extends React.Component {
 
     componentDidMount() {
         this.interval = setInterval(() => this.tick(), 1000);
-        if (this.state.mode == 'precision')
-            setInterval(() => this.deleteCircle(0), this.state.addCircleTimer);
+        if (this.state.mode == 'precision') setInterval(() => this.deleteCircle(0), this.state.addCircleTimer);
 
         setInterval(() => this.addCircle(), this.state.addCircleTimer);
 
@@ -100,16 +91,8 @@ class Canvas extends React.Component {
         const list = [];
         for (let i = 0; i < 1; i++) {
             let circle = {
-                x:
-                    Math.floor(
-                        Math.random() *
-                            (this.state.width - this.state.radius - this.state.radius + 1)
-                    ) + this.state.radius,
-                y:
-                    Math.floor(
-                        Math.random() *
-                            (this.state.height - this.state.radius - this.state.radius + 1)
-                    ) + this.state.radius,
+                x: Math.floor(Math.random() * (this.state.width - this.state.radius - this.state.radius + 1)) + this.state.radius,
+                y: Math.floor(Math.random() * (this.state.height - this.state.radius - this.state.radius + 1)) + this.state.radius,
                 r: this.state.radius,
                 polarity: 1,
             };
@@ -121,7 +104,7 @@ class Canvas extends React.Component {
 
     updateCircleList = () => {
         const newList = [...this.state.list];
-        console.log(this.state);
+        // console.log(this.state);
         for (let i of newList) {
             if (i.r > this.state.maxRadius || i.r < this.state.minRadius) {
                 if (i.polarity == -1 && i.r < this.state.minRadius) {
@@ -159,10 +142,7 @@ class Canvas extends React.Component {
         const newList = [...this.state.list];
 
         for (let i of newList) {
-            if (
-                Math.sqrt((e.nativeEvent.offsetX - i.x) ** 2 + (e.nativeEvent.offsetY - i.y) ** 2) <
-                i.r
-            ) {
+            if (Math.sqrt((e.nativeEvent.offsetX - i.x) ** 2 + (e.nativeEvent.offsetY - i.y) ** 2) < i.r) {
                 this.setState({
                     targetsHit: this.state.targetsHit + 1,
                 });
@@ -198,10 +178,7 @@ class Canvas extends React.Component {
                         <b>FPS: {this.state.fps}</b>
                     </div>
                     <div className="col d-flex justify-content-center">
-                        <b>
-                            Accuracy:{' '}
-                            {Math.trunc((this.state.targetsHit / this.state.totalTargets) * 100)}%
-                        </b>
+                        <b>Accuracy: {Math.trunc((this.state.targetsHit / this.state.totalTargets) * 100)}%</b>
                     </div>
                     <div className="col d-flex justify-content-center">
                         <b>
@@ -210,13 +187,7 @@ class Canvas extends React.Component {
                     </div>
                 </div>
                 <div className="row justify-content-center">
-                    <canvas
-                        onClick={this.isIntersect}
-                        id="canvas"
-                        ref={this.canvas}
-                        width={this.state.width}
-                        height={this.state.height}
-                    />
+                    <canvas onClick={this.isIntersect} id="canvas" ref={this.canvas} width={this.state.width} height={this.state.height} />
                 </div>
             </div>
         );
