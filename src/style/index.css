@@ -6,7 +6,7 @@
 #canvas {
     border: 1px solid black;
     background-image: url('../images/grid1.png');
-    background-color: rgb(255, 255, 255);
+    background-color: rgb(36, 32, 32);
     background-size: cover; /* <------ */
     background-repeat: no-repeat;
 }
@@ -41,4 +41,48 @@
     font-size: 2.5em;
     font-weight: 900;
     color: #ff003a;
+}
+
+.mode-page-container {
+    margin-top: 8em;
+    /* height: 60vh; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* border: 1px solid rgb(51, 78, 55); */
+    background-color: #111217;
+}
+
+.mode-page-title {
+    font-family: 'Lucida Console', Courier, monospace;
+    font-size: 2.5em;
+    font-weight: 900;
+    color: #ff003a;
+}
+
+.mode-page-subtitle {
+    font-family: 'Lucida Console', Courier, monospace;
+    font-size: 1.5em;
+    font-weight: 900;
+    color: #ff003a;
+}
+
+.mode-screen-styling {
+    width: 15vw;
+    height: 20vh;
+    margin: 10px;
+    background-color: #ff003a;
+    color: white;
+    border-radius: 12px;
+    border: 3px solid rgb(0, 0, 0);
+    background-image: url('../images/target1.png');
+    background-size: 100%;
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.canvas-bar {
+    color: white;
+    padding-left: 5vw;
+    padding-right: 6vw;
 }

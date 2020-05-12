@@ -1,6 +1,7 @@
 import React from 'react';
 import Canvas from './Canvas.js';
 import HomePage from './HomePage.js';
+import Modes from './Modes.js';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 
 class App extends React.Component {
@@ -28,9 +29,9 @@ class App extends React.Component {
                             <Link className="navbar-brand" to="/">
                                 Home
                             </Link>
-                            <Link className="navbar-brand pl-5" to="/play">
+                            {/* <Link className="navbar-brand pl-5" to="/play">
                                 Play
-                            </Link>
+                            </Link> */}
                         </nav>
 
                         {/* A <Switch> looks through its children <Route>s and
@@ -38,6 +39,9 @@ class App extends React.Component {
                         <Switch>
                             <Route path="/play">
                                 <Canvas width={this.state.width} height={this.state.height} radius={this.state.radius} radiusChange={this.state.radiusChange} difficulty={this.state.difficultywidth}></Canvas>
+                            </Route>
+                            <Route path="/modes">
+                                <Modes></Modes>
                             </Route>
                             <Route path="/">
                                 <HomePage></HomePage>

@@ -1,8 +1,8 @@
 import React, { createRef } from 'react';
 
 //TODO:
-//Setup timer in component did mount
-
+//use react 'onkeydown' function to pick up keyboard inputs, then get current mouse x,y and check for intersect
+//Fix accuracy and target hits to avoid possible accuracy > 100%. Probably should update only after a clicked circle or circle timed out
 class Canvas extends React.Component {
     constructor(props) {
         super(props);
@@ -15,6 +15,8 @@ class Canvas extends React.Component {
             seconds: 50,
             list: [],
             fps: 0,
+            targetsHit: 0,
+            totalTargets: 1, //Currently must be > 0 to avoid deviding by 0 in render function
         };
         this.isRunning = true;
         this.canvas = createRef();
@@ -49,6 +51,7 @@ class Canvas extends React.Component {
             newList.push(circle);
             this.setState(state => ({
                 list: newList,
+                totalTargets: this.state.totalTargets + 1,
             }));
         }
     }
@@ -83,8 +86,6 @@ class Canvas extends React.Component {
             list[i] = circle;
         }
         this.setState({ list }, callback);
-
-        //console.log("1");
     };
 
     updateCircleList = () => {
@@ -119,7 +120,6 @@ class Canvas extends React.Component {
         ctx.clearRect(0, 0, this.state.width, this.state.height);
     };
 
-    //TODO: CHANGE SO ONLY 1 CIRCLE IS DELETED
     isIntersect = e => {
         const newList = [...this.state.list];
 
@@ -129,6 +129,9 @@ class Canvas extends React.Component {
                 //this.createCircleList();
                 //this.drawCircles();
                 //const index = newList.indexOf(i);
+                this.setState({
+                    targetsHit: this.state.targetsHit + 1,
+                });
                 newList.splice(newList.indexOf(i), 1);
                 //console.log(index);
             }
@@ -152,12 +155,20 @@ class Canvas extends React.Component {
     render() {
         return (
             <div className="container canvas-board">
-                <div className="row">
+                <div className="row canvas-bar">
                     <div className="col d-flex justify-content-center">
                         <b>Seconds: {this.state.seconds}</b>
                     </div>
                     <div className="col d-flex justify-content-center">
                         <b>FPS: {this.state.fps}</b>
+                    </div>
+                    <div className="col d-flex justify-content-center">
+                        <b>Accuracy: {Math.trunc((this.state.targetsHit / this.state.totalTargets) * 100)}%</b>
+                    </div>
+                    <div className="col d-flex justify-content-center">
+                        <b>
+                            Targets Hit: {this.state.targetsHit}/{this.state.totalTargets}
+                        </b>
                     </div>
                 </div>
                 <div className="row justify-content-center">
