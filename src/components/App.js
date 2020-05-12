@@ -12,9 +12,12 @@ class App extends React.Component {
             height: 600,
             radius: 5,
             radiusChange: 1,
+            maxRadius: 70,
+            minRadius: 1,
             difficulty: 'easy',
             addCircleTimer: 500,
-            mode: 'classic',
+            mode: 'speed',
+            seconds: 70,
         };
     }
 
@@ -22,15 +25,19 @@ class App extends React.Component {
     //Add Home/Main page
     //Add Settings page to customize difficulty and time
 
-    updateGameState(newGameState) {
+    updateGameState = newGameState => {
         this.setState({
             width: newGameState.width,
             height: newGameState.height,
             radius: newGameState.radius,
             radiusChange: newGameState.radiusChange,
             difficulty: newGameState.difficulty,
+            mode: newGameState.mode,
+            addCircleTimer: newGameState.addCircleTimer,
+            maxRadius: newGameState.maxRadius,
+            minRadius: newGameState.minRadius,
         });
-    }
+    };
 
     render() {
         return (
@@ -51,7 +58,18 @@ class App extends React.Component {
                             renders the first one that matches the current URL. */}
                         <Switch>
                             <Route path="/play">
-                                <Canvas mode={this.state.mode} width={this.state.width} height={this.state.height} radius={this.state.radius} radiusChange={this.state.radiusChange} difficulty={this.state.difficultywidth} addCircleTimer={this.state.addCircleTimer}></Canvas>
+                                <Canvas
+                                    minRadius={this.state.minRadius}
+                                    maxRadius={this.state.maxRadius}
+                                    seconds={this.state.seconds}
+                                    mode={this.state.mode}
+                                    width={this.state.width}
+                                    height={this.state.height}
+                                    radius={this.state.radius}
+                                    radiusChange={this.state.radiusChange}
+                                    difficulty={this.state.difficulty}
+                                    addCircleTimer={this.state.addCircleTimer}
+                                ></Canvas>
                             </Route>
                             <Route path="/modes">
                                 <Modes updateGameState={this.updateGameState}></Modes>

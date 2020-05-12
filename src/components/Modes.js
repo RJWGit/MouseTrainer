@@ -9,11 +9,44 @@ class Modes extends React.Component {
         this.state = {};
     }
 
+    // width: newGameState.width,
+    // height: newGameState.height,
+    // radius: newGameState.radius,
+    // radiusChange: newGameState.radiusChange,
+    // difficulty: newGameState.difficulty,
+    // mode:newGameState.mode,
+    // addCircleTimer:newGameState.addCircleTimer,
+    // maxRadius: newGameState.maxRadius,
+    // minRadius: newGameState.minRadius,
     gameState = e => {
-        gameStateObj = {};
+        const gameStateObj = {};
         switch (e.target.name) {
+            case 'classic':
             case 'speed':
-                gameStateObj.break;
+                gameStateObj.width = 800;
+                gameStateObj.height = 600;
+                gameStateObj.radius = 5;
+                gameStateObj.radiusChange = 1;
+                gameStateObj.difficulty = 'easy';
+                gameStateObj.mode = 'classic';
+                gameStateObj.addCircleTimer = 1000;
+                gameStateObj.maxRadius = 70;
+                gameStateObj.minRadius = 1;
+                this.props.updateGameState(gameStateObj);
+                break;
+
+            case 'precision':
+                gameStateObj.width = 800;
+                gameStateObj.height = 600;
+                gameStateObj.radius = 5;
+                gameStateObj.radiusChange = 1;
+                gameStateObj.difficulty = 'easy';
+                gameStateObj.mode = 'precision';
+                gameStateObj.addCircleTimer = 1000;
+                gameStateObj.maxRadius = 70;
+                gameStateObj.minRadius = 1;
+                this.props.updateGameState(gameStateObj);
+                break;
             default:
                 alert('Fail');
         }
@@ -29,17 +62,21 @@ class Modes extends React.Component {
                     <div className="col-4 mb-5 d-flex justify-content-around">
                         <div className="row justify-content-md-center">
                             <div className="mode-page-subtitle">Speed</div>
-                            <button onClick={this.gameState} type="button" name="speed" className="mode-screen-styling">
-                                {/* <img src="target1.png" className="mode-screen-image"></img> */}
-                            </button>
+                            <Link to="/play">
+                                <button onClick={this.gameState} type="button" name="speed" className="mode-screen-styling">
+                                    {/* <img src="target1.png" className="mode-screen-image"></img> */}
+                                </button>
+                            </Link>
                         </div>
                     </div>
                     <div className="col-4 mb-5 d-flex justify-content-around">
                         <div className="row justify-content-md-center">
                             <div className="mode-page-subtitle">Precision</div>
-                            <button type="button" name="precision" className="mode-screen-styling">
-                                {/* <img src="target1.png" className="mode-screen-image"></img> */}
-                            </button>
+                            <Link to="/play">
+                                <button onClick={this.gameState} type="button" name="precision" className="mode-screen-styling">
+                                    {/* <img src="target1.png" className="mode-screen-image"></img> */}
+                                </button>
+                            </Link>
                         </div>
                     </div>
                     <div className="col-4 mb-5 d-flex justify-content-around">
