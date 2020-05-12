@@ -13,12 +13,25 @@ class App extends React.Component {
             radius: 5,
             radiusChange: 1,
             difficulty: 'easy',
+            addCircleTimer: 500,
+            mode: 'classic',
         };
     }
 
     //Use react-router to flip between pages
     //Add Home/Main page
     //Add Settings page to customize difficulty and time
+
+    updateGameState(newGameState) {
+        this.setState({
+            width: newGameState.width,
+            height: newGameState.height,
+            radius: newGameState.radius,
+            radiusChange: newGameState.radiusChange,
+            difficulty: newGameState.difficulty,
+        });
+    }
+
     render() {
         return (
             <div>
@@ -38,10 +51,10 @@ class App extends React.Component {
                             renders the first one that matches the current URL. */}
                         <Switch>
                             <Route path="/play">
-                                <Canvas width={this.state.width} height={this.state.height} radius={this.state.radius} radiusChange={this.state.radiusChange} difficulty={this.state.difficultywidth}></Canvas>
+                                <Canvas mode={this.state.mode} width={this.state.width} height={this.state.height} radius={this.state.radius} radiusChange={this.state.radiusChange} difficulty={this.state.difficultywidth} addCircleTimer={this.state.addCircleTimer}></Canvas>
                             </Route>
                             <Route path="/modes">
-                                <Modes></Modes>
+                                <Modes updateGameState={this.updateGameState}></Modes>
                             </Route>
                             <Route path="/">
                                 <HomePage></HomePage>

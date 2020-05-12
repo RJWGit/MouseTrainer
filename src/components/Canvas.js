@@ -12,7 +12,9 @@ class Canvas extends React.Component {
             radius: this.props.radius,
             radiusChange: this.props.radiusChange,
             difficulty: this.props.difficulty,
-            seconds: 50,
+            addCircleTimer: this.props.addCircleTimer, //In milliseconds
+            mode: this.props.mode,
+            seconds: 60,
             list: [],
             fps: 0,
             targetsHit: 0,
@@ -22,10 +24,8 @@ class Canvas extends React.Component {
         this.canvas = createRef();
         this.init = true;
         this.myFrames = 0;
-        //this.gameLoop = this.gameLoop.bind(this);
     }
 
-    //CREATE DIFFERENT TIME FUNCTIONS, POSSIBLE SET INTERVAL TO ADD NEW CIRCLES TO LIST EVERY .X SECONDS DEPENDING ON DIFFICULTY
     tick() {
         if (this.isRunning) {
             console.log(this.myFrames);
@@ -56,9 +56,21 @@ class Canvas extends React.Component {
         }
     }
 
+    deleteCircle(index) {
+        const newList = [...this.state.list];
+        newList.splice(newList.indexOf(index), 1);
+
+        this.setState({
+            list: newList,
+        });
+    }
+
     componentDidMount() {
         this.interval = setInterval(() => this.tick(), 1000);
-        setInterval(() => this.addCircle(), 1000);
+        if (this.state.mode == 'precision') setInterval(() => this.deleteCircle(0), this.state.addCircleTimer);
+
+        setInterval(() => this.addCircle(), this.state.addCircleTimer);
+
         this.createCircleList(this.gameLoop);
     }
 
@@ -93,7 +105,11 @@ class Canvas extends React.Component {
 
         for (let i of newList) {
             if (i.r > 50 || i.r < 1) {
-                i.polarity = i.polarity * -1;
+                if (i.polarity == -1 && i.r < 1) {
+                    newList.splice(newList.indexOf(i), 1); //Delete after 1 'rotation' of small--->big---->small----->delete
+                } else {
+                    i.polarity = i.polarity * -1;
+                }
             }
             i.r += this.state.radiusChange * i.polarity;
         }
@@ -143,9 +159,9 @@ class Canvas extends React.Component {
 
     gameLoop = () => {
         if (!this.isRunning) return;
-
-        this.updateCircleList();
+        if (this.state.mode == 'classic' || this.state.mode == 'speed') this.updateCircleList();
         this.myFrames++;
+
         if (this.state.seconds == 0) {
             this.isRunning = false;
         }
