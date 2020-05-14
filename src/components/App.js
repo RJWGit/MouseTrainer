@@ -2,13 +2,15 @@ import React from 'react';
 import Canvas from './Canvas.js';
 import HomePage from './HomePage.js';
 import Modes from './Modes.js';
+import Footer from './Footer.js';
+
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 
 class App extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            width: 800,
+            width: 1100,
             height: 600,
             radius: 5,
             radiusChange: 1,
@@ -17,7 +19,7 @@ class App extends React.Component {
             difficulty: 'easy',
             addCircleTimer: 500,
             mode: 'speed',
-            seconds: 70,
+            seconds: 15,
         };
     }
 
@@ -48,6 +50,9 @@ class App extends React.Component {
                         <nav className="navbar navbar-expand-sm navbar-dark bg-dark">
                             <Link className="navbar-brand" to="/">
                                 Home
+                            </Link>
+                            <Link className="navbar-brand" to="/">
+                                SignUp
                             </Link>
                             {/* <Link className="navbar-brand pl-5" to="/play">
                                 Play
@@ -80,6 +85,7 @@ class App extends React.Component {
                         </Switch>
                     </div>
                 </Router>
+                <Footer></Footer>
             </div>
         );
     }

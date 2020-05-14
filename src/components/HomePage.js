@@ -11,18 +11,23 @@ class HomePage extends React.Component {
         return (
             <div className="container home-page-container">
                 <div className="row justify-content-md-center">
-                    <div className="col pb-5 d-flex justify-content-around">
-                        <h1 className="home-page-title">Aim Trainer</h1>
+                    <div className="col-12 pb-5 d-flex justify-content-around">
+                        <div className="home-page-image">asdf</div>
+                    </div>
+                    <div className="col-12 pb-5 d-flex justify-content-around">
+                        <h1 className="home-page-title">Mouse Trainer</h1>
                     </div>
                     <div className="col-12 mb-5 d-flex justify-content-around">
                         <Link to="/play">
                             <button type="button" className="home-button-styling">
-                                Play
+                                QUICK PLAY
                             </button>
                         </Link>
+                    </div>
+                    <div className="col-12 mb-5 d-flex justify-content-around">
                         <Link to="/modes">
                             <button type="button" className="home-button-styling">
-                                Modes
+                                MODES
                             </button>
                         </Link>
                     </div>

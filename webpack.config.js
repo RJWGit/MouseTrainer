@@ -16,9 +16,22 @@ module.exports = {
                 },
             },
             {
-                test: /\.(png|svg|jpg|gif)$/,
+                test: /\.(png|svg|jpg|gif|ttf)$/,
                 use: ['file-loader'],
             },
+
+            //BREAKS ALL IMAGES
+            // {
+            //     test: /\.(png|jpg|gif)$/i,
+            //     use: [
+            //         {
+            //             loader: 'url-loader',
+            //             options: {
+            //                 limit: 8192,
+            //             },
+            //         },
+            //     ],
+            // },
         ],
     },
     resolve: {

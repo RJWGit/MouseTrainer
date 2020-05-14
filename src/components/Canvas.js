@@ -1,4 +1,6 @@
 import React, { createRef } from 'react';
+import { Link } from 'react-router-dom';
+import Results from './Results';
 
 //TODO:
 //use react 'onkeydown' function to pick up keyboard inputs, then get current mouse x,y and check for intersect
@@ -21,15 +23,15 @@ class Canvas extends React.Component {
             fps: 0,
             targetsHit: 0,
             totalTargets: 1, //Currently must be > 0 to avoid deviding by 0 in render function
+            isRunning: true,
         };
-        this.isRunning = true;
         this.canvas = createRef();
         this.init = true;
         this.myFrames = 0;
     }
 
     tick() {
-        if (this.isRunning) {
+        if (this.state.isRunning) {
             // console.log(this.myFrames);
             // console.log(this.state.fps);
             this.setState(state => ({
@@ -41,7 +43,7 @@ class Canvas extends React.Component {
     }
 
     addCircle() {
-        if (this.isRunning) {
+        if (this.state.isRunning) {
             const newList = [...this.state.list];
             let circle = {
                 x: Math.floor(Math.random() * (this.state.width - this.state.radius - this.state.radius + 1)) + this.state.radius,
@@ -77,14 +79,14 @@ class Canvas extends React.Component {
     }
 
     componentDidUpdate() {
-        if (this.isRunning) {
+        if (this.state.isRunning) {
             this.clearCanvas();
             this.drawCircles();
         }
     }
     componentWillUnmount() {
         //clearInterval(this.interval);
-        this.isRunning = false;
+        // this.state.isRunning = false;
     }
 
     createCircleList = callback => {
@@ -138,15 +140,18 @@ class Canvas extends React.Component {
         ctx.clearRect(0, 0, this.state.width, this.state.height);
     };
 
+    //TODO: Fix so no 'after-image' when clicked. stop from redrawing after deleting
     isIntersect = e => {
         const newList = [...this.state.list];
 
         for (let i of newList) {
             if (Math.sqrt((e.nativeEvent.offsetX - i.x) ** 2 + (e.nativeEvent.offsetY - i.y) ** 2) < i.r) {
+                newList.splice(newList.indexOf(i), 1);
+
                 this.setState({
                     targetsHit: this.state.targetsHit + 1,
                 });
-                newList.splice(newList.indexOf(i), 1);
+                break;
             }
         }
         this.setState({
@@ -155,42 +160,84 @@ class Canvas extends React.Component {
     };
 
     gameLoop = () => {
-        if (!this.isRunning) return;
+        if (!this.state.isRunning) return;
         if (this.state.mode == 'classic' || this.state.mode == 'speed') {
             this.updateCircleList();
         }
         this.myFrames++;
 
         if (this.state.seconds <= 0) {
-            this.isRunning = false;
+            this.handleIsRunning();
         }
         requestAnimationFrame(this.gameLoop);
     };
 
+    handleIsRunning = () => {
+        this.setState({
+            isRunning: !this.state.isRunning,
+        });
+    };
+
+    restartGameState = () => {
+        this.setState({
+            width: this.props.width,
+            height: this.props.height,
+            radius: this.props.radius,
+            radiusChange: this.props.radiusChange,
+            difficulty: this.props.difficulty,
+            addCircleTimer: this.props.addCircleTimer, //In milliseconds
+            mode: this.props.mode,
+            seconds: this.props.seconds,
+            maxRadius: this.props.maxRadius,
+            minRadius: this.props.minRadius,
+            list: [],
+            fps: 0,
+            targetsHit: 0,
+            totalTargets: 1, //Currently must be > 0 to avoid deviding by 0 in render function
+            isRunning: true,
+        });
+
+        requestAnimationFrame(this.gameLoop);
+    };
+
     render() {
-        return (
-            <div className="container canvas-board">
-                <div className="row canvas-bar">
-                    <div className="col d-flex justify-content-center">
-                        <b>Seconds: {this.state.seconds}</b>
+        {
+            if (!this.state.isRunning)
+                return (
+                    <Results
+                        targetsHit={this.state.targetsHit}
+                        totalTargets={this.state.totalTargets}
+                        difficulty={this.state.difficulty}
+                        mode={this.state.mode}
+                        restartGameState={this.restartGameState}
+                    ></Results>
+                );
+            else {
+                return (
+                    <div className="container canvas-board">
+                        <div className="row canvas-bar">
+                            <div className="col d-flex justify-content-center">
+                                <b>Seconds: {this.state.seconds}</b>
+                            </div>
+                            <div className="col d-flex justify-content-center">
+                                <b>FPS: {this.state.fps}</b>
+                            </div>
+                            <div className="col d-flex justify-content-center">
+                                <b>Accuracy: {Math.trunc((this.state.targetsHit / this.state.totalTargets) * 100)}%</b>
+                            </div>
+                            <div className="col d-flex justify-content-center">
+                                <b>
+                                    Targets Hit: {this.state.targetsHit}/{this.state.totalTargets}
+                                </b>
+                            </div>
+                        </div>
+                        <div className="row justify-content-center">
+                            <canvas onClick={this.isIntersect} id="canvas" ref={this.canvas} width={this.state.width} height={this.state.height} />
+                        </div>
                     </div>
-                    <div className="col d-flex justify-content-center">
-                        <b>FPS: {this.state.fps}</b>
-                    </div>
-                    <div className="col d-flex justify-content-center">
-                        <b>Accuracy: {Math.trunc((this.state.targetsHit / this.state.totalTargets) * 100)}%</b>
-                    </div>
-                    <div className="col d-flex justify-content-center">
-                        <b>
-                            Targets Hit: {this.state.targetsHit}/{this.state.totalTargets}
-                        </b>
-                    </div>
-                </div>
-                <div className="row justify-content-center">
-                    <canvas onClick={this.isIntersect} id="canvas" ref={this.canvas} width={this.state.width} height={this.state.height} />
-                </div>
-            </div>
-        );
+                );
+            }
+        }
     }
 }
 
