@@ -3,8 +3,12 @@ import { Link } from 'react-router-dom';
 import Results from './Results';
 
 //TODO:
-//use react 'onkeydown' function to pick up keyboard inputs, then get current mouse x,y and check for intersect
-//Fix accuracy and target hits to avoid possible accuracy > 100%. Probably should update only after a clicked circle or circle timed out
+//1.use react 'onkeydown' function to pick up keyboard inputs, then get current mouse x,y and check for intersect
+//2.Fix accuracy and target hits to avoid possible accuracy > 100%. Probably should update only after a clicked circle or circle timed out
+//3.Figure out delete. Possibly make delete list. Add new tick function to count every 100ms then add new attribute to deleted circles or circles and
+// get current tick and add + x amount and when tick reaches said value then delete. Can all be done in new tick function.
+//Sudo: Get tick count, add 100ms, check through delete list if it's time to delete, if so delete, else don't, then update state stick. Function
+//can be called every 100ms component did mount
 class Canvas extends React.Component {
     constructor(props) {
         super(props);
@@ -28,12 +32,14 @@ class Canvas extends React.Component {
         this.canvas = createRef();
         this.init = true;
         this.myFrames = 0;
+        this.circleID = 0;
+        this.intervalTick;
+        this.intervalAddCircle;
+        this.intervalDeleteCircle;
     }
 
     tick() {
         if (this.state.isRunning) {
-            // console.log(this.myFrames);
-            // console.log(this.state.fps);
             this.setState(state => ({
                 seconds: state.seconds - 1,
                 fps: this.myFrames,
@@ -46,11 +52,14 @@ class Canvas extends React.Component {
         if (this.state.isRunning) {
             const newList = [...this.state.list];
             let circle = {
-                x: Math.floor(Math.random() * (this.state.width - this.state.radius - this.state.radius + 1)) + this.state.radius,
-                y: Math.floor(Math.random() * (this.state.height - this.state.radius - this.state.radius + 1)) + this.state.radius,
+                x: Math.floor(Math.random() * (this.state.width - this.state.maxRadius - this.state.maxRadius + 1)) + this.state.maxRadius,
+                y: Math.floor(Math.random() * (this.state.height - this.state.maxRadius - this.state.maxRadius + 1)) + this.state.maxRadius,
                 r: this.state.radius,
                 polarity: 1,
+                isClicked: false,
+                ID: this.circleID,
             };
+            this.circleID += 1;
 
             newList.push(circle);
             this.setState(state => ({
@@ -60,7 +69,7 @@ class Canvas extends React.Component {
         }
     }
 
-    deleteCircle(index) {
+    deleteCircleByTimer(index) {
         const newList = [...this.state.list];
         newList.splice(newList.indexOf(index), 1);
 
@@ -69,12 +78,49 @@ class Canvas extends React.Component {
         });
     }
 
+    deleteCircle() {
+        const newList = [...this.state.list];
+        console.log('delete circle');
+        for (let i of newList) {
+            if (i.isClicked == true) {
+                newList.splice(newList.indexOf(i), 1);
+            }
+        }
+
+        this.setState({
+            list: newList,
+        });
+    }
+    //WHY DOESN'T THIS WORK? HAS TO BE CALLED IN UPDATECIRCLE OR ELSE WON'T DELETE
+    // deleteCircleByID(id) {
+    //     const newList = [...this.state.list];
+    //     console.log('inside');
+
+    //     for (let i of newList) {
+    //         if (id == i.ID) {
+    //             console.log('delete');
+    //             console.log('delete');
+
+    //             console.log(newList);
+    //             newList.splice(newList.indexOf(i), 1);
+    //             console.log(newList);
+    //         }
+    //     }
+
+    //     this.setState({
+    //         list: newList,
+    //     });
+    // }
+
+    //FIGURE OUT DELETE FOR EACH GAME MODE AND MAKE SURE TO UNMOUNT
     componentDidMount() {
-        this.interval = setInterval(() => this.tick(), 1000);
-        if (this.state.mode == 'precision') setInterval(() => this.deleteCircle(0), this.state.addCircleTimer);
+        this.intervalTick = setInterval(() => this.tick(), 1000);
+        if (this.state.mode == 'precision') {
+            this.intervalDeleteCircle = setInterval(() => this.deleteCircleByTimer(0), this.state.addCircleTimer);
+        }
 
-        setInterval(() => this.addCircle(), this.state.addCircleTimer);
-
+        this.intervalAddCircle = setInterval(() => this.addCircle(), this.state.addCircleTimer);
+        setInterval(() => this.deleteCircle(), this.state.addCircleTimer);
         this.createCircleList(this.gameLoop);
     }
 
@@ -85,8 +131,11 @@ class Canvas extends React.Component {
         }
     }
     componentWillUnmount() {
-        //clearInterval(this.interval);
-        // this.state.isRunning = false;
+        clearInterval(this.intervalAddCircle);
+        clearInterval(this.intervalDeleteCircle);
+        clearInterval(this.intervalTick);
+
+        this.state.isRunning = false;
     }
 
     createCircleList = callback => {
@@ -97,25 +146,30 @@ class Canvas extends React.Component {
                 y: Math.floor(Math.random() * (this.state.height - this.state.radius - this.state.radius + 1)) + this.state.radius,
                 r: this.state.radius,
                 polarity: 1,
+                isClicked: false,
             };
 
             list[i] = circle;
         }
-        this.setState({ list }, callback);
+        this.setState(callback);
     };
 
     updateCircleList = () => {
         const newList = [...this.state.list];
         // console.log(this.state);
         for (let i of newList) {
-            if (i.r > this.state.maxRadius || i.r < this.state.minRadius) {
-                if (i.polarity == -1 && i.r < this.state.minRadius) {
-                    newList.splice(newList.indexOf(i), 1); //Delete after 1 'rotation' of small--->big---->small----->delete
-                } else {
-                    i.polarity = i.polarity * -1;
+            if (i.isClicked == false) {
+                if (i.r > this.state.maxRadius || i.r < this.state.minRadius) {
+                    if (i.polarity == -1 && i.r < this.state.minRadius) {
+                        newList.splice(newList.indexOf(i), 1); //Delete after 1 'rotation' of small--->big---->small----->delete
+                    } else {
+                        i.polarity = i.polarity * -1;
+                    }
                 }
+                i.r += this.state.radiusChange * i.polarity;
+            } else {
+                // setInterval(() => newList.splice(newList.indexOf(i), 1), 500);
             }
-            i.r += this.state.radiusChange * i.polarity;
         }
         this.setState({
             list: newList,
@@ -127,10 +181,22 @@ class Canvas extends React.Component {
         const ctx = canvas.getContext('2d');
 
         for (let i of this.state.list) {
-            ctx.beginPath();
-            ctx.arc(i.x, i.y, i.r, 0, Math.PI * 2, true); // Outer circle
-            ctx.fill();
-            ctx.stroke();
+            if (i.isClicked == true) {
+                // console.log(i);
+                ctx.beginPath();
+                ctx.arc(i.x, i.y, i.r, 0, Math.PI * 2, true); // Outer circle
+                // ctx.fillStyle = 'rgba(255, 0, 0, 0.5)';
+                // ctx.fill();
+                ctx.strokeStyle = 'teal';
+                ctx.stroke();
+            } else {
+                ctx.beginPath();
+                ctx.arc(i.x, i.y, i.r, 0, Math.PI * 2, true); // Outer circle
+                ctx.fillStyle = 'black';
+
+                ctx.fill();
+                ctx.stroke();
+            }
         }
     };
 
@@ -146,16 +212,16 @@ class Canvas extends React.Component {
 
         for (let i of newList) {
             if (Math.sqrt((e.nativeEvent.offsetX - i.x) ** 2 + (e.nativeEvent.offsetY - i.y) ** 2) < i.r) {
-                newList.splice(newList.indexOf(i), 1);
+                i.isClicked = true;
+                // newList.splice(newList.indexOf(i), 1);
+                // console.log(i.ID);
 
-                this.setState({
-                    targetsHit: this.state.targetsHit + 1,
-                });
                 break;
             }
         }
         this.setState({
             list: newList,
+            targetsHit: this.state.targetsHit + 1,
         });
     };
 
@@ -214,7 +280,7 @@ class Canvas extends React.Component {
                 );
             else {
                 return (
-                    <div className="container canvas-board">
+                    <div className="convas-page-container">
                         <div className="row canvas-bar">
                             <div className="col d-flex justify-content-center">
                                 <b>Seconds: {this.state.seconds}</b>
@@ -232,7 +298,7 @@ class Canvas extends React.Component {
                             </div>
                         </div>
                         <div className="row justify-content-center">
-                            <canvas onClick={this.isIntersect} id="canvas" ref={this.canvas} width={this.state.width} height={this.state.height} />
+                            <canvas onClick={this.isIntersect} ref={this.canvas} width={this.state.width} height={this.state.height} />
                         </div>
                     </div>
                 );

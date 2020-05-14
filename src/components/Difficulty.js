@@ -71,7 +71,7 @@ class Difficulty extends React.Component {
                 if (e.target.name == 'easy') {
                     gameStateObj.width = 800;
                     gameStateObj.height = 600;
-                    gameStateObj.radius = 5;
+                    gameStateObj.radius = 50;
                     gameStateObj.radiusChange = 1;
                     gameStateObj.difficulty = 'easy';
                     gameStateObj.mode = 'precision';

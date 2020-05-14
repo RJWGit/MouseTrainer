@@ -10,16 +10,16 @@ class App extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            width: 1100,
+            width: 1600,
             height: 600,
-            radius: 5,
+            radius: 50,
             radiusChange: 1,
             maxRadius: 70,
             minRadius: 1,
             difficulty: 'easy',
             addCircleTimer: 500,
             mode: 'speed',
-            seconds: 15,
+            seconds: 50,
         };
     }
 

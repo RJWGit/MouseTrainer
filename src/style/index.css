@@ -8,19 +8,27 @@
     height: 100vh;
     background-image: linear-gradient(rgb(0, 0, 0) 1px, transparent 0), linear-gradient(90deg, rgb(0, 0, 0) 1px, transparent 0);
     background-size: 40px 40px, 40px 40px;
+    font-family: 'roboto-regular';
 }
 
-#canvas {
+/* #canvas {
     border: 1px solid black;
-    background-image: url('../images/grid1.png');
-    background-color: rgb(36, 32, 32);
-    background-size: cover; /* <------ */
-    background-repeat: no-repeat;
-}
-.canvas-board {
+    background-image: linear-gradient(rgb(0, 0, 0) 1px, transparent 0), linear-gradient(90deg, rgb(0, 0, 0) 1px, transparent 0);
+    background-size: 40px 40px, 40px 40px;
+} */
+/* .canvas-board {
     margin-top: 8em;
-}
+} */
+/* .canvas-background {
+    background-color: rgb(167, 167, 167);
+    padding-top: 20px;
+    padding-bottom: 20px;
+} */
 
+/* .convas-page-container {
+    width: 80vw !important;
+    height: 80vh !important;
+} */
 .home-page-row {
 }
 
@@ -56,12 +64,11 @@
     color: white;
     font-family: 'roboto-regular';
 }
-/* .home-page-image {
-    background-image: url('../images/Target.png');
-    width: 208px;
-    height: 66px;
-    object-fit: fill;
-} */
+.home-page-image {
+    object-fit: cover;
+    height: 150px;
+    width: 150px;
+}
 .mode-page-container {
     margin-top: 8em;
     /* height: 60vh; */
@@ -69,28 +76,26 @@
     justify-content: center;
     align-items: center;
     /* border: 1px solid rgb(51, 78, 55); */
-    background-color: #111217;
+    /* background-color: #111217; */
 }
 
 .mode-page-title {
-    font-family: 'Lucida Console', Courier, monospace;
     font-size: 2.5em;
     font-weight: 900;
-    color: #ff003a;
+    color: white;
 }
 
 .mode-page-subtitle {
-    font-family: 'Lucida Console', Courier, monospace;
     font-size: 1.5em;
     font-weight: 900;
-    color: #ff003a;
+    color: white;
 }
 
 .mode-screen-styling {
     width: 15vw;
     height: 20vh;
     margin: 10px;
-    background-color: #ff003a;
+    /* background-color: #ff003a; */
     color: white;
     border-radius: 12px;
     border: 3px solid rgb(0, 0, 0);
@@ -102,10 +107,13 @@
 
 .canvas-bar {
     color: white;
-    padding-left: 5vw;
+    padding-left: 6vw;
     padding-right: 6vw;
 }
 
+.row {
+    margin: 0 !important;
+}
 .footer {
     position: fixed;
     bottom: 0;
@@ -123,12 +131,11 @@
     /* height: 60vh; */
 
     /* border: 1px solid rgb(51, 78, 55); */
-    background-color: #111217;
+    /* background-color: #1a1818; */
 }
 
 .result-text {
-    font-family: 'Lucida Console', Courier, monospace;
     font-size: 1.5em;
     font-weight: 900;
-    color: #ff003a;
+    color: white;
 }
