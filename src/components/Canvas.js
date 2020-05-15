@@ -4,7 +4,7 @@ import Results from './Results';
 
 //TODO:
 //1.use react 'onkeydown' function to pick up keyboard inputs, then get current mouse x,y and check for intersect
-
+//2. Trigger hit on mouse down, instead of release
 class Canvas extends React.Component {
     constructor(props) {
         super(props);
@@ -287,7 +287,7 @@ class Canvas extends React.Component {
                             </div>
                         </div>
                         <div className="row justify-content-center">
-                            <canvas onClick={this.isIntersect} ref={this.canvas} width={this.state.width} height={this.state.height} />
+                            <canvas onMouseDown={this.isIntersect} ref={this.canvas} width={this.state.width} height={this.state.height} />
                         </div>
                     </div>
                 );
