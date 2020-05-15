@@ -190,7 +190,8 @@ class Canvas extends React.Component {
         const newList = [...this.state.list];
 
         for (let i of newList) {
-            if (Math.sqrt((e.nativeEvent.offsetX - i.x) ** 2 + (e.nativeEvent.offsetY - i.y) ** 2) < i.r) {
+            //Check mouse position intersects circle and make sure circle hasn't been clicked(or else can click circle several times while it's in death animation)
+            if (Math.sqrt((e.nativeEvent.offsetX - i.x) ** 2 + (e.nativeEvent.offsetY - i.y) ** 2) < i.r && i.isClicked == false) {
                 i.isClicked = true;
                 this.setState(state => ({
                     list: newList,
