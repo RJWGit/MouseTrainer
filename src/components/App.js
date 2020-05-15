@@ -3,6 +3,9 @@ import Canvas from './Canvas.js';
 import HomePage from './HomePage.js';
 import Modes from './Modes.js';
 import Footer from './Footer.js';
+import Privacy from './Privacy.js';
+import Contact from './Contact.js';
+import Updates from './Updates';
 
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 
@@ -10,8 +13,8 @@ class App extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            width: 1600,
-            height: 600,
+            width: 1200,
+            height: 800,
             radius: 50,
             radiusChange: 1,
             maxRadius: 70,
@@ -19,7 +22,7 @@ class App extends React.Component {
             difficulty: 'easy',
             addCircleTimer: 500,
             mode: 'speed',
-            seconds: 50,
+            seconds: 10,
         };
     }
 
@@ -29,8 +32,8 @@ class App extends React.Component {
 
     updateGameState = newGameState => {
         this.setState({
-            width: newGameState.width,
-            height: newGameState.height,
+            // width: newGameState.width,
+            // height: newGameState.height,
             radius: newGameState.radius,
             radiusChange: newGameState.radiusChange,
             difficulty: newGameState.difficulty,
@@ -47,13 +50,20 @@ class App extends React.Component {
                 {/* <Canvas></Canvas> */}
                 <Router>
                     <div>
-                        <nav className="navbar navbar-expand-sm navbar-dark bg-dark">
-                            <Link className="navbar-brand" to="/">
-                                Home
-                            </Link>
-                            <Link className="navbar-brand" to="/">
-                                SignUp
-                            </Link>
+                        <nav className="navbar row navbar-expand-sm navbar-dark bg-dark">
+                            <div className="col-9">
+                                <Link className="navbar-brand" to="/">
+                                    Home
+                                </Link>
+                                <Link className="navbar-brand" to="/updates">
+                                    Updates
+                                </Link>
+                            </div>
+                            <div className="col-3">
+                                <Link className="navbar-brand justify-content-end d-flex" to="/">
+                                    SignUp
+                                </Link>
+                            </div>
                             {/* <Link className="navbar-brand pl-5" to="/play">
                                 Play
                             </Link> */}
@@ -76,16 +86,25 @@ class App extends React.Component {
                                     addCircleTimer={this.state.addCircleTimer}
                                 ></Canvas>
                             </Route>
+                            <Route path="/privacy">
+                                <Privacy></Privacy>
+                            </Route>
                             <Route path="/modes">
                                 <Modes updateGameState={this.updateGameState}></Modes>
+                            </Route>
+                            <Route path="/contact">
+                                <Contact></Contact>
+                            </Route>
+                            <Route path="/updates">
+                                <Updates></Updates>
                             </Route>
                             <Route path="/">
                                 <HomePage></HomePage>
                             </Route>
                         </Switch>
                     </div>
+                    <Footer></Footer>
                 </Router>
-                <Footer></Footer>
             </div>
         );
     }

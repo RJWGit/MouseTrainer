@@ -61,7 +61,7 @@ class Difficulty extends React.Component {
                     gameStateObj.difficulty = 'hard';
                     gameStateObj.mode = 'classic';
                     gameStateObj.addCircleTimer = 400;
-                    gameStateObj.maxRadius = 35;
+                    gameStateObj.maxRadius = 40;
                     gameStateObj.minRadius = 1;
                     this.props.updateGameState(gameStateObj);
                     break;
@@ -71,7 +71,7 @@ class Difficulty extends React.Component {
                 if (e.target.name == 'easy') {
                     gameStateObj.width = 800;
                     gameStateObj.height = 600;
-                    gameStateObj.radius = 50;
+                    gameStateObj.radius = 5;
                     gameStateObj.radiusChange = 1;
                     gameStateObj.difficulty = 'easy';
                     gameStateObj.mode = 'precision';
@@ -88,7 +88,7 @@ class Difficulty extends React.Component {
                     gameStateObj.radiusChange = 1;
                     gameStateObj.difficulty = 'medium';
                     gameStateObj.mode = 'precision';
-                    gameStateObj.addCircleTimer = 700;
+                    gameStateObj.addCircleTimer = 900;
                     gameStateObj.maxRadius = 45;
                     gameStateObj.minRadius = 1;
                     this.props.updateGameState(gameStateObj);
@@ -101,7 +101,7 @@ class Difficulty extends React.Component {
                     gameStateObj.radiusChange = 1;
                     gameStateObj.difficulty = 'hard';
                     gameStateObj.mode = 'precision';
-                    gameStateObj.addCircleTimer = 400;
+                    gameStateObj.addCircleTimer = 800;
                     gameStateObj.maxRadius = 35;
                     gameStateObj.minRadius = 1;
                     this.props.updateGameState(gameStateObj);

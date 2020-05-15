@@ -1,4 +1,5 @@
 import React, { createRef } from 'react';
+import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 
 class Footer extends React.Component {
     constructor(props) {
@@ -10,12 +11,13 @@ class Footer extends React.Component {
         return (
             <div className="footer navbar-fixed-bottom">
                 <nav className="navbar navbar-expand-sm navbar-dark bg-dark justify-content-center footer-navbar">
-                    <a class="nav-item nav-link footer-item" href="#">
+                    <Link to="/privacy" class="nav-item nav-link footer-item">
                         Privacy Policy
-                    </a>
-                    <a class="nav-item nav-link footer-item" href="#">
+                    </Link>
+                    <Link to="/contact" class="nav-item nav-link footer-item">
                         Contact Us
-                    </a>
+                    </Link>
+
                     <a class="nav-item nav-link footer-item" href="https://github.com/RJWGit/MouseBooster">
                         GitHub
                     </a>

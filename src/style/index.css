@@ -139,3 +139,14 @@
     font-weight: 900;
     color: white;
 }
+
+.privacy-page {
+    /* background-color: rgb(141, 136, 136); */
+    color: white;
+}
+
+.privacy-page-container {
+    margin-top: 16em;
+
+    /* opacity: 0.7; */
+}
