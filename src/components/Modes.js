@@ -51,8 +51,13 @@ class Modes extends React.Component {
                         </div>
                         <div className="col-4 mb-5 d-flex justify-content-around">
                             <div className="row justify-content-md-center">
-                                <div className="col-12 d-flex justify-content-center mode-page-subtitle">Speed</div>
-                                <button onClick={e => this.changePage(e, 'difficulty')} type="button" name="speed" className="mode-screen-styling">
+                                <div className="col-12 d-flex justify-content-center mode-page-subtitle">Auto Balance</div>
+                                <button
+                                    onClick={e => this.changePage(e, 'difficulty')}
+                                    type="button"
+                                    name="autobalance"
+                                    className="mode-screen-styling"
+                                >
                                     {/* <img src="target1.png" className="mode-screen-image"></img> */}
                                 </button>
                             </div>

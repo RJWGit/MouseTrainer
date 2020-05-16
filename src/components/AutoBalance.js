@@ -1,24 +1,20 @@
 import React, { createRef } from 'react';
-import { Link } from 'react-router-dom';
 import Results from './Results';
 
-//TODO:
-//1.use react 'onkeydown' function to pick up keyboard inputs, then get current mouse x,y and check for intersect
-//2. Trigger hit on mouse down, instead of release
-class Canvas extends React.Component {
+class AutoBalance extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            width: this.props.width,
-            height: this.props.height,
-            radius: this.props.radius,
-            radiusChange: this.props.radiusChange,
-            difficulty: this.props.difficulty,
-            addCircleTimer: this.props.addCircleTimer, //In milliseconds
-            mode: this.props.mode,
-            seconds: this.props.seconds,
-            maxRadius: this.props.maxRadius,
-            minRadius: this.props.minRadius,
+            width: this.props.getGameState.width,
+            height: this.props.getGameState.height,
+            radius: this.props.getGameState.radius,
+            radiusChange: this.props.getGameState.radiusChange,
+            difficulty: this.props.getGameState.difficulty,
+            addCircleTimer: this.props.getGameState.addCircleTimer, //In milliseconds
+            mode: this.props.getGameState.mode,
+            seconds: this.props.getGameState.seconds,
+            maxRadius: this.props.getGameState.maxRadius,
+            minRadius: this.props.getGameState.minRadius,
             list: [],
             fps: 0,
             targetsHit: 0,
@@ -30,7 +26,6 @@ class Canvas extends React.Component {
         this.myFrames = 0;
         this.circleID = 0;
         this.intervalTick;
-        this.intervalAddCircle;
         this.intervalDeleteCircle;
         this.displayTotalTargets;
         this.displayTargetsHit;
@@ -45,11 +40,12 @@ class Canvas extends React.Component {
                 seconds: state.seconds - 1,
                 fps: this.myFrames,
             }));
+
             this.displayTargetsHit = this.state.targetsHit;
             this.displayTotalTargets = this.state.totalTargets;
-
             this.myFrames = 0;
         }
+        console.log(this.state.addCircleTimer);
     }
 
     //Create and add circles to state list
@@ -72,16 +68,9 @@ class Canvas extends React.Component {
                 list: newList,
                 totalTargets: this.state.totalTargets + 1,
             }));
+
+            setTimeout(() => this.addCircle(), this.state.addCircleTimer);
         }
-    }
-
-    deleteCircleByTimer(index) {
-        const newList = [...this.state.list];
-        newList.splice(newList.indexOf(index), 1);
-
-        this.setState({
-            list: newList,
-        });
     }
 
     deleteCircleByClick() {
@@ -104,16 +93,9 @@ class Canvas extends React.Component {
     //FIGURE OUT DELETE FOR EACH GAME MODE AND MAKE SURE TO UNMOUNT
     componentDidMount() {
         this.intervalTick = setInterval(() => this.tick(), 1000);
+        this.intervalDeleteCircle = setInterval(() => this.deleteCircleByClick(), 100);
 
-        //Delete timers
-        if (this.state.mode == 'precision') {
-            this.intervalDeleteCircle = setInterval(() => this.deleteCircleByTimer(0), this.state.addCircleTimer);
-        } else {
-            this.intervalDeleteCircle = setInterval(() => this.deleteCircleByClick(), 100);
-        }
-
-        this.intervalAddCircle = setInterval(() => this.addCircle(), this.state.addCircleTimer);
-
+        this.addCircle();
         this.initGameLoop(this.gameLoop);
     }
 
@@ -124,7 +106,6 @@ class Canvas extends React.Component {
         }
     }
     componentWillUnmount() {
-        clearInterval(this.intervalAddCircle);
         clearInterval(this.intervalDeleteCircle);
         clearInterval(this.intervalTick);
 
@@ -137,12 +118,21 @@ class Canvas extends React.Component {
 
     updateCircleRadius = () => {
         const newList = [...this.state.list];
-        // console.log(this.state);
+        const increaseTimer = 50;
+        const newTime = this.state.addCircleTimer + increaseTimer;
+
+        const streak = true;
+
         for (let i of newList) {
             if (i.isClicked == false) {
                 if (i.r > this.state.maxRadius || i.r < this.state.minRadius) {
                     if (i.polarity == -1 && i.r < this.state.minRadius) {
                         newList.splice(newList.indexOf(i), 1); //Delete after 1 'rotation' of small--->big---->small----->delete
+
+                        //Update add circle timer
+                        this.setState({
+                            addCircleTimer: increaseTimer + this.state.addCircleTimer,
+                        });
                     } else {
                         i.polarity = i.polarity * -1;
                     }
@@ -158,10 +148,10 @@ class Canvas extends React.Component {
     drawCircles = () => {
         const canvas = this.canvas.current;
         const ctx = canvas.getContext('2d');
-
         for (let i of this.state.list) {
+            // console.log(i);
+
             if (i.isClicked == true) {
-                // console.log(i);
                 ctx.beginPath();
                 ctx.arc(i.x, i.y, i.r, 0, Math.PI * 2, true); // Outer circle
                 // ctx.fillStyle = 'rgba(255, 0, 0, 0.5)';
@@ -185,7 +175,6 @@ class Canvas extends React.Component {
         ctx.clearRect(0, 0, this.state.width, this.state.height);
     };
 
-    //TODO: Fix so no 'after-image' when clicked. stop from redrawing after deleting
     isIntersect = e => {
         const newList = [...this.state.list];
 
@@ -196,6 +185,8 @@ class Canvas extends React.Component {
                 this.setState(state => ({
                     list: newList,
                     targetsHit: this.state.targetsHit + 1,
+                    targetStreak: this.state.targetStreak + 1,
+                    addCircleTimer: this.state.addCircleTimer - 20,
                 }));
                 break;
             }
@@ -207,9 +198,9 @@ class Canvas extends React.Component {
 
     gameLoop = () => {
         if (!this.state.isRunning) return;
-        if (this.state.mode == 'classic' || this.state.mode == 'speed') {
-            this.updateCircleRadius();
-        }
+
+        this.updateCircleRadius();
+
         this.myFrames++;
 
         if (this.state.seconds <= 0) {
@@ -225,23 +216,29 @@ class Canvas extends React.Component {
     };
 
     restartGameState = () => {
-        this.setState({
-            width: this.props.width,
-            height: this.props.height,
-            radius: this.props.radius,
-            radiusChange: this.props.radiusChange,
-            difficulty: this.props.difficulty,
-            addCircleTimer: this.props.addCircleTimer, //In milliseconds
-            mode: this.props.mode,
-            seconds: this.props.seconds,
-            maxRadius: this.props.maxRadius,
-            minRadius: this.props.minRadius,
-            list: [],
-            fps: 0,
-            targetsHit: 0,
-            totalTargets: 0, //Currently must be > 0 to avoid deviding by 0 in render function
-            isRunning: true,
-        });
+        this.myFrames = 0;
+        this.circleID = 0;
+        this.circleDeleteTimer = 300;
+        this.setState(
+            {
+                width: this.props.getGameState.width,
+                height: this.props.getGameState.height,
+                radius: this.props.getGameState.radius,
+                radiusChange: this.props.getGameState.radiusChange,
+                difficulty: this.props.getGameState.difficulty,
+                addCircleTimer: this.props.getGameState.addCircleTimer, //In milliseconds
+                mode: this.props.getGameState.mode,
+                seconds: this.props.getGameState.seconds,
+                maxRadius: this.props.getGameState.maxRadius,
+                minRadius: this.props.getGameState.minRadius,
+                list: [],
+                fps: 0,
+                targetsHit: 0,
+                totalTargets: 0, //Currently must be > 0 to avoid deviding by 0 in render function
+                isRunning: true,
+            },
+            () => this.addCircle()
+        );
 
         requestAnimationFrame(this.gameLoop);
     };
@@ -296,4 +293,4 @@ class Canvas extends React.Component {
     }
 }
 
-export default Canvas;
+export default AutoBalance;

@@ -1,12 +1,12 @@
 import React from 'react';
-import Canvas from './Canvas.js';
+import Canvas from './Classic.js';
 import HomePage from './HomePage.js';
 import Modes from './Modes.js';
 import Footer from './Footer.js';
 import Privacy from './Privacy.js';
 import Contact from './Contact.js';
 import Updates from './Updates';
-
+import ChosenMode from './ChosenMode';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 
 class App extends React.Component {
@@ -20,9 +20,9 @@ class App extends React.Component {
             maxRadius: 70,
             minRadius: 1,
             difficulty: 'easy',
-            addCircleTimer: 500,
-            mode: 'speed',
-            seconds: 10,
+            addCircleTimer: 1000,
+            mode: 'autobalance',
+            seconds: 5,
         };
     }
 
@@ -44,10 +44,26 @@ class App extends React.Component {
         });
     };
 
+    returnGameState = () => {
+        let obj = {};
+        obj = {
+            width: this.state.width,
+            height: this.state.height,
+            radius: this.state.radius,
+            radiusChange: this.state.radiusChange,
+            difficulty: this.state.difficulty,
+            mode: this.state.mode,
+            addCircleTimer: this.state.addCircleTimer,
+            maxRadius: this.state.maxRadius,
+            minRadius: this.state.minRadius,
+            seconds: this.state.seconds,
+        };
+
+        return obj;
+    };
     render() {
         return (
             <div>
-                {/* <Canvas></Canvas> */}
                 <Router>
                     <div>
                         <nav className="navbar row navbar-expand-sm navbar-dark bg-dark">
@@ -73,18 +89,7 @@ class App extends React.Component {
                             renders the first one that matches the current URL. */}
                         <Switch>
                             <Route path="/play">
-                                <Canvas
-                                    minRadius={this.state.minRadius}
-                                    maxRadius={this.state.maxRadius}
-                                    seconds={this.state.seconds}
-                                    mode={this.state.mode}
-                                    width={this.state.width}
-                                    height={this.state.height}
-                                    radius={this.state.radius}
-                                    radiusChange={this.state.radiusChange}
-                                    difficulty={this.state.difficulty}
-                                    addCircleTimer={this.state.addCircleTimer}
-                                ></Canvas>
+                                <ChosenMode getGameState={this.returnGameState}></ChosenMode>
                             </Route>
                             <Route path="/privacy">
                                 <Privacy></Privacy>
