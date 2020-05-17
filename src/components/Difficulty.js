@@ -181,16 +181,17 @@ class Difficulty extends React.Component {
         event.preventDefault();
         const gameStateObj = {};
 
-        gameStateObj.width = this.state.width;
-        gameStateObj.height = this.state.height;
-        gameStateObj.seconds = this.state.width;
-        gameStateObj.radius = this.state.radius;
-        gameStateObj.radiusChange = this.state.radiusChange;
-        gameStateObj.difficulty = 'Custom';
+        gameStateObj.width = parseInt(this.state.width, 10);
+        gameStateObj.height = parseInt(this.state.height, 10);
+        gameStateObj.seconds = parseInt(this.state.width, 10);
+        gameStateObj.radius = parseInt(this.state.radius, 10);
+        gameStateObj.radiusChange = parseFloat(this.state.radiusChange);
+        gameStateObj.addCircleTimer = parseInt(this.state.addCircleTimer, 10);
+        gameStateObj.maxRadius = parseInt(this.state.maxRadius, 10);
+        gameStateObj.minRadius = parseInt(this.state.minRadius, 10);
         gameStateObj.mode = this.props.mode;
-        gameStateObj.addCircleTimer = this.state.addCircleTimer;
-        gameStateObj.maxRadius = this.state.maxRadius;
-        gameStateObj.minRadius = this.state.minRadius;
+        gameStateObj.difficulty = 'Custom';
+
         this.props.updateGameState(gameStateObj);
     };
     render() {

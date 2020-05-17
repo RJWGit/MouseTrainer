@@ -27,6 +27,7 @@ class App extends React.Component {
     }
 
     updateGameState = newGameState => {
+        console.log(newGameState);
         this.setState({
             width: newGameState.width,
             height: newGameState.height,
