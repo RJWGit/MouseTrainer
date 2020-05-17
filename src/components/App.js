@@ -26,10 +26,6 @@ class App extends React.Component {
         };
     }
 
-    //Use react-router to flip between pages
-    //Add Home/Main page
-    //Add Settings page to customize difficulty and time
-
     updateGameState = newGameState => {
         this.setState({
             width: newGameState.width,
@@ -81,9 +77,6 @@ class App extends React.Component {
                                     SignUp
                                 </Link>
                             </div>
-                            {/* <Link className="navbar-brand pl-5" to="/play">
-                                Play
-                            </Link> */}
                         </nav>
 
                         {/* A <Switch> looks through its children <Route>s and

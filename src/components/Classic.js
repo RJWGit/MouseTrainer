@@ -75,6 +75,7 @@ class Classic extends React.Component {
         }
     }
 
+    //Create and add clicks to drawclicklist
     addClick(e) {
         if (this.state.isRunning) {
             const newList = [...this.state.drawClickList];
@@ -91,6 +92,8 @@ class Classic extends React.Component {
             }));
         }
     }
+
+    //delete circles from list on a timer
     deleteCircleByClick() {
         const newList = [...this.state.list];
         for (let i of newList) {
@@ -108,6 +111,7 @@ class Classic extends React.Component {
         });
     }
 
+    //delete clicks from drawclicklist on a timer
     deleteClicks() {
         const newList = [...this.state.drawClickList];
         for (let i of newList) {
@@ -162,6 +166,7 @@ class Classic extends React.Component {
         }
     };
 
+    //Init timers to start game
     componentDidMount() {
         this.intervalTick = setInterval(() => this.tick(), 1000);
         this.intervalDeleteCircle = setInterval(() => this.deleteCircleByClick(), 100);
@@ -170,7 +175,7 @@ class Classic extends React.Component {
         this.initGameLoop(this.gameLoop);
     }
 
-    //Draw and clear functions
+    //Update canvas
     componentDidUpdate() {
         if (this.state.isRunning) {
             this.clearCanvas();
@@ -241,14 +246,14 @@ class Classic extends React.Component {
     gameLoop = () => {
         if (!this.state.isRunning) return;
 
-        this.updateCircleRadius();
+        this.updateCircleRadius(); //Based on FPS
 
         this.myFrames++;
 
         if (this.state.seconds <= 0) {
             this.handleIsRunning();
         }
-        requestAnimationFrame(this.gameLoop);
+        requestAnimationFrame(this.gameLoop); //set at 60 FPS
     };
 
     //Toggle switch for game running
@@ -284,7 +289,7 @@ class Classic extends React.Component {
             () => this.addCircle()
         );
 
-        requestAnimationFrame(this.gameLoop);
+        requestAnimationFrame(this.gameLoop); //set at 60 FPS
     };
 
     render() {

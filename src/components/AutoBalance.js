@@ -76,7 +76,7 @@ class AutoBalance extends React.Component {
             setTimeout(() => this.addCircle(), this.state.addCircleTimer);
         }
     }
-
+    //Create and add clicks to drawclicklist
     addClick(e) {
         if (this.state.isRunning) {
             const newList = [...this.state.drawClickList];
@@ -93,6 +93,8 @@ class AutoBalance extends React.Component {
             }));
         }
     }
+
+    //delete circles from list on a timer
     deleteCircleByClick() {
         const newList = [...this.state.list];
         for (let i of newList) {
@@ -110,6 +112,7 @@ class AutoBalance extends React.Component {
         });
     }
 
+    //delete clicks from drawclicklist on a timer
     deleteClicks() {
         const newList = [...this.state.drawClickList];
         for (let i of newList) {
@@ -129,8 +132,6 @@ class AutoBalance extends React.Component {
         const canvas = this.canvas.current;
         const ctx = canvas.getContext('2d');
         for (let i of this.state.list) {
-            // console.log(i);
-
             if (i.isClicked == true) {
                 ctx.beginPath();
                 ctx.arc(i.x, i.y, i.r, 0, Math.PI * 2, true); // Outer circle
@@ -153,8 +154,6 @@ class AutoBalance extends React.Component {
         const canvas = this.canvas.current;
         const ctx = canvas.getContext('2d');
         for (let i of this.state.drawClickList) {
-            // console.log(i);
-
             ctx.beginPath();
             ctx.arc(i.x, i.y, i.r, 0, Math.PI * 2, true); // Outer circle
             ctx.fillStyle = 'grey';
@@ -164,15 +163,16 @@ class AutoBalance extends React.Component {
         }
     };
 
+    //Init timers to start game
     componentDidMount() {
         this.intervalTick = setInterval(() => this.tick(), 1000);
         this.intervalDeleteCircle = setInterval(() => this.deleteCircleByClick(), 100);
         this.intervalDeleteClick = setInterval(() => this.deleteClicks(), 100);
-        this.addCircle();
+        this.addCircle(); //Start adding circles
         this.initGameLoop(this.gameLoop);
     }
 
-    //Draw and clear functions
+    //Update canvas
     componentDidUpdate() {
         if (this.state.isRunning) {
             this.clearCanvas();
@@ -250,14 +250,14 @@ class AutoBalance extends React.Component {
     gameLoop = () => {
         if (!this.state.isRunning) return;
 
-        this.updateCircleRadius();
+        this.updateCircleRadius(); //Based on FPS
 
         this.myFrames++;
 
         if (this.state.seconds <= 0) {
             this.handleIsRunning();
         }
-        requestAnimationFrame(this.gameLoop);
+        requestAnimationFrame(this.gameLoop); //set at 60 FPS
     };
 
     //Toggle switch for game running
@@ -293,7 +293,7 @@ class AutoBalance extends React.Component {
             () => this.addCircle()
         );
 
-        requestAnimationFrame(this.gameLoop);
+        requestAnimationFrame(this.gameLoop); //set at 60 FPS
     };
 
     render() {

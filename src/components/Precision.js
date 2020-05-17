@@ -79,6 +79,7 @@ class Precision extends React.Component {
         }
     }
 
+    //Create and add clicks to drawclicklist
     addClick(e) {
         if (this.state.isRunning) {
             const newList = [...this.state.drawClickList];
@@ -96,6 +97,7 @@ class Precision extends React.Component {
         }
     }
 
+    //delete circles from list on a timer after a fail to be clicked
     deleteCircleByTimer(index) {
         const newList = [...this.state.list];
         newList.splice(newList.indexOf(index), 1);
@@ -105,6 +107,7 @@ class Precision extends React.Component {
         });
     }
 
+    //delete circles from list on a timer after being clicked
     deleteCircleByClick() {
         const newList = [...this.state.list];
         for (let i of newList) {
@@ -122,6 +125,7 @@ class Precision extends React.Component {
         });
     }
 
+    //delete clicks from drawclicklist on a timer
     deleteClicks() {
         const newList = [...this.state.drawClickList];
         for (let i of newList) {
@@ -137,6 +141,7 @@ class Precision extends React.Component {
         });
     }
 
+    //Init timers to start game
     componentDidMount() {
         this.intervalTick = setInterval(() => this.tick(), 1000);
         this.intervalDeleteCircleTimer = setInterval(() => this.deleteCircleByTimer(0), this.state.addCircleTimer);
@@ -146,6 +151,7 @@ class Precision extends React.Component {
         this.initGameLoop(this.gameLoop);
     }
 
+    //Update canvas
     componentDidUpdate() {
         if (this.state.isRunning) {
             this.clearCanvas();
@@ -153,6 +159,8 @@ class Precision extends React.Component {
             this.drawClicks();
         }
     }
+
+    //Clear interval timers to prevent running after leaving game mode
     componentWillUnmount() {
         clearInterval(this.intervalAddCircle);
         clearInterval(this.intervalDeleteCircleTimer);
@@ -211,7 +219,7 @@ class Precision extends React.Component {
         ctx.clearRect(0, 0, this.state.width, this.state.height);
     };
 
-    //TODO: Fix so no 'after-image' when clicked. stop from redrawing after deleting
+    //Check if click hits circle then updates state
     isIntersect = e => {
         const newList = [...this.state.list];
 
@@ -240,7 +248,7 @@ class Precision extends React.Component {
         if (this.state.seconds <= 0) {
             this.handleIsRunning();
         }
-        requestAnimationFrame(this.gameLoop);
+        requestAnimationFrame(this.gameLoop); //set at 60 FPS
     };
 
     handleIsRunning = () => {
@@ -270,7 +278,7 @@ class Precision extends React.Component {
             targetStreak: 0,
         });
 
-        requestAnimationFrame(this.gameLoop);
+        requestAnimationFrame(this.gameLoop); //set at 60 FPS
     };
 
     render() {

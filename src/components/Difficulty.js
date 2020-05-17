@@ -1,8 +1,7 @@
 import React, { createRef } from 'react';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 
-//TODO:
-//Update pictures for modes to reflect an in-game image
+//TODO: Add pictures and add formatting to custom mode page
 class Difficulty extends React.Component {
     constructor(props) {
         super(props);
@@ -21,15 +20,6 @@ class Difficulty extends React.Component {
         };
     }
 
-    // width: newGameState.width,
-    // height: newGameState.height,
-    // radius: newGameState.radius,
-    // radiusChange: newGameState.radiusChange,
-    // difficulty: newGameState.difficulty,
-    // mode:newGameState.mode,
-    // addCircleTimer:newGameState.addCircleTimer,
-    // maxRadius: newGameState.maxRadius,
-    // minRadius: newGameState.minRadius,
     gameState = e => {
         const gameStateObj = {};
 
