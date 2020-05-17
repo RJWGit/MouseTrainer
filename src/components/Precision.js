@@ -20,6 +20,7 @@ class Precision extends React.Component {
             maxRadius: this.props.getGameState.maxRadius,
             minRadius: this.props.getGameState.minRadius,
             list: [],
+            drawClickList: [],
             fps: 0,
             targetsHit: 0,
             totalTargets: 0, //Currently must be > 0 to avoid deviding by 0 in render function
@@ -36,6 +37,7 @@ class Precision extends React.Component {
         this.displayTotalTargets;
         this.displayTargetsHit;
         this.circleDeleteTimer = 300;
+        this.intervalDeleteClick;
     }
 
     //Seconds count down timer
@@ -77,6 +79,23 @@ class Precision extends React.Component {
         }
     }
 
+    addClick(e) {
+        if (this.state.isRunning) {
+            const newList = [...this.state.drawClickList];
+            let circle = {
+                x: e.nativeEvent.offsetX,
+                y: e.nativeEvent.offsetY,
+                r: 5,
+                deleteTimer: this.circleDeleteTimer,
+            };
+
+            newList.push(circle);
+            this.setState(state => ({
+                drawClickList: newList,
+            }));
+        }
+    }
+
     deleteCircleByTimer(index) {
         const newList = [...this.state.list];
         newList.splice(newList.indexOf(index), 1);
@@ -103,11 +122,26 @@ class Precision extends React.Component {
         });
     }
 
-    //FIGURE OUT DELETE FOR EACH GAME MODE AND MAKE SURE TO UNMOUNT
+    deleteClicks() {
+        const newList = [...this.state.drawClickList];
+        for (let i of newList) {
+            i.deleteTimer -= 100;
+
+            if (i.deleteTimer <= 0) {
+                newList.splice(newList.indexOf(i), 1);
+            }
+        }
+
+        this.setState({
+            drawClickList: newList,
+        });
+    }
+
     componentDidMount() {
         this.intervalTick = setInterval(() => this.tick(), 1000);
         this.intervalDeleteCircleTimer = setInterval(() => this.deleteCircleByTimer(0), this.state.addCircleTimer);
         this.intervalDeleteCircleByClick = setInterval(() => this.deleteCircleByClick(), 100);
+        this.intervalDeleteClick = setInterval(() => this.deleteClicks(), 100);
         this.intervalAddCircle = setInterval(() => this.addCircle(), this.state.addCircleTimer);
         this.initGameLoop(this.gameLoop);
     }
@@ -116,6 +150,7 @@ class Precision extends React.Component {
         if (this.state.isRunning) {
             this.clearCanvas();
             this.drawCircles();
+            this.drawClicks();
         }
     }
     componentWillUnmount() {
@@ -123,6 +158,8 @@ class Precision extends React.Component {
         clearInterval(this.intervalDeleteCircleTimer);
         clearInterval(this.intervalDeleteCircleByClick);
         clearInterval(this.intervalTick);
+        clearInterval(this.intervalDeleteClick);
+
         this.state.isRunning = false;
     }
 
@@ -150,6 +187,21 @@ class Precision extends React.Component {
                 ctx.fill();
                 ctx.stroke();
             }
+        }
+    };
+
+    drawClicks = () => {
+        const canvas = this.canvas.current;
+        const ctx = canvas.getContext('2d');
+        for (let i of this.state.drawClickList) {
+            // console.log(i);
+
+            ctx.beginPath();
+            ctx.arc(i.x, i.y, i.r, 0, Math.PI * 2, true); // Outer circle
+            ctx.fillStyle = 'grey';
+            ctx.fill();
+            ctx.strokeStyle = 'grey';
+            ctx.stroke();
         }
     };
 
@@ -209,6 +261,8 @@ class Precision extends React.Component {
             seconds: this.props.getGameState.seconds,
             maxRadius: this.props.getGameState.maxRadius,
             minRadius: this.props.getGameState.minRadius,
+            list: [],
+            drawClickList: [],
             fps: 0,
             targetsHit: 0,
             totalTargets: 0, //Currently must be > 0 to avoid deviding by 0 in render function
@@ -259,8 +313,16 @@ class Precision extends React.Component {
                                 </b>
                             </div>
                         </div>
-                        <div className="row justify-content-center">
-                            <canvas onMouseDown={this.isIntersect} ref={this.canvas} width={this.state.width} height={this.state.height} />
+                        <div onContextMenu={e => e.preventDefault()} className="row justify-content-center">
+                            <canvas
+                                onMouseDown={e => {
+                                    this.isIntersect(e);
+                                    this.addClick(e);
+                                }}
+                                ref={this.canvas}
+                                width={this.state.width}
+                                height={this.state.height}
+                            />
                         </div>
                     </div>
                 );

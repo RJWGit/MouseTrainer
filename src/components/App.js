@@ -15,14 +15,14 @@ class App extends React.Component {
         this.state = {
             width: 1200,
             height: 800,
-            radius: 50,
+            radius: 1,
             radiusChange: 1,
-            maxRadius: 70,
+            maxRadius: 50,
             minRadius: 1,
-            difficulty: 'easy',
-            addCircleTimer: 1000,
+            difficulty: 'medium',
+            addCircleTimer: 800,
             mode: 'autobalance',
-            seconds: 5,
+            seconds: 50,
         };
     }
 
@@ -32,8 +32,8 @@ class App extends React.Component {
 
     updateGameState = newGameState => {
         this.setState({
-            // width: newGameState.width,
-            // height: newGameState.height,
+            width: newGameState.width,
+            height: newGameState.height,
             radius: newGameState.radius,
             radiusChange: newGameState.radiusChange,
             difficulty: newGameState.difficulty,
@@ -41,6 +41,7 @@ class App extends React.Component {
             addCircleTimer: newGameState.addCircleTimer,
             maxRadius: newGameState.maxRadius,
             minRadius: newGameState.minRadius,
+            seconds: newGameState.seconds,
         });
     };
 
