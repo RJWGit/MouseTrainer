@@ -1,7 +1,6 @@
 import React, { createRef } from 'react';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 
-//TODO: Add pictures and add formatting to custom mode page
 class Difficulty extends React.Component {
     constructor(props) {
         super(props);
@@ -204,20 +203,22 @@ class Difficulty extends React.Component {
                         </div>
                         <div className="col-4 mb-5 d-flex justify-content-around">
                             <div className="row justify-content-center">
-                                <div className="col-12 d-flex justify-content-center mode-page-subtitle">Easy</div>
+                                <div className="col-12 d-flex justify-content-center mode-page-subtitle"></div>
                                 <Link to="/play">
-                                    <button type="button" name="easy" onClick={this.gameState} className="mode-screen-styling">
+                                    <button type="button" name="easy" onClick={this.gameState} className="mode-screen-styling easy-button">
                                         {/* <img src="target1.png" className="mode-screen-image"></img> */}
+                                        Easy
                                     </button>
                                 </Link>
                             </div>
                         </div>
                         <div className="col-4 mb-5 d-flex justify-content-around">
                             <div className="row justify-content-center">
-                                <div className="col-12 d-flex justify-content-center mode-page-subtitle">Medium</div>
+                                <div className="col-12 d-flex justify-content-center mode-page-subtitle"></div>
                                 <Link to="/play">
-                                    <button type="button" name="medium" onClick={this.gameState} className="mode-screen-styling">
+                                    <button type="button" name="medium" onClick={this.gameState} className="mode-screen-styling medium-button">
                                         {/* <img src="target1.png" className="mode-screen-image"></img> */}
+                                        Medium
                                     </button>
                                 </Link>
                             </div>
@@ -225,19 +226,21 @@ class Difficulty extends React.Component {
 
                         <div className="col-4 mb-5 d-flex justify-content-around">
                             <div className="row justify-content-center">
-                                <div className="col-12 d-flex justify-content-center mode-page-subtitle">Hard</div>
+                                <div className="col-12 d-flex justify-content-center mode-page-subtitle"></div>
                                 <Link to="/play">
-                                    <button type="button" name="hard" onClick={this.gameState} className="mode-screen-styling">
+                                    <button type="button" name="hard" onClick={this.gameState} className="mode-screen-styling hard-button">
                                         {/* <img src="target1.png" className="mode-screen-image"></img> */}
+                                        Hard
                                     </button>
                                 </Link>
                             </div>
                         </div>
                         <div className="col-12 mb-5 d-flex justify-content-around">
                             <div className="row justify-content-center">
-                                <div className="col-12 d-flex justify-content-center mode-page-subtitle">Custom</div>
-                                <button type="button" name="hard" onClick={this.customDifficulty} className="mode-screen-styling">
+                                <div className="col-12 d-flex justify-content-center mode-page-subtitle"></div>
+                                <button type="button" name="hard" onClick={this.customDifficulty} className="mode-screen-styling custon-button">
                                     {/* <img src="target1.png" className="mode-screen-image"></img> */}
+                                    Custom
                                 </button>
                             </div>
                         </div>
@@ -246,54 +249,83 @@ class Difficulty extends React.Component {
             );
         } else {
             return (
-                <div className="container mode-page-container">
-                    <form>
-                        <label>
-                            Width:
-                            <input type="number" name="width" value={this.state.width} onChange={this.handleChange} />
-                        </label>
+                <div className="container justify-content-center mode-page-container">
+                    <div className="row justify-content-center">
+                        <div className="col-12 mb-3 d-flex justify-content-around">
+                            <h1 className="mode-page-title">Custom Settings</h1>
+                        </div>
+                        <div className="col-6 d-flex justify-content-end">
+                            <div>
+                                <label>
+                                    Game Width:
+                                    <input name="width" className="form-control" value={this.state.width} onChange={this.handleChange} />
+                                </label>
+                                <br></br>
+                                <label>
+                                    Game Height:
+                                    <input name="height" className="form-control" value={this.state.height} onChange={this.handleChange} />
+                                </label>
+                                <br></br>
+                                <label>
+                                    Seconds:
+                                    <input name="seconds" className="form-control" value={this.state.seconds} onChange={this.handleChange} />
+                                </label>
+                                <br></br>
+                                <label>
+                                    Circle Respawn Timer (in miliseconds*):
+                                    <input
+                                        name="addCircleTimer"
+                                        className="form-control"
+                                        value={this.state.addCircleTimer}
+                                        onChange={this.handleChange}
+                                    />
+                                </label>
+                                <br></br>
+                            </div>
+                        </div>
                         <br></br>
-                        <label>
-                            height:
-                            <input type="number" name="height" value={this.state.height} onChange={this.handleChange} />
-                        </label>
-                        <br></br>
-                        <label>
-                            seconds:
-                            <input type="number" name="seconds" value={this.state.seconds} onChange={this.handleChange} />
-                        </label>
-                        <br></br>
-                        <label>
-                            addCircleTimer:
-                            <input type="number" name="addCircleTimer" value={this.state.addCircleTimer} onChange={this.handleChange} />
-                        </label>
-                        <br></br>
-                        <label>
-                            radius:
-                            <input type="number" name="radius" value={this.state.radius} onChange={this.handleChange} />
-                        </label>
-                        <br></br>
-                        <label>
-                            radiusChange:
-                            <input type="number" name="radiusChange" value={this.state.radiusChange} onChange={this.handleChange} />
-                        </label>
-                        <br></br>
-                        <label>
-                            maxRadius:
-                            <input type="number" name="maxRadius" value={this.state.maxRadius} onChange={this.handleChange} />
-                        </label>
-                        <br></br>
-                        <label>
-                            minRadius:
-                            <input type="number" name="minRadius" value={this.state.minRadius} onChange={this.handleChange} />
-                        </label>
-                        <br></br>
-                        <Link to="/play">
-                            <button onClick={this.handleSubmit} type="button" class="btn btn-secondary">
-                                Submit
-                            </button>
-                        </Link>
-                    </form>
+                        <div className="col-6 d-flex justify-content-start">
+                            <div>
+                                <label>
+                                    Radius:
+                                    <input name="radius" className="form-control" value={this.state.radius} onChange={this.handleChange} />
+                                </label>
+                                <br></br>
+                                <label>
+                                    Radius Change:
+                                    <input
+                                        name="radiusChange"
+                                        className="form-control"
+                                        value={this.state.radiusChange}
+                                        onChange={this.handleChange}
+                                    />
+                                </label>
+                                <br></br>
+                                <label>
+                                    Max Radius:
+                                    <input name="maxRadius" className="form-control" value={this.state.maxRadius} onChange={this.handleChange} />
+                                </label>
+                                <br></br>
+                                <label>
+                                    Minimum Radius:
+                                    <input name="minRadius" className="form-control" value={this.state.minRadius} onChange={this.handleChange} />
+                                </label>
+                                <br></br>
+                            </div>
+                        </div>
+                        <div className="col-12 d-flex justify-content-center mt-5 submit-div">
+                            <Link className="submit-link d-flex justify-content-center" to="/play">
+                                <button onClick={this.handleSubmit} type="button" className="submit-button">
+                                    Submit
+                                </button>
+                            </Link>
+                        </div>
+                        <div className="col-12 d-flex justify-content-center mt-3 submit-div">
+                            Note: Failure to enter reasonable numbers will break the game or not work correctly. Refresh to fix.
+                            <br></br>
+                            *1 seconds = 1000 miliseconds
+                        </div>
+                    </div>
                 </div>
             );
         }

@@ -64,7 +64,7 @@ class App extends React.Component {
             <div>
                 <Router>
                     <div>
-                        <nav className="navbar row navbar-expand-sm navbar-dark bg-dark">
+                        <nav className="navbar row navbar-expand-sm navbar-dark bg-dark main-navbar">
                             <div className="col-9">
                                 <Link className="navbar-brand" to="/">
                                     Home
@@ -99,7 +99,7 @@ class App extends React.Component {
                                 <Updates></Updates>
                             </Route>
                             <Route path="/">
-                                <HomePage></HomePage>
+                                <HomePage updateGameState={this.updateGameState}></HomePage>
                             </Route>
                         </Switch>
                     </div>

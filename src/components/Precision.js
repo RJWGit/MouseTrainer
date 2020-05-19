@@ -3,7 +3,6 @@ import Results from './Results';
 
 //TODO:
 //1.use react 'onkeydown' function to pick up keyboard inputs, then get current mouse x,y and check for intersect
-//2. Trigger hit on mouse down, instead of release
 
 class Precision extends React.Component {
     constructor(props) {
