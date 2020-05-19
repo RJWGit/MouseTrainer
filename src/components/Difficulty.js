@@ -183,7 +183,7 @@ class Difficulty extends React.Component {
 
         gameStateObj.width = parseInt(this.state.width, 10);
         gameStateObj.height = parseInt(this.state.height, 10);
-        gameStateObj.seconds = parseInt(this.state.width, 10);
+        gameStateObj.seconds = parseInt(this.state.seconds, 10);
         gameStateObj.radius = parseInt(this.state.radius, 10);
         gameStateObj.radiusChange = parseFloat(this.state.radiusChange);
         gameStateObj.addCircleTimer = parseInt(this.state.addCircleTimer, 10);

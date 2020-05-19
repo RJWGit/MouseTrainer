@@ -22,7 +22,7 @@ class App extends React.Component {
             difficulty: 'medium',
             addCircleTimer: 800,
             mode: 'autobalance',
-            seconds: 50,
+            seconds: 5,
         };
     }
 

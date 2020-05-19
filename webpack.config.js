@@ -39,6 +39,10 @@ module.exports = {
             components: path.resolve(__dirname, 'src/components'),
         },
     },
+    devServer: {
+        historyApiFallback: true,
+    },
+
     plugins: [
         new HtmlWebPackPlugin({
             template: './src/index.html',

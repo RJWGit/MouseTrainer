@@ -168,7 +168,8 @@ class AutoBalance extends React.Component {
         this.intervalTick = setInterval(() => this.tick(), 1000);
         this.intervalDeleteCircle = setInterval(() => this.deleteCircleByClick(), 100);
         this.intervalDeleteClick = setInterval(() => this.deleteClicks(), 100);
-        this.addCircle(); //Start adding circles
+        // this.addCircle(); //Start adding circles
+        setTimeout(() => this.addCircle(), 100);
         this.initGameLoop(this.gameLoop);
     }
 
