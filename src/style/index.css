@@ -33,6 +33,12 @@
 .home-page-row {
 }
 
+.background {
+    position: absolute;
+    top: 10vh;
+    width: 100vw;
+}
+
 .home-button-styling {
     width: 208px;
     height: 66px;

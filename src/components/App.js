@@ -5,13 +5,11 @@ import Modes from './Modes.js';
 import Footer from './Footer.js';
 import Privacy from './Privacy.js';
 import Contact from './Contact.js';
-import Updates from './Updates';
-import ChosenMode from './ChosenMode';
+import Updates from './Updates.js';
+import ChosenMode from './ChosenMode.js';
+import Preview from './Preview.js';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 
-//TODO: 1.change contact email to new mousetrainer only email
-//      2. make it more obvious what the modes are
-//      3. add donation link
 class App extends React.Component {
     constructor(props) {
         super(props);
@@ -88,6 +86,7 @@ class App extends React.Component {
                         <Switch>
                             <Route path="/play">
                                 <ChosenMode getGameState={this.returnGameState}></ChosenMode>
+                                {/* <Preview getGameState={this.returnGameState}></Preview> */}
                             </Route>
                             <Route path="/privacy">
                                 <Privacy></Privacy>
@@ -102,6 +101,9 @@ class App extends React.Component {
                                 <Updates></Updates>
                             </Route>
                             <Route path="/">
+                                <div className="background">
+                                    <Preview getGameState={this.returnGameState}></Preview>
+                                </div>
                                 <HomePage updateGameState={this.updateGameState}></HomePage>
                             </Route>
                         </Switch>
