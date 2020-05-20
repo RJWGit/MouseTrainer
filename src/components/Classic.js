@@ -131,22 +131,22 @@ class Classic extends React.Component {
         const canvas = this.canvas.current;
         const ctx = canvas.getContext('2d');
         for (let i of this.state.list) {
-            // console.log(i);
-
-            if (i.isClicked == true) {
-                ctx.beginPath();
-                ctx.arc(i.x, i.y, i.r, 0, Math.PI * 2, true); // Outer circle
-                // ctx.fillStyle = 'rgba(255, 0, 0, 0.5)';
-                // ctx.fill();
-                ctx.strokeStyle = 'teal';
-                ctx.stroke();
-            } else {
-                ctx.beginPath();
-                ctx.arc(i.x, i.y, i.r, 0, Math.PI * 2, true); // Outer circle
-                ctx.fillStyle = 'black';
-                ctx.strokeStyle = 'teal';
-                ctx.fill();
-                ctx.stroke();
+            if (i.r > 0) {
+                if (i.isClicked == true) {
+                    ctx.beginPath();
+                    ctx.arc(i.x, i.y, i.r, 0, Math.PI * 2, true); // Outer circle
+                    // ctx.fillStyle = 'rgba(255, 0, 0, 0.5)';
+                    // ctx.fill();
+                    ctx.strokeStyle = 'teal';
+                    ctx.stroke();
+                } else {
+                    ctx.beginPath();
+                    ctx.arc(i.x, i.y, i.r, 0, Math.PI * 2, true); // Outer circle
+                    ctx.fillStyle = 'black';
+                    ctx.strokeStyle = 'teal';
+                    ctx.fill();
+                    ctx.stroke();
+                }
             }
         }
     };
@@ -344,6 +344,7 @@ class Classic extends React.Component {
                                 ref={this.canvas}
                                 width={this.state.width}
                                 height={this.state.height}
+                                className=" canvas-background "
                             />
                         </div>
                     </div>

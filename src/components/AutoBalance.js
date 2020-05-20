@@ -21,8 +21,8 @@ class AutoBalance extends React.Component {
             targetsHit: 0,
             totalTargets: 0, //Currently must be > 0 to avoid deviding by 0 in render function
             isRunning: true,
-            increaseCircleTimer: 30,
-            decreaseCircleTimer: 5,
+            increaseCircleTimer: 15,
+            decreaseCircleTimer: 0.01,
         };
         this.canvas = createRef();
         this.init = true;
@@ -132,20 +132,22 @@ class AutoBalance extends React.Component {
         const canvas = this.canvas.current;
         const ctx = canvas.getContext('2d');
         for (let i of this.state.list) {
-            if (i.isClicked == true) {
-                ctx.beginPath();
-                ctx.arc(i.x, i.y, i.r, 0, Math.PI * 2, true); // Outer circle
-                // ctx.fillStyle = 'rgba(255, 0, 0, 0.5)';
-                // ctx.fill();
-                ctx.strokeStyle = 'teal';
-                ctx.stroke();
-            } else {
-                ctx.beginPath();
-                ctx.arc(i.x, i.y, i.r, 0, Math.PI * 2, true); // Outer circle
-                ctx.fillStyle = 'black';
-                ctx.strokeStyle = 'teal';
-                ctx.fill();
-                ctx.stroke();
+            if (i.r > 0) {
+                if (i.isClicked == true) {
+                    ctx.beginPath();
+                    ctx.arc(i.x, i.y, i.r, 0, Math.PI * 2, true); // Outer circle
+                    // ctx.fillStyle = 'rgba(255, 0, 0, 0.5)';
+                    // ctx.fill();
+                    ctx.strokeStyle = 'teal';
+                    ctx.stroke();
+                } else {
+                    ctx.beginPath();
+                    ctx.arc(i.x, i.y, i.r, 0, Math.PI * 2, true); // Outer circle
+                    ctx.fillStyle = 'black';
+                    ctx.strokeStyle = 'teal';
+                    ctx.fill();
+                    ctx.stroke();
+                }
             }
         }
     };
@@ -229,6 +231,7 @@ class AutoBalance extends React.Component {
     //Check if click hits circle then updates state
     isIntersect = e => {
         const newList = [...this.state.list];
+        console.log(this.state.addCircleTimer * this.state.decreaseCircleTimer);
         for (let i of newList) {
             //Check mouse position intersects circle and make sure circle hasn't been clicked(or else can click circle several times while it's in death animation)
             if (Math.sqrt((e.nativeEvent.offsetX - i.x) ** 2 + (e.nativeEvent.offsetY - i.y) ** 2) < i.r && i.isClicked == false) {
@@ -237,7 +240,7 @@ class AutoBalance extends React.Component {
                     list: newList,
                     targetsHit: this.state.targetsHit + 1,
                     targetStreak: this.state.targetStreak + 1,
-                    addCircleTimer: this.state.addCircleTimer - this.state.decreaseCircleTimer,
+                    addCircleTimer: this.state.addCircleTimer - this.state.addCircleTimer * this.state.decreaseCircleTimer,
                 }));
                 break;
             }
@@ -348,6 +351,7 @@ class AutoBalance extends React.Component {
                                 ref={this.canvas}
                                 width={this.state.width}
                                 height={this.state.height}
+                                className=" canvas-background "
                             />
                         </div>
                     </div>

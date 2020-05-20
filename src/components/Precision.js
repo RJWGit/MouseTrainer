@@ -329,6 +329,7 @@ class Precision extends React.Component {
                                 ref={this.canvas}
                                 width={this.state.width}
                                 height={this.state.height}
+                                className=" canvas-background "
                             />
                         </div>
                     </div>

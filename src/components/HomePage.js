@@ -10,14 +10,14 @@ class HomePage extends React.Component {
 
     gameState = e => {
         const gameStateObj = {};
-        gameStateObj.width = 1200;
-        gameStateObj.height = 800;
+        gameStateObj.width = 1100;
+        gameStateObj.height = 700;
         gameStateObj.seconds = 60;
         gameStateObj.radius = 1;
-        gameStateObj.radiusChange = 1;
+        gameStateObj.radiusChange = 0.7;
         gameStateObj.difficulty = 'medium';
         gameStateObj.mode = 'autobalance';
-        gameStateObj.addCircleTimer = 800;
+        gameStateObj.addCircleTimer = 500;
         gameStateObj.maxRadius = 50;
         gameStateObj.minRadius = 1;
         this.props.updateGameState(gameStateObj);

@@ -19,11 +19,12 @@
 /* .canvas-board {
     margin-top: 8em;
 } */
-/* .canvas-background {
-    background-color: rgb(167, 167, 167);
-    padding-top: 20px;
-    padding-bottom: 20px;
-} */
+.canvas-background {
+    /* background-color: rgb(167, 167, 167); */
+    /* padding-top: 20px;
+    padding-bottom: 20px; */
+    border: 3px solid rgba(255, 255, 255, 0.219);
+}
 
 /* .convas-page-container {
     width: 80vw !important;
@@ -51,6 +52,10 @@
     background-color: rgba(204, 204, 204, 0.856);
 }
 
+.main-navbar {
+    margin: 0 !important;
+    padding: 1px !important;
+}
 .home-page-container {
     margin-top: 6em;
     height: 60vh;
@@ -85,7 +90,7 @@
 }
 
 .mode-page-title {
-    font-size: 2.5em;
+    font-size: 5vmin;
     font-weight: 900;
     color: white;
 }
@@ -97,13 +102,13 @@
 }
 
 .mode-screen-styling {
-    width: 275px;
-    height: 200px;
+    width: 12vw;
+    height: 17vh;
     margin: 10px;
-    font-size: 2.5em;
+    font-size: 3vmin;
     /* background-image: linear-gradient(rgb(0, 0, 0), rgb(255, 255, 255)); */
-    background-color: rgba(36, 34, 126, 0.61); /* buttons*/
-    color: rgba(167, 169, 243, 0.863);
+    background-color: rgb(255, 255, 255); /* buttons*/
+    color: rgba(0, 0, 0, 0.863);
     border-radius: 12px;
     border: 3px solid #010236;
     /* background-image: url('../images/target1.png'); */
@@ -113,7 +118,7 @@
 }
 
 .mode-screen-styling:hover {
-    background-color: rgba(28, 11, 179, 0.678);
+    background-color: rgba(204, 204, 204, 0.856);
 }
 .easy-button {
     background-image: linear-gradient(rgba(167, 226, 228, 0.603), rgba(12, 190, 221, 0.616));
@@ -143,7 +148,7 @@
 }
 
 .custon-button:hover {
-    background-color: rgba(28, 11, 179, 0.678);
+    background-color: rgba(204, 204, 204, 0.856);
 }
 
 .canvas-bar {

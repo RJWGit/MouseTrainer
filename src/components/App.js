@@ -9,20 +9,23 @@ import Updates from './Updates';
 import ChosenMode from './ChosenMode';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 
+//TODO: 1.change contact email to new mousetrainer only email
+//      2. make it more obvious what the modes are
+//      3. add donation link
 class App extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            width: 1200,
-            height: 800,
+            width: 1100,
+            height: 700,
             radius: 1,
-            radiusChange: 1,
+            radiusChange: 0.7,
             maxRadius: 50,
             minRadius: 1,
             difficulty: 'medium',
-            addCircleTimer: 800,
+            addCircleTimer: 500,
             mode: 'autobalance',
-            seconds: 5,
+            seconds: 60,
         };
     }
 
