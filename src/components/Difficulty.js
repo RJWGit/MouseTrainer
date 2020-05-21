@@ -197,7 +197,7 @@ class Difficulty extends React.Component {
             return (
                 <div className="container mode-page-container">
                     <div className="row justify-content-md-center">
-                        <div className="col-12 pb-5 d-flex justify-content-around">
+                        <div className="col-12 pb-3 d-flex justify-content-around">
                             <h1 className="mode-page-title">Difficulty</h1>
                         </div>
                         <div className="col-4 mb-5 d-flex justify-content-around">
@@ -325,14 +325,14 @@ class Difficulty extends React.Component {
                                         <br></br>
                                     </div>
                                 </div>
-                                <div className="col-12 d-flex justify-content-center mt-5 submit-div">
+                                <div className="col-12 d-flex justify-content-center mt-3 submit-div">
                                     <Link className="submit-link d-flex justify-content-center" to="/play">
                                         <button onClick={this.handleSubmit} type="button" className="submit-button">
                                             Submit
                                         </button>
                                     </Link>
                                 </div>
-                                <div className="col-12 d-flex justify-content-center mt-3 submit-div">
+                                <div className="col-12 d-flex justify-content-center submit-div">
                                     Note: Failure to enter reasonable numbers will break the game or not work correctly. Refresh to fix.
                                     <br></br>
                                     *In miliseconds, 1 seconds = 1000 miliseconds
@@ -390,14 +390,14 @@ class Difficulty extends React.Component {
                                     </label>
                                     <br></br>
                                 </div>
-                                <div className="col-12 d-flex justify-content-center mt-5 submit-div">
+                                <div className="col-12 d-flex justify-content-center mt-3 submit-div">
                                     <Link className="submit-link d-flex justify-content-center" to="/play">
                                         <button onClick={this.handleSubmit} type="button" className="submit-button">
                                             Submit
                                         </button>
                                     </Link>
                                 </div>
-                                <div className="col-12 d-flex justify-content-center mt-3 submit-div">
+                                <div className="col-12 d-flex justify-content-center submit-div">
                                     Note: Failure to enter reasonable numbers will break the game or will not work correctly. Refresh to fix.
                                     <br></br>
                                     *In miliseconds, 1 seconds = 1000 miliseconds

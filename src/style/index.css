@@ -85,8 +85,8 @@
     width: 150px;
 }
 .mode-page-container {
-    margin-top: 6em;
-    height: 70vh;
+    margin-top: 4em;
+    height: 75vh;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -205,7 +205,7 @@
 }
 
 .submit-div {
-    height: 4em;
+    height: 3em;
 }
 .submit-link {
     width: 100%;
