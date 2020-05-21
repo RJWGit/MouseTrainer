@@ -17,10 +17,6 @@ class Footer extends React.Component {
                     <Link to="/contact" class="nav-item nav-link footer-item">
                         Contact Us
                     </Link>
-
-                    <a class="nav-item nav-link footer-item" href="https://github.com/RJWGit/MouseBooster">
-                        GitHub
-                    </a>
                     <a class="nav-item nav-link footer-item" href="#">
                         Donate
                     </a>

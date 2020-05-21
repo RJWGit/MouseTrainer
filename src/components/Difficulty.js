@@ -169,7 +169,7 @@ class Difficulty extends React.Component {
 
     handleChange = e => {
         const name = e.target.name;
-        console.log(name);
+
         this.setState({
             [name]: e.target.value,
         });
@@ -247,86 +247,166 @@ class Difficulty extends React.Component {
                 </div>
             );
         } else {
-            return (
-                <div className="container justify-content-center mode-page-container">
-                    <div className="row justify-content-center">
-                        <div className="col-12 mb-3 d-flex justify-content-around">
-                            <h1 className="mode-page-title">Custom Settings</h1>
-                        </div>
-                        <div className="col-6 d-flex justify-content-end">
-                            <div>
-                                <label>
-                                    Game Width:
-                                    <input name="width" className="form-control" value={this.state.width} onChange={this.handleChange} />
-                                </label>
+            switch (this.props.mode) {
+                case 'autobalance':
+                case 'classic':
+                    return (
+                        <div className="container justify-content-center mode-page-container">
+                            <div className="row justify-content-center">
+                                <div className="col-12 mb-3 d-flex justify-content-around">
+                                    <h1 className="mode-page-title">Custom Settings</h1>
+                                </div>
+                                <div className="col-6 d-flex justify-content-end">
+                                    <div>
+                                        <label>
+                                            Game Width:
+                                            <input name="width" className="form-control" value={this.state.width} onChange={this.handleChange} />
+                                        </label>
+                                        <br></br>
+                                        <label>
+                                            Game Height:
+                                            <input name="height" className="form-control" value={this.state.height} onChange={this.handleChange} />
+                                        </label>
+                                        <br></br>
+                                        <label>
+                                            Seconds:
+                                            <input name="seconds" className="form-control" value={this.state.seconds} onChange={this.handleChange} />
+                                        </label>
+                                        <br></br>
+                                        <label>
+                                            Circle Respawn Timer*
+                                            <input
+                                                name="addCircleTimer"
+                                                className="form-control"
+                                                value={this.state.addCircleTimer}
+                                                onChange={this.handleChange}
+                                            />
+                                        </label>
+                                        <br></br>
+                                    </div>
+                                </div>
                                 <br></br>
-                                <label>
-                                    Game Height:
-                                    <input name="height" className="form-control" value={this.state.height} onChange={this.handleChange} />
-                                </label>
-                                <br></br>
-                                <label>
-                                    Seconds:
-                                    <input name="seconds" className="form-control" value={this.state.seconds} onChange={this.handleChange} />
-                                </label>
-                                <br></br>
-                                <label>
-                                    Circle Respawn Timer*
-                                    <input
-                                        name="addCircleTimer"
-                                        className="form-control"
-                                        value={this.state.addCircleTimer}
-                                        onChange={this.handleChange}
-                                    />
-                                </label>
-                                <br></br>
+                                <div className="col-6 d-flex justify-content-start">
+                                    <div>
+                                        <label>
+                                            Radius:
+                                            <input name="radius" className="form-control" value={this.state.radius} onChange={this.handleChange} />
+                                        </label>
+                                        <br></br>
+                                        <label>
+                                            Circle growth rate:
+                                            <input
+                                                name="radiusChange"
+                                                className="form-control"
+                                                value={this.state.radiusChange}
+                                                onChange={this.handleChange}
+                                            />
+                                        </label>
+                                        <br></br>
+                                        <label>
+                                            Max Radius:
+                                            <input
+                                                name="maxRadius"
+                                                className="form-control"
+                                                value={this.state.maxRadius}
+                                                onChange={this.handleChange}
+                                            />
+                                        </label>
+                                        <br></br>
+                                        <label>
+                                            Minimum Radius:
+                                            <input
+                                                name="minRadius"
+                                                className="form-control"
+                                                value={this.state.minRadius}
+                                                onChange={this.handleChange}
+                                            />
+                                        </label>
+                                        <br></br>
+                                    </div>
+                                </div>
+                                <div className="col-12 d-flex justify-content-center mt-5 submit-div">
+                                    <Link className="submit-link d-flex justify-content-center" to="/play">
+                                        <button onClick={this.handleSubmit} type="button" className="submit-button">
+                                            Submit
+                                        </button>
+                                    </Link>
+                                </div>
+                                <div className="col-12 d-flex justify-content-center mt-3 submit-div">
+                                    Note: Failure to enter reasonable numbers will break the game or not work correctly. Refresh to fix.
+                                    <br></br>
+                                    *In miliseconds, 1 seconds = 1000 miliseconds
+                                </div>
                             </div>
                         </div>
-                        <br></br>
-                        <div className="col-6 d-flex justify-content-start">
-                            <div>
-                                <label>
-                                    Radius:
-                                    <input name="radius" className="form-control" value={this.state.radius} onChange={this.handleChange} />
-                                </label>
+                    );
+                    break;
+
+                case 'precision':
+                    return (
+                        <div className="container justify-content-center mode-page-container">
+                            <div className="row justify-content-center">
+                                <div className="col-12 mb-3 d-flex justify-content-around">
+                                    <h1 className="mode-page-title">Custom Settings</h1>
+                                </div>
+                                <div className="col-6 d-flex justify-content-end">
+                                    <div>
+                                        <label>
+                                            Game Width:
+                                            <input name="width" className="form-control" value={this.state.width} onChange={this.handleChange} />
+                                        </label>
+                                        <br></br>
+                                        <label>
+                                            Game Height:
+                                            <input name="height" className="form-control" value={this.state.height} onChange={this.handleChange} />
+                                        </label>
+                                        <br></br>
+                                    </div>
+                                </div>
                                 <br></br>
-                                <label>
-                                    Radius Change:
-                                    <input
-                                        name="radiusChange"
-                                        className="form-control"
-                                        value={this.state.radiusChange}
-                                        onChange={this.handleChange}
-                                    />
-                                </label>
-                                <br></br>
-                                <label>
-                                    Max Radius:
-                                    <input name="maxRadius" className="form-control" value={this.state.maxRadius} onChange={this.handleChange} />
-                                </label>
-                                <br></br>
-                                <label>
-                                    Minimum Radius:
-                                    <input name="minRadius" className="form-control" value={this.state.minRadius} onChange={this.handleChange} />
-                                </label>
-                                <br></br>
+                                <div className="col-6 d-flex justify-content-start">
+                                    <div>
+                                        <label>
+                                            Radius:
+                                            <input name="radius" className="form-control" value={this.state.radius} onChange={this.handleChange} />
+                                        </label>
+                                        <br></br>
+                                        <label>
+                                            Seconds:
+                                            <input name="seconds" className="form-control" value={this.state.seconds} onChange={this.handleChange} />
+                                        </label>
+                                        <br></br>
+                                    </div>
+                                </div>
+                                <div className="col-12 d-flex justify-content-center">
+                                    <label>
+                                        Circle Respawn Timer*
+                                        <input
+                                            name="addCircleTimer"
+                                            className="form-control"
+                                            value={this.state.addCircleTimer}
+                                            onChange={this.handleChange}
+                                        />
+                                    </label>
+                                    <br></br>
+                                </div>
+                                <div className="col-12 d-flex justify-content-center mt-5 submit-div">
+                                    <Link className="submit-link d-flex justify-content-center" to="/play">
+                                        <button onClick={this.handleSubmit} type="button" className="submit-button">
+                                            Submit
+                                        </button>
+                                    </Link>
+                                </div>
+                                <div className="col-12 d-flex justify-content-center mt-3 submit-div">
+                                    Note: Failure to enter reasonable numbers will break the game or will not work correctly. Refresh to fix.
+                                    <br></br>
+                                    *In miliseconds, 1 seconds = 1000 miliseconds
+                                </div>
                             </div>
                         </div>
-                        <div className="col-12 d-flex justify-content-center mt-5 submit-div">
-                            <Link className="submit-link d-flex justify-content-center" to="/play">
-                                <button onClick={this.handleSubmit} type="button" className="submit-button">
-                                    Submit
-                                </button>
-                            </Link>
-                        </div>
-                        <div className="col-12 d-flex justify-content-center mt-3 submit-div">
-                            Note: Failure to enter reasonable numbers will break the game or not work correctly. Refresh to fix.
-                            <br></br>
-                            *In miliseconds, 1 seconds = 1000 miliseconds
-                        </div>
-                    </div>
-                </div>
-            );
+                    );
+                    break;
+            }
         }
     }
 }

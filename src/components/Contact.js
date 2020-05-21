@@ -15,7 +15,7 @@ class Contact extends React.Component {
                         <h1>Contact</h1>
                     </div>
                     <div className="col-12 pb-5 d-flex justify-content-center">
-                        <h5> For suggestions, questions, or anything, you can contact me on GitHub or reach me at RodneyjWalton@yahoo.com</h5>
+                        <h5> For suggestions, questions, or anything, you can contact me at MouseTrainer@protonmail.com</h5>
                     </div>
                 </div>
             </div>
