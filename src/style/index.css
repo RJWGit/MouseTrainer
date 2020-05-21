@@ -108,8 +108,9 @@
 }
 
 .mode-screen-styling {
-    width: 12vw;
-    height: 17vh;
+    width: 22vmin;
+    height: 18vmin;
+    max-width: 5px;
     margin: 10px;
     font-size: 3vmin;
     /* background-image: linear-gradient(rgb(0, 0, 0), rgb(255, 255, 255)); */

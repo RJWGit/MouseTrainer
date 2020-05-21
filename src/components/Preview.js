@@ -35,8 +35,6 @@ class Preview extends React.Component {
         this.pointer = new Image();
         this.pointer.src = pointerimg;
     }
-    //Seconds count down timer
-    //Update display timers updated every second
 
     //Create and add circles to state list
     addCircle() {
@@ -62,8 +60,8 @@ class Preview extends React.Component {
             setTimeout(() => this.addCircle(), this.state.addCircleTimer);
         }
     }
-    //Create and add clicks to drawclicklist
 
+    //Create and add clicks to drawclicklist
     addClick() {
         if (this.state.isRunning) {
             const newList = [...this.state.drawClickList];
@@ -142,7 +140,7 @@ class Preview extends React.Component {
     drawPointer = () => {
         const canvas = this.canvas.current;
         const ctx = canvas.getContext('2d');
-        const movement = 4;
+        const movement = 5;
         let x = 0,
             y = 0;
 
@@ -164,8 +162,6 @@ class Preview extends React.Component {
         else {
             ctx.drawImage(this.pointer, this.pointerX, this.pointerY, 15, 21);
         }
-
-        // ctx.drawImage(this.pointer, this.state.pointerX, this.state.pointerY, 14, 14);
     };
 
     drawClicks = () => {
