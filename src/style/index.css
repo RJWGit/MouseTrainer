@@ -229,3 +229,10 @@ a:hover {
 .navbar-brand:hover {
     color: rgb(0, 0, 0) !important;
 }
+
+.update-page-container {
+    margin-top: 8em;
+    border: 3px solid rgba(255, 255, 255, 0.5);
+    background-color: rgba(37, 37, 37, 0.39);
+    color: white;
+}
