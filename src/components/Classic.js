@@ -321,7 +321,7 @@ class Classic extends React.Component {
                                         if (this.displayTargetsHit > 0 && this.displayTotalTargets > 0) {
                                             return Math.trunc((this.displayTargetsHit / this.displayTotalTargets) * 100) + '%';
                                         } else {
-                                            return 'NAN';
+                                            return '--';
                                         }
                                     })()}
                                 </b>

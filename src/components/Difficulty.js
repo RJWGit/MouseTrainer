@@ -289,7 +289,7 @@ class Difficulty extends React.Component {
                                 <div className="col-6 d-flex justify-content-start">
                                     <div>
                                         <label>
-                                            Radius:
+                                            Circle Initial Radius:
                                             <input name="radius" className="form-control" value={this.state.radius} onChange={this.handleChange} />
                                         </label>
                                         <br></br>
@@ -367,7 +367,7 @@ class Difficulty extends React.Component {
                                 <div className="col-6 d-flex justify-content-start">
                                     <div>
                                         <label>
-                                            Radius:
+                                            Circle Initial Radius:
                                             <input name="radius" className="form-control" value={this.state.radius} onChange={this.handleChange} />
                                         </label>
                                         <br></br>

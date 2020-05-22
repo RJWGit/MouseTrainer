@@ -75,9 +75,9 @@ class App extends React.Component {
                                 </Link>
                             </div>
                             <div className="col-3">
-                                <Link className="navbar-brand justify-content-end d-flex" to="/">
+                                {/* <Link className="navbar-brand justify-content-end d-flex" to="/">
                                     SignUp
-                                </Link>
+                                </Link> */}
                             </div>
                         </nav>
 
