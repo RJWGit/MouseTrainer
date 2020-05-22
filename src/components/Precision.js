@@ -167,7 +167,7 @@ class Precision extends React.Component {
         clearInterval(this.intervalTick);
         clearInterval(this.intervalDeleteClick);
 
-        this.state.isRunning = false;
+        this.handleIsRunning();
     }
 
     initGameLoop = callback => {

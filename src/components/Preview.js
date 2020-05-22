@@ -184,6 +184,8 @@ class Preview extends React.Component {
         this.intervalDeleteClick = setInterval(() => this.deleteClicks(), 100);
         setTimeout(() => this.addCircle(), 100); //Delay added for initial call of function so totalTargets counts correctly
         this.initGameLoop(this.gameLoop);
+        window.addEventListener('focus', this.onFocus);
+        window.addEventListener('blur', this.onBlur);
     }
 
     //Update canvas
@@ -202,11 +204,51 @@ class Preview extends React.Component {
         clearInterval(this.intervalDeleteCircle);
         clearInterval(this.intervalDeleteClick);
 
-        this.state.isRunning = false;
+        this.setState({
+            isRunning: false,
+        });
     }
 
     initGameLoop = callback => {
         this.setState(callback);
+    };
+
+    //Restart background if focused on screen
+    onFocus = () => {
+        this.intervalDeleteCircle = setInterval(() => this.deleteCircleByClick(), 100);
+        this.intervalDeleteClick = setInterval(() => this.deleteClicks(), 100);
+
+        this.restartGameState();
+    };
+
+    //Pause background if not focused on screen
+    onBlur = () => {
+        clearInterval(this.intervalDeleteCircle);
+        clearInterval(this.intervalDeleteClick);
+
+        this.handleIsRunning();
+    };
+
+    restartGameState = () => {
+        this.circleID = 0;
+        this.setState(
+            {
+                width: window.innerWidth - 100,
+                height: window.innerHeight - 200,
+                radius: 1,
+                radiusChange: 1,
+                addCircleTimer: 1200, //In milliseconds
+                seconds: 1000,
+                maxRadius: 50,
+                minRadius: 1,
+                list: [],
+                drawClickList: [],
+                isRunning: true,
+            },
+            () => this.addCircle()
+        );
+
+        requestAnimationFrame(this.gameLoop); //set at 60 FPS
     };
 
     updateCircleRadius = () => {
@@ -256,7 +298,6 @@ class Preview extends React.Component {
 
     gameLoop = () => {
         if (!this.state.isRunning) return;
-        console.log('asdf');
         this.updateCircleRadius(); //Based on FPS
         this.isIntersect();
 
