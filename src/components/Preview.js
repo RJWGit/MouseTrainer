@@ -195,7 +195,6 @@ class Preview extends React.Component {
             this.drawCircles();
             this.drawClicks();
             this.drawPointer();
-            // console.log('asdf');
         }
     }
 

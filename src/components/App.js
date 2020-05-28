@@ -28,7 +28,6 @@ class App extends React.Component {
     }
 
     updateGameState = newGameState => {
-        console.log(newGameState);
         this.setState({
             width: newGameState.width,
             height: newGameState.height,
@@ -81,15 +80,13 @@ class App extends React.Component {
                             </div>
                         </nav>
 
-                        {/* A <Switch> looks through its children <Route>s and
-                            renders the first one that matches the current URL. */}
                         <Switch>
                             <Route path="/play">
                                 <ChosenMode getGameState={this.returnGameState}></ChosenMode>
                                 {/* <Preview getGameState={this.returnGameState}></Preview> */}
                             </Route>
                             <Route path="/privacy">
-                                <Privacy></Privacy>
+                                <Privacy />
                             </Route>
                             <Route path="/modes">
                                 <Modes updateGameState={this.updateGameState}></Modes>

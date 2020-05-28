@@ -49,7 +49,6 @@ class AutoBalance extends React.Component {
             this.displayTotalTargets = this.state.totalTargets;
             this.myFrames = 0;
         }
-        console.log(this.state.addCircleTimer);
     }
 
     //Create and add circles to state list
@@ -171,7 +170,8 @@ class AutoBalance extends React.Component {
         this.intervalDeleteCircle = setInterval(() => this.deleteCircleByClick(), 100);
         this.intervalDeleteClick = setInterval(() => this.deleteClicks(), 100);
         setTimeout(() => this.addCircle(), 100); //Delay added for initial call of function so totalTargets counts correctly
-        this.initGameLoop(this.gameLoop);
+
+        this.gameLoop();
     }
 
     //Update canvas
@@ -191,10 +191,6 @@ class AutoBalance extends React.Component {
 
         this.handleIsRunning();
     }
-
-    initGameLoop = callback => {
-        this.setState(callback);
-    };
 
     updateCircleRadius = () => {
         const newList = [...this.state.list];
@@ -231,7 +227,6 @@ class AutoBalance extends React.Component {
     //Check if click hits circle then updates state
     isIntersect = e => {
         const newList = [...this.state.list];
-        console.log(this.state.addCircleTimer * this.state.decreaseCircleTimer);
         for (let i of newList) {
             //Check mouse position intersects circle and make sure circle hasn't been clicked(or else can click circle several times while it's in death animation)
             if (Math.sqrt((e.nativeEvent.offsetX - i.x) ** 2 + (e.nativeEvent.offsetY - i.y) ** 2) < i.r && i.isClicked == false) {
@@ -313,7 +308,7 @@ class AutoBalance extends React.Component {
                 );
             else {
                 return (
-                    <div className="convas-page-container">
+                    <div className="canvas-page-container">
                         <div className="row canvas-bar">
                             <div className="col d-flex justify-content-center">
                                 <b>Seconds: {this.state.seconds}</b>
@@ -321,7 +316,7 @@ class AutoBalance extends React.Component {
                             <div className="col d-flex justify-content-center">
                                 <b>FPS: {this.state.fps}</b>
                             </div>
-                            <div className="col d-flex justify-content-center">
+                            {/* <div className="col d-flex justify-content-center">
                                 <b>
                                     Accuracy:
                                     {(() => {
@@ -332,7 +327,7 @@ class AutoBalance extends React.Component {
                                         }
                                     })()}
                                 </b>
-                            </div>
+                            </div> */}
                             <div className="col d-flex justify-content-center">
                                 <b>
                                     Targets Hit: {this.state.targetsHit}/{this.state.totalTargets}

@@ -22,8 +22,6 @@ class Difficulty extends React.Component {
     gameState = e => {
         const gameStateObj = {};
 
-        console.log(this.props.mode);
-        console.log(e.target.name);
 
         switch (this.props.mode) {
             case 'classic':
@@ -300,6 +298,7 @@ class Difficulty extends React.Component {
                                                 className="form-control"
                                                 value={this.state.radiusChange}
                                                 onChange={this.handleChange}
+                                                
                                             />
                                         </label>
                                         <br></br>

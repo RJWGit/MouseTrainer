@@ -147,7 +147,7 @@ class Precision extends React.Component {
         this.intervalDeleteCircleByClick = setInterval(() => this.deleteCircleByClick(), 100);
         this.intervalDeleteClick = setInterval(() => this.deleteClicks(), 100);
         this.intervalAddCircle = setInterval(() => this.addCircle(), this.state.addCircleTimer);
-        this.initGameLoop(this.gameLoop);
+        this.gameLoop();
     }
 
     //Update canvas
@@ -169,10 +169,6 @@ class Precision extends React.Component {
 
         this.handleIsRunning();
     }
-
-    initGameLoop = callback => {
-        this.setState(callback);
-    };
 
     drawCircles = () => {
         const canvas = this.canvas.current;
@@ -201,8 +197,6 @@ class Precision extends React.Component {
         const canvas = this.canvas.current;
         const ctx = canvas.getContext('2d');
         for (let i of this.state.drawClickList) {
-            // console.log(i);
-
             ctx.beginPath();
             ctx.arc(i.x, i.y, i.r, 0, Math.PI * 2, true); // Outer circle
             ctx.fillStyle = 'grey';
@@ -294,7 +288,7 @@ class Precision extends React.Component {
                 );
             else {
                 return (
-                    <div className="convas-page-container">
+                    <div className="canvas-page-container">
                         <div className="row canvas-bar">
                             <div className="col d-flex justify-content-center">
                                 <b>Seconds: {this.state.seconds}</b>
@@ -302,7 +296,7 @@ class Precision extends React.Component {
                             <div className="col d-flex justify-content-center">
                                 <b>FPS: {this.state.fps}</b>
                             </div>
-                            <div className="col d-flex justify-content-center">
+                            {/* <div className="col d-flex justify-content-center">
                                 <b>
                                     Accuracy:
                                     {(() => {
@@ -313,7 +307,7 @@ class Precision extends React.Component {
                                         }
                                     })()}
                                 </b>
-                            </div>
+                            </div> */}
                             <div className="col d-flex justify-content-center">
                                 <b>
                                     Targets Hit: {this.state.targetsHit}/{this.state.totalTargets}
