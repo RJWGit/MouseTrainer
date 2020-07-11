@@ -9,6 +9,7 @@ import Updates from './Updates.js';
 import ChosenMode from './ChosenMode.js';
 import Preview from './Preview.js';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+import Login from './Login.js';
 
 class App extends React.Component {
     constructor(props) {
@@ -74,9 +75,9 @@ class App extends React.Component {
                                 </Link>
                             </div>
                             <div className="col-3">
-                                {/* <Link className="navbar-brand justify-content-end d-flex" to="/">
-                                    SignUp
-                                </Link> */}
+                                <Link className="navbar-brand justify-content-end d-flex" to="/login">
+                                    Login
+                                </Link>
                             </div>
                         </nav>
 
@@ -96,6 +97,9 @@ class App extends React.Component {
                             </Route>
                             <Route path="/updates">
                                 <Updates></Updates>
+                            </Route>
+                            <Route path="/login">
+                                <Login></Login>
                             </Route>
                             <Route path="/">
                                 <div className="background">
