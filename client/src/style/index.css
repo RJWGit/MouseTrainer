@@ -236,3 +236,37 @@ a:hover {
     background-color: rgba(37, 37, 37, 0.39);
     color: white;
 }
+
+.login-page-container {
+    min-height: 450px;
+    margin: auto;
+    margin-top: 10em;
+    display: flex;
+    justify-content: center;
+    max-width: 400px !important;
+    align-items: center;
+    border: 3px solid rgba(255, 255, 255, 0.5);
+    background-color: rgba(37, 37, 37, 0.39);
+    color: white;
+}
+
+.login-button {
+    width: 120px;
+    height: 50px;
+    font-size: 15px;
+    font-weight: 400;
+    text-transform: uppercase;
+    background-color: #ffffff;
+    color: black;
+    border-radius: 6px;
+    border: 1px solid rgb(0, 0, 0);
+}
+
+.login-button:hover {
+    background-color: rgba(204, 204, 204, 0.856);
+}
+
+.failed-text {
+    font-size: 12px;
+    color: red;
+}

@@ -18,7 +18,7 @@ app.listen(port, () =>
 //1. Make GET/POST requests for login/Create Account
 //2. Create Login/Create Account page
 //3. Add mongoDB to store the information from the requests
-//4. Migrate client/server into one repo
+//4. Migrate client/server into one repo || DONE?
 //5. Push changes to live site
 //6. Hash passwords
 //7. Add email verification???

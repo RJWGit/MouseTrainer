@@ -230,6 +230,7 @@ class Preview extends React.Component {
 
     restartGameState = () => {
         this.circleID = 0;
+        console.log(this.state.list);
         this.setState(
             {
                 width: window.innerWidth - 100,

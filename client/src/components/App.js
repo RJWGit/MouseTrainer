@@ -8,8 +8,10 @@ import Contact from './Contact.js';
 import Updates from './Updates.js';
 import ChosenMode from './ChosenMode.js';
 import Preview from './Preview.js';
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import Login from './Login.js';
+import CreateAccount from './CreateAccount.js';
+
+import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 
 class App extends React.Component {
     constructor(props) {
@@ -74,8 +76,8 @@ class App extends React.Component {
                                     Updates
                                 </Link>
                             </div>
-                            <div className="col-3">
-                                <Link className="navbar-brand justify-content-end d-flex" to="/login">
+                            <div className="col-3 justify-content-end d-flex">
+                                <Link className="navbar-brand" to="/login">
                                     Login
                                 </Link>
                             </div>
@@ -99,7 +101,16 @@ class App extends React.Component {
                                 <Updates></Updates>
                             </Route>
                             <Route path="/login">
+                                <div className="background">
+                                    <Preview getGameState={this.returnGameState}></Preview>
+                                </div>
                                 <Login></Login>
+                            </Route>
+                            <Route path="/createaccount">
+                                <div className="background">
+                                    <Preview getGameState={this.returnGameState}></Preview>
+                                </div>
+                                <CreateAccount></CreateAccount>
                             </Route>
                             <Route path="/">
                                 <div className="background">
