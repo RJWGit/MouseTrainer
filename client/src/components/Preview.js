@@ -11,7 +11,6 @@ class Preview extends React.Component {
             radius: 1,
             radiusChange: 1,
             addCircleTimer: 1200, //In milliseconds
-            seconds: 1000,
             maxRadius: 50,
             minRadius: 1,
             list: [],
@@ -26,6 +25,7 @@ class Preview extends React.Component {
         this.intervalDeleteCircle;
         this.circleDeleteTimer = 300;
         this.intervalDeleteClick;
+        this.intervalCreateCircle;
         this.pointer;
         this.pointerX = window.innerWidth / 2;
         this.pointerY = window.innerHeight / 2;
@@ -38,7 +38,9 @@ class Preview extends React.Component {
 
     //Create and add circles to state list
     addCircle() {
-        if (this.state.isRunning && this.state.seconds > 1) {
+        console.log(this.state.list);
+
+        if (this.state.isRunning) {
             const newList = [...this.state.list];
             let circle = {
                 x: Math.floor(Math.random() * (this.state.width - this.state.maxRadius - this.state.maxRadius + 1)) + this.state.maxRadius,
@@ -57,7 +59,8 @@ class Preview extends React.Component {
                 totalTargets: this.state.totalTargets + 1,
             }));
 
-            setTimeout(() => this.addCircle(), this.state.addCircleTimer);
+            console.log('add circle');
+            // setTimeout(() => this.addCircle(), this.state.addCircleTimer);
         }
     }
 
@@ -123,7 +126,7 @@ class Preview extends React.Component {
                     ctx.arc(i.x, i.y, i.r, 0, Math.PI * 2, true); // Outer circle
                     // ctx.fillStyle = 'rgba(255, 0, 0, 0.5)';
                     // ctx.fill();
-                    ctx.strokeStyle = 'teal';
+                    ctx.strokeStyle = 'green';
                     ctx.stroke();
                 } else {
                     ctx.beginPath();
@@ -140,27 +143,39 @@ class Preview extends React.Component {
     drawPointer = () => {
         const canvas = this.canvas.current;
         const ctx = canvas.getContext('2d');
-        const movement = 5;
+        const pointerImageSizeX = 14;
+        const pointerImageSizeY = 23;
+
+        const movement = 4;
         let x = 0,
             y = 0;
 
+        console.log(movement);
+        //Go through circle list and move pointer toward circle
         if (this.state.list.length > 0)
             for (let i of this.state.list) {
                 if (i.r > 0 && i.isClicked == false) {
                     x = i.x - this.pointerX;
                     y = i.y - this.pointerY;
-                    this.pointerX = x > 0 ? this.pointerX + movement : this.pointerX - movement;
-                    this.pointerY = y > 0 ? this.pointerY + movement : this.pointerY - movement;
 
-                    ctx.drawImage(this.pointer, this.pointerX, this.pointerY, 15, 21);
+                    //Check if the difference between circle and pointer is > movement value to prevent the point having a shaking effect
+                    if (Math.abs(x) > movement) {
+                        this.pointerX = x > 0 ? this.pointerX + movement : this.pointerX - movement; //Move up or down toward circle
+                    }
+                    //Check if the difference between circle and pointer is > movement value to prevent the point having a shaking effect
+                    if (Math.abs(y) > movement) {
+                        this.pointerY = y > 0 ? this.pointerY + movement : this.pointerY - movement; //Move left or right toward circle
+                    }
+
+                    ctx.drawImage(this.pointer, this.pointerX, this.pointerY, pointerImageSizeX, pointerImageSizeY);
 
                     break;
                 } else {
-                    ctx.drawImage(this.pointer, this.pointerX, this.pointerY, 15, 21);
+                    ctx.drawImage(this.pointer, this.pointerX, this.pointerY, pointerImageSizeX, pointerImageSizeY);
                 }
             }
         else {
-            ctx.drawImage(this.pointer, this.pointerX, this.pointerY, 15, 21);
+            ctx.drawImage(this.pointer, this.pointerX, this.pointerY, pointerImageSizeX, pointerImageSizeY);
         }
     };
 
@@ -170,22 +185,23 @@ class Preview extends React.Component {
         for (let i of this.state.drawClickList) {
             ctx.beginPath();
             ctx.arc(i.x, i.y, i.r, 0, Math.PI * 2, true); // Outer circle
-            ctx.fillStyle = 'grey';
+            ctx.fillStyle = 'green';
             ctx.fill();
-            ctx.strokeStyle = 'grey';
+            ctx.strokeStyle = 'green';
             ctx.stroke();
         }
     };
 
     //Init timers to start game
     componentDidMount() {
+        window.addEventListener('focus', this.onFocus);
+        window.addEventListener('blur', this.onBlur);
         this.load();
         this.intervalDeleteCircle = setInterval(() => this.deleteCircleByClick(), 100);
         this.intervalDeleteClick = setInterval(() => this.deleteClicks(), 100);
         setTimeout(() => this.addCircle(), 100); //Delay added for initial call of function so totalTargets counts correctly
-        this.initGameLoop(this.gameLoop);
-        window.addEventListener('focus', this.onFocus);
-        window.addEventListener('blur', this.onBlur);
+        this.intervalCreateCircle = setInterval(() => this.addCircle(), this.state.addCircleTimer);
+        this.gameLoop();
     }
 
     //Update canvas
@@ -202,53 +218,44 @@ class Preview extends React.Component {
     componentWillUnmount() {
         clearInterval(this.intervalDeleteCircle);
         clearInterval(this.intervalDeleteClick);
-
+        clearInterval(this.intervalCreateCircle);
         this.setState({
             isRunning: false,
         });
     }
 
-    initGameLoop = callback => {
-        this.setState(callback);
-    };
-
-    //Restart background if focused on screen
     onFocus = () => {
-        this.intervalDeleteCircle = setInterval(() => this.deleteCircleByClick(), 100);
-        this.intervalDeleteClick = setInterval(() => this.deleteClicks(), 100);
+        console.log('focus');
 
-        this.restartGameState();
+        //Check to prevent double running of gameloop, this seems only possible if user clicks off page when page is loading
+        if (!this.state.isRunning) {
+            this.intervalDeleteCircle = setInterval(() => this.deleteCircleByClick(), 100);
+            this.intervalDeleteClick = setInterval(() => this.deleteClicks(), 100);
+
+            this.restartGameState();
+        }
     };
 
     //Pause background if not focused on screen
     onBlur = () => {
-        clearInterval(this.intervalDeleteCircle);
-        clearInterval(this.intervalDeleteClick);
+        console.log('blur');
+        if (this.state.isRunning) {
+            clearInterval(this.intervalDeleteCircle);
+            clearInterval(this.intervalDeleteClick);
 
-        this.handleIsRunning();
+            this.setState({
+                isRunning: false,
+            });
+        }
     };
 
-    restartGameState = () => {
-        this.circleID = 0;
-        console.log(this.state.list);
+    restartGameState = async () => {
         this.setState(
             {
-                width: window.innerWidth - 100,
-                height: window.innerHeight - 200,
-                radius: 1,
-                radiusChange: 1,
-                addCircleTimer: 1200, //In milliseconds
-                seconds: 1000,
-                maxRadius: 50,
-                minRadius: 1,
-                list: [],
-                drawClickList: [],
                 isRunning: true,
             },
-            () => this.addCircle()
+            () => this.gameLoop()
         );
-
-        requestAnimationFrame(this.gameLoop); //set at 60 FPS
     };
 
     updateCircleRadius = () => {
@@ -301,17 +308,7 @@ class Preview extends React.Component {
         this.updateCircleRadius(); //Based on FPS
         this.isIntersect();
 
-        if (this.state.seconds <= 0) {
-            this.handleIsRunning();
-        }
         requestAnimationFrame(this.gameLoop); //set at 60 FPS
-    };
-
-    //Toggle switch for game running
-    handleIsRunning = () => {
-        this.setState({
-            isRunning: !this.state.isRunning,
-        });
     };
 
     render() {
