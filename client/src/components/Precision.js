@@ -29,14 +29,26 @@ class Precision extends React.Component {
         this.init = true;
         this.myFrames = 0;
         this.circleID = 0;
+        this.circleDeleteTimer = 300;
+
+        //Score display
+        this.displayTotalTargets;
+        this.displayTargetsHit;
+
+        //Interval timers
+        this.intervalDeleteClick;
         this.intervalTick;
         this.intervalAddCircle;
         this.intervalDeleteCircleTimer;
         this.intervalDeleteCircleByClick;
-        this.displayTotalTargets;
-        this.displayTargetsHit;
-        this.circleDeleteTimer = 300;
-        this.intervalDeleteClick;
+
+        //Circle Colors
+        this.circleSuccessColor = 'green';
+        this.circleDefaultOuterColor = 'teal';
+        this.circleDefaultInnerColor = 'black';
+
+        //Clicks Colors
+        this.clickDefaultColor = 'grey';
     }
 
     //Seconds count down timer
@@ -173,22 +185,23 @@ class Precision extends React.Component {
     drawCircles = () => {
         const canvas = this.canvas.current;
         const ctx = canvas.getContext('2d');
-
         for (let i of this.state.list) {
-            if (i.isClicked == true) {
-                ctx.beginPath();
-                ctx.arc(i.x, i.y, i.r, 0, Math.PI * 2, true); // Outer circle
-                // ctx.fillStyle = 'rgba(255, 0, 0, 0.5)';
-                // ctx.fill();
-                ctx.strokeStyle = 'teal';
-                ctx.stroke();
-            } else {
-                ctx.beginPath();
-                ctx.arc(i.x, i.y, i.r, 0, Math.PI * 2, true); // Outer circle
-                ctx.fillStyle = 'black';
-                ctx.strokeStyle = 'teal';
-                ctx.fill();
-                ctx.stroke();
+            if (i.r > 0) {
+                if (i.isClicked == true) {
+                    ctx.beginPath();
+                    ctx.arc(i.x, i.y, i.r, 0, Math.PI * 2, true); // Outer circle
+                    // ctx.fillStyle = 'rgba(255, 0, 0, 0.5)';
+                    // ctx.fill();
+                    ctx.strokeStyle = this.circleSuccessColor;
+                    ctx.stroke();
+                } else {
+                    ctx.beginPath();
+                    ctx.arc(i.x, i.y, i.r, 0, Math.PI * 2, true); // Outer circle
+                    ctx.fillStyle = this.circleDefaultInnerColor;
+                    ctx.strokeStyle = this.circleDefaultOuterColor;
+                    ctx.fill();
+                    ctx.stroke();
+                }
             }
         }
     };
@@ -199,9 +212,9 @@ class Precision extends React.Component {
         for (let i of this.state.drawClickList) {
             ctx.beginPath();
             ctx.arc(i.x, i.y, i.r, 0, Math.PI * 2, true); // Outer circle
-            ctx.fillStyle = 'grey';
+            ctx.fillStyle = this.circleSuccessColor;
             ctx.fill();
-            ctx.strokeStyle = 'grey';
+            ctx.strokeStyle = this.circleSuccessColor;
             ctx.stroke();
         }
     };
@@ -296,18 +309,6 @@ class Precision extends React.Component {
                             <div className="col d-flex justify-content-center">
                                 <b>FPS: {this.state.fps}</b>
                             </div>
-                            {/* <div className="col d-flex justify-content-center">
-                                <b>
-                                    Accuracy:
-                                    {(() => {
-                                        if (this.displayTargetsHit > 0 && this.displayTotalTargets > 0) {
-                                            return Math.trunc((this.displayTargetsHit / this.displayTotalTargets) * 100) + '%';
-                                        } else {
-                                            return '--';
-                                        }
-                                    })()}
-                                </b>
-                            </div> */}
                             <div className="col d-flex justify-content-center">
                                 <b>
                                     Targets Hit: {this.state.targetsHit}/{this.state.totalTargets}

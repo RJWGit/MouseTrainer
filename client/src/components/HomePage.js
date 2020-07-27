@@ -3,25 +3,6 @@ import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import myimage from '../images/logocross.png';
 
 class HomePage extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {};
-    }
-
-    gameState = e => {
-        const gameStateObj = {};
-        gameStateObj.width = 1100;
-        gameStateObj.height = 700;
-        gameStateObj.seconds = 60;
-        gameStateObj.radius = 1;
-        gameStateObj.radiusChange = 0.7;
-        gameStateObj.difficulty = 'medium';
-        gameStateObj.mode = 'autobalance';
-        gameStateObj.addCircleTimer = 500;
-        gameStateObj.maxRadius = 50;
-        gameStateObj.minRadius = 1;
-        this.props.updateGameState(gameStateObj);
-    };
     render() {
         return (
             <div className="container home-page-container">
@@ -34,7 +15,7 @@ class HomePage extends React.Component {
                     </div>
                     <div className="col-12 pb-2 d-flex justify-content-around">
                         <Link to="/play">
-                            <button type="button" onClick={this.gameState} className="home-button-styling">
+                            <button type="button" className="home-button-styling">
                                 QUICK PLAY
                             </button>
                         </Link>

@@ -8,11 +8,35 @@ class Login extends React.Component {
         this.state = {
             username: '',
             password: '',
-            authorized: false,
+            authenticated: false,
             validUser: true,
         };
     }
 
+    postData = async () => {
+        try {
+            const result = await fetch('http://localhost:3000/api/user/login', {
+                method: 'POST',
+                mode: 'cors',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    username: this.state.username,
+                    password: this.state.password,
+                }),
+            });
+
+            //Save tokens to local storage
+            const tokens = await result.json();
+            localStorage.setItem('accessToken', tokens.accessToken);
+            localStorage.setItem('refreshToken', tokens.refreshToken);
+
+            return result;
+        } catch (e) {
+            console.log('error');
+        }
+    };
     handleChange = e => {
         const name = e.target.name;
 
@@ -21,29 +45,21 @@ class Login extends React.Component {
         });
     };
 
-    postData = async () => {
-        try {
-            let result = await fetch('https://webhook.site/eda25444-b10a-4d50-afda-1b59fc5cb529', {
-                method: 'post',
-                mode: 'no-cors',
-                headers: {
-                    Accept: 'application.json',
-                },
-                body: JSON.stringify({
-                    key1: 'login',
-                }),
-            });
-            console.log(result);
-        } catch (e) {
-            console.log(e);
-        }
-    };
+    handleLogin = async () => {
+        const result = await this.postData();
 
-    handleLogin = () => {
-        this.setState({
-            authorized: false,
-            validUser: false,
-        });
+        if (result.status === 200) {
+            localStorage.setItem('username', this.state.username);
+
+            this.setState({
+                authenticated: true,
+            });
+            this.props.handleLogin();
+        } else {
+            this.setState({
+                validUser: false,
+            });
+        }
     };
 
     render() {
@@ -85,7 +101,7 @@ class Login extends React.Component {
                         {this.state.validUser ? '' : 'You have entered invalid username and password. Please try again.'}
                     </div>
                 </div>
-                {this.state.authorized ? (
+                {this.state.authenticated ? (
                     <div>
                         {' '}
                         <Redirect to="/"></Redirect>

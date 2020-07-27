@@ -6,9 +6,9 @@ class Difficulty extends React.Component {
         super(props);
         this.state = {
             customMode: false,
-            width: 1200,
-            height: 800,
-            radius: 7,
+            width: 1100,
+            height: 700,
+            radius: 1,
             radiusChange: 0.7,
             maxRadius: 50,
             minRadius: 1,
@@ -22,7 +22,7 @@ class Difficulty extends React.Component {
     gameState = e => {
         const gameStateObj = {};
 
-
+        //Different games mode settings
         switch (this.props.mode) {
             case 'classic':
                 if (e.target.name == 'easy') {
@@ -190,6 +190,7 @@ class Difficulty extends React.Component {
 
         this.props.updateGameState(gameStateObj);
     };
+
     render() {
         if (!this.state.customMode) {
             return (
@@ -298,7 +299,6 @@ class Difficulty extends React.Component {
                                                 className="form-control"
                                                 value={this.state.radiusChange}
                                                 onChange={this.handleChange}
-                                                
                                             />
                                         </label>
                                         <br></br>

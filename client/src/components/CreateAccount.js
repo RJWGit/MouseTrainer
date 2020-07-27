@@ -24,19 +24,20 @@ class CreateAccount extends React.Component {
 
     postData = async () => {
         try {
-            let result = await fetch('https://webhook.site/eda25444-b10a-4d50-afda-1b59fc5cb529', {
-                method: 'post',
-                mode: 'no-cors',
+            let result = await fetch('http://localhost:3000/api/user/createaccount', {
+                method: 'POST',
+                mode: 'cors',
                 headers: {
-                    Accept: 'application.json',
+                    'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    key1: 'login',
+                    username: this.state.username,
+                    password: this.state.password,
                 }),
             });
-            console.log(result);
+            return result;
         } catch (e) {
-            console.log(e);
+            console.log('error');
         }
     };
 
@@ -52,21 +53,20 @@ class CreateAccount extends React.Component {
         }
     };
 
-    //check database if username already exists
-    checkUsername = () => {};
-
     handleSubmit = async () => {
         event.preventDefault();
 
         await this.checkPassword();
-        // this.checkUsername();
 
-        if (this.state.passwordValid && this.state.usernameValid) {
-            //Create account
-
-            this.setState({
-                accountCreated: true,
-            });
+        if (this.state.passwordValid) {
+            const result = await this.postData();
+            console.log(result);
+            if (result.status === 201) {
+                //Create account
+                this.setState({
+                    accountCreated: true,
+                });
+            }
         }
     };
 
@@ -91,7 +91,14 @@ class CreateAccount extends React.Component {
                             <div className="col-12 d-flex justify-content-center">Password</div>
                             <div className="col-12 d-flex justify-content-center">
                                 <label>
-                                    <input type="password" value={this.state.password} onChange={this.handleChange} name="password" />
+                                    <input
+                                        type="password"
+                                        value={this.state.password}
+                                        onChange={this.handleChange}
+                                        name="password"
+                                        required
+                                        title="Password needs to have at least one upper and lower characters. As well as 1 numerical character"
+                                    />
                                 </label>
                                 <br></br>
                             </div>
@@ -106,8 +113,8 @@ class CreateAccount extends React.Component {
                             </div>
                         </div>
 
-                        <div className="col-12 pt-3 pb-3 d-flex justify-content-center">
-                            <p>Password needs to be atleast 8 characters</p>
+                        <div className="col-12 pt-3 d-flex justify-content-center">
+                            <p>Password needs to be atleast 8 characters and needs atleast 1 upper, lower, and number character</p>
                         </div>
 
                         <div className="col-12  d-flex justify-content-center">

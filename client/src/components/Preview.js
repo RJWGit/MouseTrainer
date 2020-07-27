@@ -19,16 +19,26 @@ class Preview extends React.Component {
         };
         this.canvas = createRef();
         this.init = true;
-        this.myFrames = 0;
         this.circleID = 0;
-        this.intervalTick;
-        this.intervalDeleteCircle;
         this.circleDeleteTimer = 300;
+        this.pointer;
+
+        //Interval timers
         this.intervalDeleteClick;
         this.intervalCreateCircle;
-        this.pointer;
+        this.intervalDeleteCircle;
+
+        //Play field
         this.pointerX = window.innerWidth / 2;
         this.pointerY = window.innerHeight / 2;
+
+        //Circle Colors
+        this.circleSuccessColor = 'green';
+        this.circleDefaultOuterColor = 'teal';
+        this.circleDefaultInnerColor = 'black';
+
+        //Clicks Colors
+        this.clickDefaultColor = 'grey';
     }
 
     load() {
@@ -38,8 +48,6 @@ class Preview extends React.Component {
 
     //Create and add circles to state list
     addCircle() {
-        console.log(this.state.list);
-
         if (this.state.isRunning) {
             const newList = [...this.state.list];
             let circle = {
@@ -59,7 +67,6 @@ class Preview extends React.Component {
                 totalTargets: this.state.totalTargets + 1,
             }));
 
-            console.log('add circle');
             // setTimeout(() => this.addCircle(), this.state.addCircleTimer);
         }
     }
@@ -126,13 +133,13 @@ class Preview extends React.Component {
                     ctx.arc(i.x, i.y, i.r, 0, Math.PI * 2, true); // Outer circle
                     // ctx.fillStyle = 'rgba(255, 0, 0, 0.5)';
                     // ctx.fill();
-                    ctx.strokeStyle = 'green';
+                    ctx.strokeStyle = this.circleSuccessColor;
                     ctx.stroke();
                 } else {
                     ctx.beginPath();
                     ctx.arc(i.x, i.y, i.r, 0, Math.PI * 2, true); // Outer circle
-                    ctx.fillStyle = 'black';
-                    ctx.strokeStyle = 'teal';
+                    ctx.fillStyle = this.circleDefaultInnerColor;
+                    ctx.strokeStyle = this.circleDefaultOuterColor;
                     ctx.fill();
                     ctx.stroke();
                 }
@@ -150,7 +157,6 @@ class Preview extends React.Component {
         let x = 0,
             y = 0;
 
-        console.log(movement);
         //Go through circle list and move pointer toward circle
         if (this.state.list.length > 0)
             for (let i of this.state.list) {
@@ -185,9 +191,9 @@ class Preview extends React.Component {
         for (let i of this.state.drawClickList) {
             ctx.beginPath();
             ctx.arc(i.x, i.y, i.r, 0, Math.PI * 2, true); // Outer circle
-            ctx.fillStyle = 'green';
+            ctx.fillStyle = this.clickDefaultColor;
             ctx.fill();
-            ctx.strokeStyle = 'green';
+            ctx.strokeStyle = this.clickDefaultColor;
             ctx.stroke();
         }
     };
@@ -225,8 +231,6 @@ class Preview extends React.Component {
     }
 
     onFocus = () => {
-        console.log('focus');
-
         //Check to prevent double running of gameloop, this seems only possible if user clicks off page when page is loading
         if (!this.state.isRunning) {
             this.intervalDeleteCircle = setInterval(() => this.deleteCircleByClick(), 100);
@@ -238,7 +242,6 @@ class Preview extends React.Component {
 
     //Pause background if not focused on screen
     onBlur = () => {
-        console.log('blur');
         if (this.state.isRunning) {
             clearInterval(this.intervalDeleteCircle);
             clearInterval(this.intervalDeleteClick);
