@@ -2,6 +2,7 @@ import React, { createRef } from 'react';
 import Classic from './Classic.js';
 import Precision from './Precision.js';
 import AutoBalance from './AutoBalance';
+
 class ChosenMode extends React.Component {
     constructor(props) {
         super(props);

@@ -8,16 +8,21 @@ import Updates from './Updates.js';
 import ChosenMode from './ChosenMode.js';
 import Preview from './Preview.js';
 import Login from './Login.js';
+import Ranked from './Ranked.js';
+import UserAccount from './UserAccount';
 import CreateAccount from './CreateAccount.js';
-// import 'semantic-ui-css/semantic.min.css';
+import Leaderboard from './Leaderboard.js';
+import 'semantic-ui-css/semantic.min.css';
+import DropDownMenu from './DropDownMenu';
+import { newToken } from '../apicalls/api.js';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 
 class App extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            width: window.innerWidth * 0.5,
-            height: window.innerHeight * 0.7,
+            width: 900,
+            height: 700,
             radius: 1,
             radiusChange: 0.7,
             maxRadius: 50,
@@ -25,17 +30,16 @@ class App extends React.Component {
             difficulty: 'medium',
             addCircleTimer: 500,
             mode: 'autobalance',
-            seconds: 5,
+            seconds: 60,
             isLoggedIn: false,
             username: '',
         };
     }
 
     componentDidMount = async () => {
-        const result = await this.newToken();
+        const result = await newToken();
         const name = localStorage.getItem('username');
-
-        if (result != null) {
+        if (result !== undefined) {
             if (result.status == 200) {
                 this.setState({
                     isLoggedIn: true,
@@ -48,6 +52,7 @@ class App extends React.Component {
             });
         }
     };
+
     updateGameState = newGameState => {
         this.setState({
             width: newGameState.width,
@@ -81,28 +86,6 @@ class App extends React.Component {
         return obj;
     };
 
-    //Example API to access restricted API
-    testAPI = async () => {
-        const accessToken = await localStorage.getItem('accessToken');
-        try {
-            const result = await fetch('http://localhost:3000/api/user/testlogin', {
-                method: 'POST',
-                mode: 'cors',
-                headers: {
-                    Authorization: 'BEAR ' + accessToken,
-                },
-            });
-            if (result.status !== 200) {
-                const newToken = await this.newToken();
-                if (newToken.status == 200) {
-                    this.testAPI();
-                }
-            }
-        } catch (e) {
-            console.log('error');
-        }
-    };
-
     //LOGOUT
     handleLogout = async () => {
         const refreshToken = localStorage.getItem('refreshToken');
@@ -131,35 +114,11 @@ class App extends React.Component {
         });
     };
 
-    //GENERATE NEW ACCESS TOKEN
-    newToken = async () => {
-        const refreshToken = localStorage.getItem('refreshToken');
-        try {
-            const result = await fetch('http://localhost:3000/api/user/token', {
-                method: 'POST',
-                mode: 'cors',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    refreshToken: refreshToken,
-                }),
-            });
-
-            //Save tokens to local storage
-            const tokens = await result.json();
-            localStorage.setItem('accessToken', tokens.accessToken);
-
-            return result;
-        } catch (e) {
-            console.log('error');
-        }
-    };
-
     //SET STATE LOGIN
     handleLogin = () => {
         this.setState({
             isLoggedIn: true,
+            username: localStorage.getItem('username'),
         });
     };
 
@@ -176,22 +135,13 @@ class App extends React.Component {
                                 <Link className="navbar-brand" to="/updates">
                                     Updates
                                 </Link>
-                                <Link className="navbar-brand" onClick={this.testAPI} to="/">
-                                    Test
+                                <Link className="navbar-brand" to="/leaderboard">
+                                    Leaderboard
                                 </Link>
                             </div>
                             {this.state.isLoggedIn && (
                                 <div className="dropdown col-3 justify-content-end d-flex">
-                                    <Link className="navbar-brand" onClick={this.handleLogout} to="/">
-                                        {this.state.username}
-                                    </Link>
-                                    {/* <Dropdown trigger={trigger} pointing="top left" icon={null}>
-                                        <Dropdown.Menu>
-                                            <Dropdown.Item text="Account" icon="user" as={Link} to="/accounts" />
-                                            <Dropdown.Item text="Settings" icon="settings" as={Link} to="/settings" />
-                                            <Dropdown.Item text="Sign Out" icon="sign out" as={Link} to="/sign-out" />
-                                        </Dropdown.Menu>
-                                    </Dropdown> */}
+                                    <DropDownMenu handleLogout={this.handleLogout} username={this.state.username}></DropDownMenu>
                                 </div>
                             )}
                             {!this.state.isLoggedIn && (
@@ -230,6 +180,21 @@ class App extends React.Component {
                                     <Preview getGameState={this.returnGameState}></Preview>
                                 </div>
                                 <CreateAccount></CreateAccount>
+                            </Route>
+                            <Route path="/useraccount">
+                                {/* <div className="background">
+                                    <Preview getGameState={this.returnGameState}></Preview>
+                                </div> */}
+                                <UserAccount></UserAccount>
+                            </Route>
+                            <Route path="/leaderboard">
+                                {/* <div className="background">
+                                    <Preview getGameState={this.returnGameState}></Preview>
+                                </div> */}
+                                <Leaderboard></Leaderboard>
+                            </Route>
+                            <Route path="/ranked">
+                                <Ranked></Ranked>
                             </Route>
                             <Route path="/">
                                 <div className="background">

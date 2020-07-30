@@ -6,7 +6,7 @@ class Difficulty extends React.Component {
         super(props);
         this.state = {
             customMode: false,
-            width: 1100,
+            width: 900,
             height: 700,
             radius: 1,
             radiusChange: 0.7,
@@ -17,6 +17,9 @@ class Difficulty extends React.Component {
             mode: 'autobalance',
             seconds: 60,
         };
+
+        this.width = 900;
+        this.height = 700;
     }
 
     gameState = e => {
@@ -26,8 +29,8 @@ class Difficulty extends React.Component {
         switch (this.props.mode) {
             case 'classic':
                 if (e.target.name == 'easy') {
-                    gameStateObj.width = 1100;
-                    gameStateObj.height = 700;
+                    gameStateObj.width = this.width;
+                    gameStateObj.height = this.height;
                     gameStateObj.seconds = 60;
                     gameStateObj.radius = 1;
                     gameStateObj.radiusChange = 0.7;
@@ -40,8 +43,8 @@ class Difficulty extends React.Component {
                     break;
                 }
                 if (e.target.name == 'medium') {
-                    gameStateObj.width = 1100;
-                    gameStateObj.height = 700;
+                    gameStateObj.width = this.width;
+                    gameStateObj.height = this.height;
                     gameStateObj.seconds = 60;
                     gameStateObj.radius = 1;
                     gameStateObj.radiusChange = 0.7;
@@ -54,8 +57,8 @@ class Difficulty extends React.Component {
                     break;
                 }
                 if (e.target.name == 'hard') {
-                    gameStateObj.width = 1100;
-                    gameStateObj.height = 700;
+                    gameStateObj.width = this.width;
+                    gameStateObj.height = this.height;
                     gameStateObj.seconds = 60;
                     gameStateObj.radius = 1;
                     gameStateObj.radiusChange = 0.7;
@@ -70,8 +73,8 @@ class Difficulty extends React.Component {
 
             case 'autobalance':
                 if (e.target.name == 'easy') {
-                    gameStateObj.width = 1100;
-                    gameStateObj.height = 700;
+                    gameStateObj.width = this.width;
+                    gameStateObj.height = this.height;
                     gameStateObj.seconds = 60;
                     gameStateObj.radius = 1;
                     gameStateObj.radiusChange = 0.7;
@@ -84,37 +87,37 @@ class Difficulty extends React.Component {
                     break;
                 }
                 if (e.target.name == 'medium') {
-                    gameStateObj.width = 1100;
-                    gameStateObj.height = 700;
+                    gameStateObj.width = this.width;
+                    gameStateObj.height = this.height;
                     gameStateObj.seconds = 60;
                     gameStateObj.radius = 1;
                     gameStateObj.radiusChange = 0.7;
                     gameStateObj.difficulty = e.target.name;
                     gameStateObj.mode = this.props.mode;
                     gameStateObj.addCircleTimer = 500;
-                    gameStateObj.maxRadius = 45;
+                    gameStateObj.maxRadius = 50;
                     gameStateObj.minRadius = 1;
                     this.props.updateGameState(gameStateObj);
                     break;
                 }
                 if (e.target.name == 'hard') {
-                    gameStateObj.width = 1100;
-                    gameStateObj.height = 700;
+                    gameStateObj.width = this.width;
+                    gameStateObj.height = this.height;
                     gameStateObj.seconds = 60;
                     gameStateObj.radius = 1;
                     gameStateObj.radiusChange = 0.7;
                     gameStateObj.difficulty = e.target.name;
                     gameStateObj.mode = this.props.mode;
                     gameStateObj.addCircleTimer = 400;
-                    gameStateObj.maxRadius = 40;
+                    gameStateObj.maxRadius = 50;
                     gameStateObj.minRadius = 1;
                     this.props.updateGameState(gameStateObj);
                     break;
                 }
             case 'precision':
                 if (e.target.name == 'easy') {
-                    gameStateObj.width = 800;
-                    gameStateObj.height = 600;
+                    gameStateObj.width = this.width;
+                    gameStateObj.height = this.height;
                     gameStateObj.seconds = 60;
                     gameStateObj.radius = 7;
                     gameStateObj.radiusChange = 0.7;
@@ -127,8 +130,8 @@ class Difficulty extends React.Component {
                     break;
                 }
                 if (e.target.name == 'medium') {
-                    gameStateObj.width = 800;
-                    gameStateObj.height = 600;
+                    gameStateObj.width = this.width;
+                    gameStateObj.height = this.height;
                     gameStateObj.seconds = 60;
                     gameStateObj.radius = 7;
                     gameStateObj.radiusChange = 0.7;
@@ -141,8 +144,8 @@ class Difficulty extends React.Component {
                     break;
                 }
                 if (e.target.name == 'hard') {
-                    gameStateObj.width = 800;
-                    gameStateObj.height = 600;
+                    gameStateObj.width = this.width;
+                    gameStateObj.height = this.height;
                     gameStateObj.seconds = 60;
                     gameStateObj.radius = 7;
                     gameStateObj.radiusChange = 0.7;

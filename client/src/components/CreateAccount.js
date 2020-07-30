@@ -22,7 +22,7 @@ class CreateAccount extends React.Component {
         });
     };
 
-    postData = async () => {
+    createAccountData = async () => {
         try {
             let result = await fetch('http://localhost:3000/api/user/createaccount', {
                 method: 'POST',
@@ -59,13 +59,14 @@ class CreateAccount extends React.Component {
         await this.checkPassword();
 
         if (this.state.passwordValid) {
-            const result = await this.postData();
-            console.log(result);
-            if (result.status === 201) {
-                //Create account
-                this.setState({
-                    accountCreated: true,
-                });
+            const result = await this.createAccountData();
+            if (result !== undefined) {
+                if (result.status === 200) {
+                    //Create account
+                    this.setState({
+                        accountCreated: true,
+                    });
+                }
             }
         }
     };

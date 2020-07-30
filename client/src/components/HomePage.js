@@ -12,6 +12,13 @@ class HomePage extends React.Component {
                     </div>
                     <div className="col-12 pb-5 d-flex justify-content-around">
                         <h1 className="home-page-title">Mouse Trainer</h1>
+                    </div>{' '}
+                    <div className="col-12 d-flex justify-content-around">
+                        <Link to="/ranked">
+                            <button type="button" className="home-button-styling">
+                                RANKED
+                            </button>
+                        </Link>
                     </div>
                     <div className="col-12 pb-2 d-flex justify-content-around">
                         <Link to="/play">

@@ -17,7 +17,7 @@ function authenticateToken(req, res, next) {
   //Check if token is valid
   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
     if (err) return res.sendStatus(403); //Token  is not valid
-    req.username = user;
+    req.user = user.username;
     next();
   });
 }
@@ -64,6 +64,25 @@ router.post("/token", (req, res) => {
   );
 });
 
+//RETURN LEADERBOARD SCORES
+router.get("/leaderboard", async (req, res) => {
+  let highscores = [];
+
+  await User.find({}, (err, user) => {
+    if (err) return res.status(404);
+    user.map((x) =>
+      highscores.push({ username: x.username, score: x.highscore })
+    );
+
+    highscores.sort((x, y) => {
+      if (x.score > y.score) return -1;
+      else return 1;
+    });
+  });
+
+  return res.status(200).send(highscores);
+});
+
 //LOGIN - CREATE REFRESH TOKEN
 router.post("/login", async (req, res) => {
   const { username, password } = req.body;
@@ -90,10 +109,26 @@ router.post("/login", async (req, res) => {
 
   //Update refresh token in database
   user.updateRefreshToken(refreshToken);
-  user.save();
 
   //Send back tokens to user
   return res.status(200).send({ accessToken, refreshToken });
+});
+
+//RANKED - update highscore
+router.post("/ranked", authenticateToken, async (req, res) => {
+  const { score } = req.body;
+  const name = req.user.username;
+
+  //Check if username exists
+  const user = await User.findOne({ username: name });
+  if (!user)
+    return res.status(400).send({ error: "No user with that name exists." });
+
+  //Update refresh token in database
+  user.updateHighScore(score);
+
+  //Send back tokens to user
+  return res.sendStatus(200);
 });
 
 //LOGOUT - DELETE REFRESH TOKEN - NEED TO FIX SAVE REFRESH TOKENS TO DATABASE AND DELETE WHEN THEY LOGOUT
@@ -108,7 +143,6 @@ router.delete("/logout", async (req, res) => {
 
     if (username != null) {
       username.updateRefreshToken("");
-      username.save();
       return res.sendStatus(200);
     }
   });
@@ -126,17 +160,23 @@ router.post("/createaccount", async (req, res) => {
 
   //Validate input
   const { error } = registerValidation.validate(req.body);
-  if (error) return res.sendStatus(400).send(error.details[0].message);
+  if (error) return res.status(400).send(error.details[0].message);
 
   //Check if username exists
   let user = await User.findOne({ username });
   if (user)
     return res
-      .sendStatus(400)
+      .status(400)
       .send({ error: "A user with that username already exists." });
 
   try {
-    const user = await User.create({ username, password, refreshToken: " " }); //Create user
+    //Create user
+    const user = await User.create({
+      username,
+      password,
+      refreshToken: " ",
+      highscore: 0,
+    });
   } catch (error) {
     return res.sendStatus(400).send({
       error: "There was an interal error. Please try again later.",

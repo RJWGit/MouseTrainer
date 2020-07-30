@@ -2,6 +2,7 @@ import React, { createRef } from 'react';
 import CreateAccount from './CreateAccount.js';
 import { BrowserRouter as Router, Switch, Route, Link, Redirect } from 'react-router-dom';
 
+//FORMIK
 class Login extends React.Component {
     constructor(props) {
         super(props);
@@ -13,7 +14,7 @@ class Login extends React.Component {
         };
     }
 
-    postData = async () => {
+    loginData = async () => {
         try {
             const result = await fetch('http://localhost:3000/api/user/login', {
                 method: 'POST',
@@ -46,15 +47,17 @@ class Login extends React.Component {
     };
 
     handleLogin = async () => {
-        const result = await this.postData();
+        const result = await this.loginData();
 
-        if (result.status === 200) {
-            localStorage.setItem('username', this.state.username);
+        if (result !== undefined) {
+            if (result.status === 200) {
+                localStorage.setItem('username', this.state.username);
 
-            this.setState({
-                authenticated: true,
-            });
-            this.props.handleLogin();
+                this.setState({
+                    authenticated: true,
+                });
+                this.props.handleLogin();
+            }
         } else {
             this.setState({
                 validUser: false,

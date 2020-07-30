@@ -18,13 +18,13 @@ module.exports = {
                 },
             },
             {
-                test: /\.(png|svg|jpg|gif|ttf)$/,
+                test: /\.(png|svg|jpg|gif|ttf|woff|eot|woff2)$/,
                 use: ['file-loader'],
             },
 
-            //BREAKS ALL IMAGES
+            // // BREAKS ALL IMAGES
             // {
-            //     test: /\.(png|jpg|gif)$/i,
+            //     test: /\.(woff|woff2)$/i,
             //     use: [
             //         {
             //             loader: 'url-loader',

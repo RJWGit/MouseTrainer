@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
+const { number } = require("joi");
 
 const UserSchema = new mongoose.Schema({
   username: {
@@ -11,6 +12,10 @@ const UserSchema = new mongoose.Schema({
   password: {
     type: String,
     required: true,
+  },
+
+  highscore: {
+    type: Number,
   },
   refreshToken: {
     type: String,
@@ -35,6 +40,14 @@ UserSchema.methods.isValidPassword = async function (password) {
 
 UserSchema.methods.updateRefreshToken = function (token) {
   this.refreshToken = token;
+  this.save();
+};
+
+UserSchema.methods.updateHighScore = async function (score) {
+  if (this.highscore < score) {
+    this.highscore = score;
+    this.save();
+  }
 };
 
 module.exports = mongoose.model("User", UserSchema);

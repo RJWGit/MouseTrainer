@@ -5,10 +5,11 @@
 
 #root {
     background-color: #413e3e;
-    height: 100vh;
     background-image: linear-gradient(rgb(0, 0, 0) 1px, transparent 0), linear-gradient(90deg, rgb(0, 0, 0) 1px, transparent 0);
     background-size: 40px 40px, 40px 40px;
     font-family: 'roboto-regular';
+    min-height: 100%;
+    min-width: 100%;
 }
 
 /* #canvas {
@@ -269,4 +270,12 @@ a:hover {
 .failed-text {
     font-size: 12px;
     color: red;
+}
+
+.leaderboard-page-container {
+    margin-top: 4em;
+}
+
+.table-dark {
+    background-color: rgb(20, 20, 20) !important;
 }
