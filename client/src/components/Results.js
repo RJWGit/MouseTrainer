@@ -34,6 +34,14 @@ class Results extends React.Component {
 
     componentDidMount = () => {
         this.updateHighScore();
+        const score = localStorage.getItem('score');
+        if (score !== null) {
+            if (this.props.targetsHit > score) {
+                localStorage.setItem('score', this.props.targetsHit);
+            }
+        } else {
+            localStorage.removeItem('score');
+        }
     };
     render() {
         return (

@@ -25,7 +25,7 @@ function authenticateToken(req, res, next) {
 //GENERATE TOKEN
 function generateAccessToken(user) {
   return jwt.sign({ username: user }, process.env.ACCESS_TOKEN_SECRET, {
-    expiresIn: "5s",
+    expiresIn: "1h",
   });
 }
 
@@ -107,11 +107,14 @@ router.post("/login", async (req, res) => {
     process.env.REFRESH_TOKEN_SECRET
   );
 
+  //Get highscore
+  const score = user.highscore;
+
   //Update refresh token in database
   user.updateRefreshToken(refreshToken);
 
   //Send back tokens to user
-  return res.status(200).send({ accessToken, refreshToken });
+  return res.status(200).send({ accessToken, refreshToken, score });
 });
 
 //RANKED - update highscore
@@ -129,6 +132,17 @@ router.post("/ranked", authenticateToken, async (req, res) => {
 
   //Send back tokens to user
   return res.sendStatus(200);
+});
+
+router.post("/gethighscore", async (req, res) => {
+  const name = req.body.username;
+
+  const user = await User.findOne({ username: name });
+  if (!user)
+    return res.status(400).send({ error: "No user with that name exists." });
+
+  const highscore = user.highscore;
+  return res.send({ score: highscore });
 });
 
 //LOGOUT - DELETE REFRESH TOKEN - NEED TO FIX SAVE REFRESH TOKENS TO DATABASE AND DELETE WHEN THEY LOGOUT

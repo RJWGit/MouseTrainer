@@ -22,6 +22,11 @@ class Difficulty extends React.Component {
         this.height = 700;
     }
 
+    componentDidMount = () => {
+        this.width > window.innerWidth - 200 ? (this.width = window.innerWidth - 200) : this.width;
+        this.height > window.innerHeight - 200 ? (this.height = window.innerHeight - 200) : this.height;
+    };
+
     gameState = e => {
         const gameStateObj = {};
 

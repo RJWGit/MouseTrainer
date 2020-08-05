@@ -39,8 +39,13 @@ class App extends React.Component {
     componentDidMount = async () => {
         const result = await newToken();
         const name = localStorage.getItem('username');
+
+        if (name === null) {
+            this.handleLogout();
+        }
+
         if (result !== undefined) {
-            if (result.status == 200) {
+            if (result.status === 200) {
                 this.setState({
                     isLoggedIn: true,
                     username: name,
@@ -49,6 +54,25 @@ class App extends React.Component {
         } else {
             this.setState({
                 isLoggedIn: false,
+            });
+        }
+        if (window.innerWidth - 200 < this.state.width) {
+            this.setState({
+                width: window.innerWidth - 200,
+            });
+        } else {
+            this.setState({
+                width: 900,
+            });
+        }
+
+        if (window.innerHeight - 200 < this.state.height) {
+            this.setState({
+                height: window.innerHeight - 200,
+            });
+        } else {
+            this.setState({
+                height: 700,
             });
         }
     };
@@ -108,6 +132,7 @@ class App extends React.Component {
         localStorage.removeItem('accessToken');
         localStorage.removeItem('refreshToken');
         localStorage.removeItem('username');
+        localStorage.removeItem('score');
 
         this.setState({
             isLoggedIn: false,

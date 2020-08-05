@@ -32,6 +32,7 @@ class Login extends React.Component {
             const tokens = await result.json();
             localStorage.setItem('accessToken', tokens.accessToken);
             localStorage.setItem('refreshToken', tokens.refreshToken);
+            localStorage.setItem('score', tokens.score);
 
             return result;
         } catch (e) {
