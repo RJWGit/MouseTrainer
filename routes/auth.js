@@ -1,7 +1,12 @@
 const router = require("express").Router();
 const User = require("../models/User");
 const { schema } = require("../models/User");
-const { registerValidation, loginValidation } = require("../validation");
+const {
+  registerValidation,
+  loginValidation,
+  usernameValidation,
+  passwordValidation,
+} = require("../validation");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
@@ -117,6 +122,61 @@ router.post("/login", async (req, res) => {
   return res.status(200).send({ accessToken, refreshToken, score });
 });
 
+//CHANGE USERNAME
+router.post("/changeusername", authenticateToken, async (req, res) => {
+  const { username } = req.body;
+
+  //Validate input
+  const { error } = usernameValidation.validate(req.body);
+  if (error) return res.status(402).send(error.details[0].message);
+
+  //Check if username exists
+  const name = await User.findOne({ username });
+  if (name) return res.status(400).send({ error: "Username already taken." });
+
+  //Find current user
+  const oldname = req.user.username;
+  const user = await User.findOne({ username: oldname });
+  if (!user) return res.status(400).send({ error: "No user found." });
+
+  //Update Username
+  user.updateUsername(username);
+
+  return res.sendStatus(200);
+});
+
+//CHANGE PASSWORD
+router.post("/changepassword", authenticateToken, async (req, res) => {
+  const { password } = req.body;
+
+  //Validate input
+  const { error } = passwordValidation.validate(req.body);
+  if (error) return res.status(402).send(error.details[0].message);
+
+  //Find current user
+  const username = req.user.username;
+  const user = await User.findOne({ username: username });
+  if (!user) return res.status(400).send({ error: "No user found." });
+
+  //Update Password
+  user.updatePassword(password);
+
+  return res.sendStatus(200);
+});
+
+//DELETE ACCOUNT
+router.post("/deleteaccount", authenticateToken, async (req, res) => {
+  //Find current user
+  const username = req.user.username;
+  const user = await User.findOne({ username: username });
+  if (!user) return res.status(400).send({ error: "No user found." });
+
+  //Delete user
+  user.remove(user);
+
+  return res.sendStatus(200);
+});
+
 //RANKED - update highscore
 router.post("/ranked", authenticateToken, async (req, res) => {
   const { score } = req.body;
@@ -159,6 +219,8 @@ router.delete("/logout", async (req, res) => {
       username.updateRefreshToken("");
       return res.sendStatus(200);
     }
+
+    return res.sendStatus(403);
   });
 });
 

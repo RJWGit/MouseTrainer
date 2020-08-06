@@ -1,6 +1,6 @@
 import React, { createRef } from 'react';
 
-class Leaderboard extends React.Component {
+class LeaderBoard extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -80,4 +80,4 @@ class Leaderboard extends React.Component {
     }
 }
 
-export default Leaderboard;
+export default LeaderBoard;

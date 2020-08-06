@@ -50,4 +50,14 @@ UserSchema.methods.updateHighScore = async function (score) {
   }
 };
 
+UserSchema.methods.updateUsername = async function (newname) {
+  this.username = newname;
+  this.save();
+};
+
+UserSchema.methods.updatePassword = async function (newpassword) {
+  this.password = await bcrypt.hash(newpassword, 10);
+  this.save();
+};
+
 module.exports = mongoose.model("User", UserSchema);

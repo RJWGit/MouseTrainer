@@ -1,5 +1,5 @@
 import React, { createRef } from 'react';
-import { BrowserRouter as Router, Switch, Route, Link, Redirect } from 'react-router-dom';
+import { BrowserRouter as Link, Redirect } from 'react-router-dom'; //You need link for redirect to work??
 
 class CreateAccount extends React.Component {
     constructor(props) {

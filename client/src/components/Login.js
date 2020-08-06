@@ -28,12 +28,6 @@ class Login extends React.Component {
                 }),
             });
 
-            //Save tokens to local storage
-            const tokens = await result.json();
-            localStorage.setItem('accessToken', tokens.accessToken);
-            localStorage.setItem('refreshToken', tokens.refreshToken);
-            localStorage.setItem('score', tokens.score);
-
             return result;
         } catch (e) {
             console.log('error');
@@ -52,6 +46,11 @@ class Login extends React.Component {
 
         if (result !== undefined) {
             if (result.status === 200) {
+                //Save tokens to local storage
+                const tokens = await result.json();
+                localStorage.setItem('accessToken', tokens.accessToken);
+                localStorage.setItem('refreshToken', tokens.refreshToken);
+                localStorage.setItem('score', tokens.score);
                 localStorage.setItem('username', this.state.username);
 
                 this.setState({

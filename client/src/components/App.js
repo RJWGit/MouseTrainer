@@ -11,7 +11,7 @@ import Login from './Login.js';
 import Ranked from './Ranked.js';
 import UserAccount from './UserAccount';
 import CreateAccount from './CreateAccount.js';
-import Leaderboard from './Leaderboard.js';
+import LeaderBoard from './LeaderBoard.js';
 import 'semantic-ui-css/semantic.min.css';
 import DropDownMenu from './DropDownMenu';
 import { newToken } from '../apicalls/api.js';
@@ -56,6 +56,9 @@ class App extends React.Component {
                 isLoggedIn: false,
             });
         }
+
+        //Check screen size to see if big enough to play at standard game widths/height
+        //If not then make game size smaller (this does not apply to ranked)
         if (window.innerWidth - 200 < this.state.width) {
             this.setState({
                 width: window.innerWidth - 200,
@@ -113,7 +116,6 @@ class App extends React.Component {
     //LOGOUT
     handleLogout = async () => {
         const refreshToken = localStorage.getItem('refreshToken');
-
         try {
             const result = await fetch('http://localhost:3000/api/user/logout', {
                 method: 'delete',
@@ -126,14 +128,13 @@ class App extends React.Component {
                 }),
             });
         } catch (e) {
-            console.log('error');
+            console.log(e);
         }
 
         localStorage.removeItem('accessToken');
         localStorage.removeItem('refreshToken');
         localStorage.removeItem('username');
         localStorage.removeItem('score');
-
         this.setState({
             isLoggedIn: false,
         });
@@ -210,17 +211,18 @@ class App extends React.Component {
                                 {/* <div className="background">
                                     <Preview getGameState={this.returnGameState}></Preview>
                                 </div> */}
-                                <UserAccount></UserAccount>
+                                <UserAccount handleLogout={this.handleLogout}></UserAccount>
                             </Route>
                             <Route path="/leaderboard">
                                 {/* <div className="background">
                                     <Preview getGameState={this.returnGameState}></Preview>
                                 </div> */}
-                                <Leaderboard></Leaderboard>
+                                <LeaderBoard></LeaderBoard>
                             </Route>
                             <Route path="/ranked">
                                 <Ranked></Ranked>
                             </Route>
+
                             <Route path="/">
                                 <div className="background">
                                     <Preview getGameState={this.returnGameState}></Preview>
