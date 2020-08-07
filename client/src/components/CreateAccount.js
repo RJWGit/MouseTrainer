@@ -8,12 +8,67 @@ class CreateAccount extends React.Component {
             username: '',
             password: '',
             passwordCheck: '',
-            passwordValid: true,
-            usernameValid: true,
+            passwordError: '',
+            usernameError: '',
             accountCreated: false,
+            errorMessage: '',
         };
     }
 
+    //validate user input
+    validation = () => {
+        const regex = new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])');
+        const validPass = regex.test(this.state.password);
+        let isValidForm = true;
+
+        this.setState({
+            passwordError: '',
+            usernameError: '',
+            errorMessage: '',
+        });
+        if (this.state.password != this.state.passwordCheck) {
+            this.setState({
+                passwordError: 'Passwords do not match',
+            });
+
+            isValidForm = false;
+        }
+
+        if (!validPass) {
+            this.setState({
+                passwordError: 'Passwords must have 1 lower, upper, and number character',
+            });
+            isValidForm = false;
+        }
+
+        if (this.state.password.length < 8) {
+            this.setState({
+                passwordError: 'Passwords must be at least 8 characters',
+            });
+            isValidForm = false;
+        }
+        if (this.state.password.length > 30) {
+            this.setState({
+                passwordError: 'Passwords cannot be more than 30 characters',
+            });
+            isValidForm = false;
+        }
+        if (this.state.username.length < 3) {
+            this.setState({
+                usernameError: 'Username must be at least 3 characters',
+            });
+            isValidForm = false;
+        }
+
+        if (this.state.username.length > 20) {
+            this.setState({
+                usernameError: 'Username can be no more than 20 characters',
+            });
+            isValidForm = false;
+        }
+
+        return isValidForm;
+    };
     handleChange = e => {
         const name = e.target.name;
 
@@ -41,101 +96,87 @@ class CreateAccount extends React.Component {
         }
     };
 
-    checkPassword = () => {
-        if (this.state.password != this.state.passwordCheck) {
-            this.setState({
-                passwordValid: false,
-            });
-        } else {
-            this.setState({
-                passwordValid: true,
-            });
-        }
-    };
-
+    //Create Account
     handleSubmit = async () => {
         event.preventDefault();
 
-        await this.checkPassword();
-
-        if (this.state.passwordValid) {
+        const isValidInput = this.validation();
+        if (isValidInput) {
             const result = await this.createAccountData();
             if (result !== undefined) {
                 if (result.status === 200) {
-                    //Create account
                     this.setState({
                         accountCreated: true,
                     });
                 }
+            } else {
+                this.setState({
+                    errorMessage: 'Problem reaching server, try again.',
+                });
             }
         }
     };
 
     render() {
-        if (!this.state.accountCreated) {
-            return (
-                <div className="container login-page-container">
+        return (
+            <div className="container login-page-container">
+                <div className="row justify-content-md-center">
+                    <div className="col-12 pb-5 pt-3 d-flex justify-content-center">
+                        <h1>Create Account</h1>
+                    </div>
                     <div className="row justify-content-md-center">
-                        <div className="col-12 pb-5 pt-3 d-flex justify-content-center">
-                            <h1>Create Account</h1>
-                        </div>
-                        <div className="row justify-content-md-center">
-                            <div className="col-12  d-flex justify-content-center">Username</div>
-                            <div className="col-12  d-flex justify-content-center">
-                                <label>
-                                    <input value={this.state.username} onChange={this.handleChange} name="username" />
-                                </label>
-                                <br></br>
-                            </div>
-                        </div>
-                        <div className="row justify-content-md-center">
-                            <div className="col-12 d-flex justify-content-center">Password</div>
-                            <div className="col-12 d-flex justify-content-center">
-                                <label>
-                                    <input
-                                        type="password"
-                                        value={this.state.password}
-                                        onChange={this.handleChange}
-                                        name="password"
-                                        required
-                                        title="Password needs to have at least one upper and lower characters. As well as 1 numerical character"
-                                    />
-                                </label>
-                                <br></br>
-                            </div>
-                        </div>
-                        <div className="row justify-content-md-center">
-                            <div className="col-12 d-flex justify-content-center">Confirm Password</div>
-                            <div className="col-12 d-flex justify-content-center">
-                                <label>
-                                    <input type="password" value={this.state.passwordCheck} onChange={this.handleChange} name="passwordCheck" />
-                                </label>
-                                <br></br>
-                            </div>
-                        </div>
-
-                        <div className="col-12 pt-3 d-flex justify-content-center">
-                            <p>Password needs to be atleast 8 characters and needs atleast 1 upper, lower, and number character</p>
-                        </div>
-
+                        <div className="col-12  d-flex justify-content-center">Username</div>
                         <div className="col-12  d-flex justify-content-center">
-                            <button type="button" className="login-button" onClick={this.handleSubmit}>
-                                Sign Up
-                            </button>
+                            <label>
+                                <input value={this.state.username} onChange={this.handleChange} name="username" />
+                            </label>
+                            <br></br>
                         </div>
-                        <div className="col-12 pb-3 d-flex justify-content-center failed-text">
-                            {this.state.passwordValid ? '' : 'Passwords do not match'}
+
+                        <div className="col-12  d-flex justify-content-center error-text">{this.state.usernameError}</div>
+                    </div>
+                    <div className="row justify-content-md-center">
+                        <div className="col-12 d-flex justify-content-center">Password</div>
+                        <div className="col-12 d-flex justify-content-center">
+                            <label>
+                                <input
+                                    type="password"
+                                    value={this.state.password}
+                                    onChange={this.handleChange}
+                                    name="password"
+                                    required
+                                    title="Password needs to have at least one upper, lower, and number character."
+                                />
+                            </label>
+                            <br></br>
+                        </div>
+                        <div className="col-12  d-flex justify-content-center  error-text"> {this.state.passwordError}</div>
+                    </div>
+                    <div className="row justify-content-md-center">
+                        <div className="col-12 d-flex justify-content-center">Confirm Password</div>
+                        <div className="col-12 d-flex justify-content-center">
+                            <label>
+                                <input type="password" value={this.state.passwordCheck} onChange={this.handleChange} name="passwordCheck" />
+                            </label>
+                            <br></br>
                         </div>
                     </div>
+
+                    <div className="col-12 pt-3  d-flex justify-content-center">
+                        <button type="button" className="login-button" onClick={this.handleSubmit}>
+                            Sign Up
+                        </button>
+                    </div>
+                    <div className="col-12 pb-3 d-flex justify-content-center  failed-text">{this.state.errorMessage}</div>
                 </div>
-            );
-        } else {
-            return (
-                <div>
-                    <Redirect to="/login"></Redirect>
-                </div>
-            );
-        }
+                {this.state.accountCreated ? (
+                    <div>
+                        {' '}
+                        <Redirect to="/login"></Redirect>
+                    </div>
+                ) : null}
+            </div>
+        );
     }
 }
 

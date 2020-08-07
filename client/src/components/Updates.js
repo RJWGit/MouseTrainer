@@ -24,6 +24,14 @@ class Updates extends React.Component {
                             change input fields
                         </h5>
                     </div>
+                    <div className="col-12 pb-5 d-flex justify-content-start">
+                        <h5>
+                            Version 2.0: User accounts are now available and ranked is enabled! Accounts require no email, only desired username and
+                            password. Moving background now is much smoother and fixed some bugs where background wouldn't pause correctly. Accounts
+                            also support name change, password change, and account deletion. Successfully clicked circles now turn green. Users
+                            account will also stay logged in even after leaving site.
+                        </h5>
+                    </div>
                 </div>
             </div>
         );

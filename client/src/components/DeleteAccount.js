@@ -7,10 +7,13 @@ class DeleteAccount extends React.Component {
         super(props);
         this.state = {
             success: false,
+            errorMessage: '',
         };
     }
 
     deleteAccountData = async () => {
+        await newToken(); //Check if need to generate new access token
+
         const accessToken = localStorage.getItem('accessToken');
         try {
             let result = await fetch('http://localhost:3000/api/user/deleteaccount', {
@@ -21,16 +24,11 @@ class DeleteAccount extends React.Component {
                 },
             });
 
-            if (result.status !== 200) {
-                const token = await newToken();
-                if (token.status == 200) {
-                    return await this.deleteAccountData();
-                }
-            } else {
-                return result;
-            }
+            return result;
         } catch (e) {
-            console.log(e);
+            this.setState({
+                errorMessage: 'Problem reaching server, try again.',
+            });
         }
     };
 
@@ -46,6 +44,10 @@ class DeleteAccount extends React.Component {
                     success: true,
                 });
             }
+        } else {
+            this.setState({
+                errorMessage: 'Problem reaching server, try again.',
+            });
         }
     };
 
@@ -64,6 +66,7 @@ class DeleteAccount extends React.Component {
                     <a href="#" className="col-12 pt-5 d-flex justify-content-center" onClick={this.props.toggle}>
                         Go back
                     </a>
+                    <div className="col-12  d-flex justify-content-center error-text">{this.state.errorMessage}</div>
                 </div>
                 {this.state.success ? (
                     <div>

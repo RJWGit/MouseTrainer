@@ -40,11 +40,7 @@ class App extends React.Component {
         const result = await newToken();
         const name = localStorage.getItem('username');
 
-        if (name === null) {
-            this.handleLogout();
-        }
-
-        if (result !== undefined) {
+        if (result !== undefined && name !== null) {
             if (result.status === 200) {
                 this.setState({
                     isLoggedIn: true,
@@ -52,9 +48,7 @@ class App extends React.Component {
                 });
             }
         } else {
-            this.setState({
-                isLoggedIn: false,
-            });
+            this.handleLogout();
         }
 
         //Check screen size to see if big enough to play at standard game widths/height
@@ -80,6 +74,7 @@ class App extends React.Component {
         }
     };
 
+    //Update game state
     updateGameState = newGameState => {
         this.setState({
             width: newGameState.width,
@@ -95,6 +90,7 @@ class App extends React.Component {
         });
     };
 
+    //Load game state
     returnGameState = () => {
         let obj = {};
         obj = {
@@ -113,7 +109,7 @@ class App extends React.Component {
         return obj;
     };
 
-    //LOGOUT
+    //logout
     handleLogout = async () => {
         const refreshToken = localStorage.getItem('refreshToken');
         try {
@@ -140,7 +136,7 @@ class App extends React.Component {
         });
     };
 
-    //SET STATE LOGIN
+    //Login
     handleLogin = () => {
         this.setState({
             isLoggedIn: true,
@@ -208,15 +204,9 @@ class App extends React.Component {
                                 <CreateAccount></CreateAccount>
                             </Route>
                             <Route path="/useraccount">
-                                {/* <div className="background">
-                                    <Preview getGameState={this.returnGameState}></Preview>
-                                </div> */}
                                 <UserAccount handleLogout={this.handleLogout}></UserAccount>
                             </Route>
                             <Route path="/leaderboard">
-                                {/* <div className="background">
-                                    <Preview getGameState={this.returnGameState}></Preview>
-                                </div> */}
                                 <LeaderBoard></LeaderBoard>
                             </Route>
                             <Route path="/ranked">

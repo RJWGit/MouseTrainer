@@ -20,18 +20,25 @@ class UserAccount extends React.Component {
         let highscore = localStorage.getItem('score');
         this.setState({
             username: name,
-            highscore: highscore,
         });
 
-        //Get new highscore from server if not found in localstorage
-        if (highscore === null) {
-            highscore = await this.getScoreData(name);
+        if (highscore) {
+            this.setState({
+                highscore: highscore,
+            });
+        }
 
-            if (highscore !== undefined) {
-                this.setState({
-                    highscore: highscore.score,
-                });
-                localStorage.setItem('score', highscore.score);
+        // Get new highscore from server if not found in localstorage
+        else {
+            const result = await this.getScoreData(name);
+
+            if (result !== undefined) {
+                if (result.status !== 200) {
+                    this.setState({
+                        highscore: result.score,
+                    });
+                    localStorage.setItem('score', result.score);
+                }
             }
         }
     };
@@ -54,7 +61,7 @@ class UserAccount extends React.Component {
         });
     };
 
-    getScoreData = async () => {
+    getScoreData = async name => {
         try {
             const result = await fetch('http://localhost:3000/api/user/gethighscore', {
                 method: 'Post',

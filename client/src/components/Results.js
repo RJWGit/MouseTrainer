@@ -3,9 +3,12 @@ import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import { newToken } from '../apicalls/api.js';
 
 class Results extends React.Component {
+    //Update user highscore if logged in
     updateHighScore = async () => {
         if (this.props.mode == 'Ranked') {
-            const accessToken = await localStorage.getItem('accessToken');
+            await newToken(); //Check if need to generate new access token
+
+            const accessToken = localStorage.getItem('accessToken');
 
             try {
                 const result = await fetch('http://localhost:3000/api/user/ranked', {
@@ -19,13 +22,8 @@ class Results extends React.Component {
                         score: this.props.targetsHit,
                     }),
                 });
-                console.log(result);
-                if (result.status !== 200) {
-                    const token = await newToken();
-                    if (token.status == 200) {
-                        this.updateHighScore();
-                    }
-                }
+
+                return result;
             } catch (e) {
                 console.log('error');
             }

@@ -10,28 +10,11 @@
     font-family: 'roboto-regular';
     min-height: 100%;
     min-width: 100%;
+    letter-spacing: 1px;
 }
 
-/* #canvas {
-    border: 1px solid black;
-    background-image: linear-gradient(rgb(0, 0, 0) 1px, transparent 0), linear-gradient(90deg, rgb(0, 0, 0) 1px, transparent 0);
-    background-size: 40px 40px, 40px 40px;
-} */
-/* .canvas-board {
-    margin-top: 8em;
-} */
 .canvas-background {
-    /* background-color: rgb(167, 167, 167); */
-    /* padding-top: 20px;
-    padding-bottom: 20px; */
     border: 3px solid rgba(255, 255, 255, 0.219);
-}
-
-/* .canvas-page-container {
-    width: 80vw !important;
-    height: 80vh !important;
-} */
-.home-page-row {
 }
 
 .background {
@@ -69,11 +52,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    /* border: 1px solid rgb(51, 78, 55); */
-    /* background-color: #111217; */
 }
 .home-page-title {
-    /* font-family: 'Lucida Console', Courier, monospace; */
     font-size: 64px;
     line-height: 75px;
     font-weight: 400;
@@ -114,12 +94,10 @@
     max-width: 5px;
     margin: 10px;
     font-size: 3vmin;
-    /* background-image: linear-gradient(rgb(0, 0, 0), rgb(255, 255, 255)); */
     background-color: rgb(255, 255, 255); /* buttons*/
     color: rgba(0, 0, 0, 0.863);
     border-radius: 12px;
     border: 3px solid #010236;
-    /* background-image: url('../images/target1.png'); */
     background-size: 100%;
     max-width: 100%;
     max-height: 100%;
@@ -138,9 +116,6 @@
 
 .hard-button {
     background-image: linear-gradient(rgba(121, 47, 47, 0.616), rgba(221, 12, 12, 0.637));
-}
-
-.custon-button {
 }
 
 .easy-button:hover {
@@ -182,10 +157,6 @@
 
 .result-page-container {
     margin-top: 8em;
-    /* height: 60vh; */
-
-    /* border: 1px solid rgb(51, 78, 55); */
-    /* background-color: #1a1818; */
 }
 
 .result-text {
@@ -195,14 +166,11 @@
 }
 
 .privacy-page {
-    /* background-color: rgb(141, 136, 136); */
     color: white;
 }
 
 .privacy-page-container {
     margin-top: 16em;
-
-    /* opacity: 0.7; */
 }
 
 .submit-div {
@@ -317,4 +285,9 @@ a:hover {
 
 .account-button-styling:hover {
     background-color: rgba(204, 204, 204, 0.856);
+}
+
+.error-text {
+    color: red;
+    font-size: 12px;
 }

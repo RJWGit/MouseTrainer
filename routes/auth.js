@@ -22,17 +22,38 @@ function authenticateToken(req, res, next) {
   //Check if token is valid
   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
     if (err) return res.sendStatus(403); //Token  is not valid
-    req.user = user.username;
+    req.user = user;
+
     next();
   });
 }
 
 //GENERATE TOKEN
-function generateAccessToken(user) {
-  return jwt.sign({ username: user }, process.env.ACCESS_TOKEN_SECRET, {
-    expiresIn: "1h",
+function generateAccessToken(username) {
+  return jwt.sign({ username }, process.env.ACCESS_TOKEN_SECRET, {
+    expiresIn: "3s",
   });
 }
+
+//VERIFY ACCESS TOKEN IS VALID ON FRONTEND
+router.get("/istokenvalid", (req, res) => {
+  //Get token
+  const authHeader = req.headers["authorization"];
+  const token = authHeader && authHeader.split(" ")[1];
+
+  //Check if token exists
+  if (token == null) return res.sendStatus(401);
+
+  //Check if token is valid
+  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
+    if (err) return res.sendStatus(403);
+    //Token  is not valid
+
+    req.user = user;
+
+    return res.sendStatus(200);
+  });
+});
 
 //GENERATE NEW TOKEN WITH REFRESH TOKEN
 router.post("/token", (req, res) => {
@@ -56,7 +77,7 @@ router.post("/token", (req, res) => {
       //Check if refresh token is same as in database
       if (username.refreshToken === refreshToken) {
         //Send back new access token
-        const accessToken = generateAccessToken({ username: user.username });
+        const accessToken = generateAccessToken(user.username);
         return res
           .status(200)
           .send({ accessToken: accessToken, username: user.username });
@@ -136,6 +157,7 @@ router.post("/changeusername", authenticateToken, async (req, res) => {
 
   //Find current user
   const oldname = req.user.username;
+
   const user = await User.findOne({ username: oldname });
   if (!user) return res.status(400).send({ error: "No user found." });
 
@@ -194,6 +216,7 @@ router.post("/ranked", authenticateToken, async (req, res) => {
   return res.sendStatus(200);
 });
 
+//GET USER HIGHSCORE
 router.post("/gethighscore", async (req, res) => {
   const name = req.body.username;
 
@@ -222,12 +245,6 @@ router.delete("/logout", async (req, res) => {
 
     return res.sendStatus(403);
   });
-});
-
-//TEST ROUTE
-router.post("/testlogin", authenticateToken, (req, res) => {
-  console.log("hidden api");
-  res.sendStatus(200);
 });
 
 //CREATE ACCOUNT

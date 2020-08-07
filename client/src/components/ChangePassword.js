@@ -6,8 +6,10 @@ class ChangePassword extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            username: '',
-            confirmUsername: '',
+            password: '',
+            passwordCheck: '',
+            passwordError: '',
+            errorMessage: '',
             success: false,
         };
     }
@@ -20,7 +22,46 @@ class ChangePassword extends React.Component {
         });
     };
 
+    validation = () => {
+        const regex = new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])');
+        const validPass = regex.test(this.state.password);
+        let isValidForm = true;
+
+        this.setState({
+            passwordError: '',
+        });
+
+        if (this.state.password != this.state.passwordCheck) {
+            this.setState({
+                passwordError: 'Passwords do not match',
+            });
+
+            isValidForm = false;
+        }
+        if (!validPass) {
+            this.setState({
+                passwordError: 'Passwords must have 1 lower, upper, and number character',
+            });
+            isValidForm = false;
+        }
+
+        if (this.state.password.length < 8) {
+            this.setState({
+                passwordError: 'Passwords must be at least 8 characters',
+            });
+            isValidForm = false;
+        }
+        if (this.state.password.length > 30) {
+            this.setState({
+                passwordError: 'Passwords cannot be more than 30 characters',
+            });
+            isValidForm = false;
+        }
+
+        return isValidForm;
+    };
     changePasswordData = async () => {
+        await newToken(); //Check if need to generate new access token
         const accessToken = localStorage.getItem('accessToken');
         try {
             let result = await fetch('http://localhost:3000/api/user/changepassword', {
@@ -31,39 +72,24 @@ class ChangePassword extends React.Component {
                     Authorization: 'BEAR ' + accessToken,
                 },
                 body: JSON.stringify({
-                    password: this.state.username,
+                    password: this.state.password,
                 }),
             });
 
-            console.log('a');
-            if (result.status !== 200) {
-                console.log('b');
-                const token = await newToken();
-                if (token.status == 200) {
-                    return await this.changePasswordData();
-                }
-            } else {
-                return result;
-            }
+            return result;
         } catch (e) {
-            console.log(e);
-        }
-    };
-
-    checkUsername = () => {
-        if (this.state.username != this.state.confirmUsername) {
-            return false;
-        } else {
-            return true;
+            this.setState({
+                errorMessage: 'Problem reaching server, try again.',
+            });
         }
     };
 
     handleSubmit = async () => {
         event.preventDefault();
-        const isSameName = this.checkUsername();
-        if (isSameName) {
-            const result = await this.changePasswordData();
 
+        const isValidForm = this.validation();
+        if (isValidForm) {
+            const result = await this.changePasswordData();
             if (result !== undefined) {
                 if (result.status == 200) {
                     this.props.handleLogout();
@@ -72,6 +98,10 @@ class ChangePassword extends React.Component {
                         success: true,
                     });
                 }
+            } else {
+                this.setState({
+                    errorMessage: 'Problem reaching server, try again.',
+                });
             }
         }
     };
@@ -87,16 +117,17 @@ class ChangePassword extends React.Component {
                         <div className="col-12  d-flex justify-content-center"> New Password</div>
                         <div className="col-12  d-flex justify-content-center">
                             <label>
-                                <input value={this.state.username} onChange={this.handleChange} name="username" />
+                                <input type="password" value={this.state.password} onChange={this.handleChange} name="password" />
                             </label>
                             <br></br>
                         </div>
+                        <div className="col-12  d-flex justify-content-center error-text">{this.state.passwordError}</div>
                     </div>
                     <div className="row justify-content-md-center">
                         <div className="col-12  d-flex justify-content-center"> Reenter New Password</div>
                         <div className="col-12  d-flex justify-content-center">
                             <label>
-                                <input value={this.state.confirmUsername} onChange={this.handleChange} name="confirmUsername" />
+                                <input type="password" value={this.state.confirmPassword} onChange={this.handleChange} name="passwordCheck" />
                             </label>
                             <br></br>
                         </div>
@@ -109,6 +140,7 @@ class ChangePassword extends React.Component {
                     <a href="#" className="col-12 pt-5 d-flex justify-content-center" onClick={this.props.toggle}>
                         Go back
                     </a>
+                    <div className="col-12  d-flex justify-content-center error-text">{this.state.errorMessage}</div>
                 </div>
                 {this.state.success ? (
                     <div>

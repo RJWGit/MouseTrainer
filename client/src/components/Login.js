@@ -1,8 +1,6 @@
 import React, { createRef } from 'react';
-import CreateAccount from './CreateAccount.js';
-import { BrowserRouter as Router, Switch, Route, Link, Redirect } from 'react-router-dom';
+import { BrowserRouter as Route, Link, Redirect } from 'react-router-dom';
 
-//FORMIK
 class Login extends React.Component {
     constructor(props) {
         super(props);
@@ -10,7 +8,7 @@ class Login extends React.Component {
             username: '',
             password: '',
             authenticated: false,
-            validUser: true,
+            errorMessage: '',
         };
     }
 
@@ -43,10 +41,9 @@ class Login extends React.Component {
 
     handleLogin = async () => {
         const result = await this.loginData();
-
         if (result !== undefined) {
             if (result.status === 200) {
-                //Save tokens to local storage
+                //Save data to local storage storage
                 const tokens = await result.json();
                 localStorage.setItem('accessToken', tokens.accessToken);
                 localStorage.setItem('refreshToken', tokens.refreshToken);
@@ -55,12 +52,17 @@ class Login extends React.Component {
 
                 this.setState({
                     authenticated: true,
+                    errorMessage: '',
                 });
                 this.props.handleLogin();
+            } else {
+                this.setState({
+                    errorMessage: 'Invalid username or password.',
+                });
             }
         } else {
             this.setState({
-                validUser: false,
+                errorMessage: 'Problem reaching server, try again.',
             });
         }
     };
@@ -100,18 +102,14 @@ class Login extends React.Component {
                     <div className="col-12 pb-3 d-flex justify-content-center">
                         <Link to="/createaccount">Create Account</Link>
                     </div>
-                    <div className="col-12 pb-3 d-flex justify-content-center  failed-text">
-                        {this.state.validUser ? '' : 'You have entered invalid username and password. Please try again.'}
-                    </div>
+                    <div className="col-12 pb-3 d-flex justify-content-center  failed-text">{this.state.errorMessage}</div>
                 </div>
                 {this.state.authenticated ? (
                     <div>
                         {' '}
                         <Redirect to="/"></Redirect>
                     </div>
-                ) : (
-                    ''
-                )}
+                ) : null}
             </div>
         );
     }

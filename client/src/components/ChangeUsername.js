@@ -8,22 +8,52 @@ class ChangeUsername extends React.Component {
         this.state = {
             username: '',
             confirmUsername: '',
+            usernameError: '',
+            errorMessage: '',
             success: false,
         };
     }
 
+    validation = () => {
+        let isValidForm = true;
+
+        this.setState({
+            usernameError: '',
+        });
+
+        if (this.state.username != this.state.confirmUsername) {
+            this.setState({
+                usernameError: 'Usernames do not match',
+            });
+            isValidForm = false;
+        }
+
+        if (this.state.username.length < 3) {
+            this.setState({
+                usernameError: 'Username must be at least 3 characters',
+            });
+            isValidForm = false;
+        }
+
+        if (this.state.username.length > 20) {
+            this.setState({
+                usernameError: 'Username can be no more than 20 characters',
+            });
+            isValidForm = false;
+        }
+
+        return isValidForm;
+    };
     handleChange = e => {
         const name = e.target.name;
-        console.log(this.state.success);
         this.setState({
             [name]: e.target.value,
         });
     };
 
     changeUsernameData = async () => {
+        await newToken(); //Check if need to generate new access token
         const accessToken = localStorage.getItem('accessToken');
-
-        if (accessToken === null) return undefined;
 
         try {
             let result = await fetch('http://localhost:3000/api/user/changeusername', {
@@ -38,41 +68,40 @@ class ChangeUsername extends React.Component {
                 }),
             });
 
-            if (result.status !== 200) {
-                const token = await newToken();
-                if (token.status == 200) {
-                    return await this.changeUsernameData();
-                }
-            } else {
-                return result;
-            }
+            return result;
         } catch (e) {
-            console.log(e);
-        }
-    };
-
-    checkUsername = () => {
-        if (this.state.username != this.state.confirmUsername) {
-            return false;
-        } else {
-            return true;
+            this.setState({
+                errorMessage: 'Problem reaching server, try again.',
+            });
         }
     };
 
     handleSubmit = async () => {
         event.preventDefault();
-        const isSameName = this.checkUsername();
-        if (isSameName) {
+
+        const isValidInput = this.validation();
+
+        if (isValidInput) {
             const result = await this.changeUsernameData();
 
             if (result !== undefined) {
-                if (result.status == 200) {
+                console.log(result.status);
+                if (result.status === 200) {
                     this.props.handleLogout();
 
                     this.setState({
                         success: true,
+                        errorMessage: '',
+                    });
+                } else {
+                    this.setState({
+                        errorMessage: 'Username maybe already taken',
                     });
                 }
+            } else {
+                this.setState({
+                    errorMessage: 'Problem reaching server, try again.',
+                });
             }
         }
     };
@@ -93,6 +122,7 @@ class ChangeUsername extends React.Component {
                             </label>
                             <br></br>
                         </div>
+                        <div className="col-12  d-flex justify-content-center error-text">{this.state.usernameError}</div>
                     </div>
                     <div className="row justify-content-md-center">
                         <div className="col-12  d-flex justify-content-center"> Reenter New Username</div>
@@ -111,6 +141,7 @@ class ChangeUsername extends React.Component {
                     <a href="#" className="col-12 pt-5 d-flex justify-content-center" onClick={this.props.toggle}>
                         Go back
                     </a>
+                    <div className="col-12  d-flex justify-content-center error-text">{this.state.errorMessage}</div>
                 </div>
 
                 {this.state.success ? (

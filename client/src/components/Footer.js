@@ -12,7 +12,7 @@ class Footer extends React.Component {
                     <Link to="/contact" class="nav-item nav-link footer-item">
                         Contact Us
                     </Link>
-                    <a class="nav-item nav-link footer-item" href="#">
+                    <a class="nav-item nav-link footer-item" href="https://www.redcross.org/donate/donation.html/">
                         Donate
                     </a>
                 </nav>
