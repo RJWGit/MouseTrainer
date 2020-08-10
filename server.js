@@ -1,5 +1,4 @@
 const express = require("express");
-const bycrypt = require("bcrypt");
 const mongoose = require("mongoose");
 const passport = require("passport");
 const cors = require("cors");
@@ -14,13 +13,13 @@ app.use(express.urlencoded({ extended: true }));
 const authRoute = require("./routes/auth");
 app.use("/api/user", authRoute);
 
+//Probably need to make this more secure?
+const uri =
+  "mongodb+srv://rodney:gkuowtYm4YES4z7X@cluster0.msl4r.mongodb.net/UserDatabase?retryWrites=true&w=majority";
+
 // Database initialization
-mongoose.connect(
-  "mongodb://localhost:27017",
-  { useNewUrlParser: true, useUnifiedTopology: true },
-  () => console.log("Connected to db")
+mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true }, () =>
+  console.log("Connected to db")
 );
 
-app.listen(port, () =>
-  console.log(`Example app listening at http://localhost:${port}`)
-);
+app.listen(port, () => console.log(`App listening at port:${port}`));
