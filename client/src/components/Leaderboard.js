@@ -64,7 +64,7 @@ class LeaderBoard extends React.Component {
                     </thead>
                     <tbody>
                         {//Check if data is loaded
-                        this.state.scores.length == 0 ? (
+                        this.state.scores.length === 0 ? (
                             <tr>
                                 <td></td>
                                 <td></td>

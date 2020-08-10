@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const passport = require("passport");
+const path = require("path");
 const cors = require("cors");
 const app = express();
 
@@ -9,9 +10,14 @@ const port = process.env.PORT || 3000;
 app.use(cors({ credentials: true, origin: true }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
 const authRoute = require("./routes/auth");
+
+app.use(express.static(path.join(__dirname, "client/dist")));
 app.use("/api/user", authRoute);
+
+app.get("/*", (req, res) => {
+  res.sendFile(path.join(__dirname, "client/dist", "index.html"));
+});
 
 //Probably need to make this more secure?
 const uri =

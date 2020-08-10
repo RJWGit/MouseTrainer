@@ -46,6 +46,8 @@ class App extends React.Component {
                     isLoggedIn: true,
                     username: name,
                 });
+            } else {
+                this.handleLogout();
             }
         } else {
             this.handleLogout();
