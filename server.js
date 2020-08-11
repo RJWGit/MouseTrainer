@@ -11,7 +11,7 @@ app.use(cors({ credentials: true, origin: true }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 const authRoute = require("./routes/auth");
-// if (process.env.NODE_ENV === "production") {
+// if (process.env.NODE.ENV === "production") {
 app.use(express.static(path.join(__dirname, "client/dist")));
 app.use("/api/user", authRoute);
 
@@ -20,6 +20,7 @@ app.get("/*", (req, res) => {
 });
 // }
 
+//Probably need to make this more secure?
 const uri = process.env.URI;
 
 // Database initialization
