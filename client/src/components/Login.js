@@ -14,7 +14,7 @@ class Login extends React.Component {
 
     loginData = async () => {
         try {
-            const result = await fetch('http://localhost:3000/api/user/login', {
+            const result = await fetch('/api/user/login', {
                 method: 'POST',
                 mode: 'cors',
                 headers: {

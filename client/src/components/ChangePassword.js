@@ -64,7 +64,7 @@ class ChangePassword extends React.Component {
         await newToken(); //Check if need to generate new access token
         const accessToken = localStorage.getItem('accessToken');
         try {
-            let result = await fetch('http://localhost:3000/api/user/changepassword', {
+            let result = await fetch('/api/user/changepassword', {
                 method: 'POST',
                 mode: 'cors',
                 headers: {

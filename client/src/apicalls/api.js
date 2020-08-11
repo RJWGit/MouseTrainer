@@ -6,7 +6,7 @@ export async function newToken() {
         if (isValid.status !== 200) {
             const refreshToken = localStorage.getItem('refreshToken');
             try {
-                const result = await fetch('http://localhost:3000/api/user/token', {
+                const result = await fetch('/api/user/token', {
                     method: 'POST',
                     mode: 'cors',
                     headers: {
@@ -39,7 +39,7 @@ async function isTokenValid() {
     const accessToken = localStorage.getItem('accessToken');
 
     try {
-        const result = await fetch('http://localhost:3000/api/user/istokenvalid', {
+        const result = await fetch('/api/user/istokenvalid', {
             method: 'GET',
             mode: 'cors',
             headers: {

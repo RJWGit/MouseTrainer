@@ -11,7 +11,7 @@ class Results extends React.Component {
             const accessToken = localStorage.getItem('accessToken');
 
             try {
-                const result = await fetch('http://localhost:3000/api/user/ranked', {
+                const result = await fetch('/api/user/ranked', {
                     method: 'POST',
                     mode: 'cors',
                     headers: {

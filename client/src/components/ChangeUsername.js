@@ -56,7 +56,7 @@ class ChangeUsername extends React.Component {
         const accessToken = localStorage.getItem('accessToken');
 
         try {
-            let result = await fetch('http://localhost:3000/api/user/changeusername', {
+            let result = await fetch('/api/user/changeusername', {
                 method: 'POST',
                 mode: 'cors',
                 headers: {

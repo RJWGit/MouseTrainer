@@ -115,7 +115,7 @@ class App extends React.Component {
     handleLogout = async () => {
         const refreshToken = localStorage.getItem('refreshToken');
         try {
-            const result = await fetch('http://localhost:3000/api/user/logout', {
+            const result = await fetch('/api/user/logout', {
                 method: 'delete',
                 mode: 'cors',
                 headers: {

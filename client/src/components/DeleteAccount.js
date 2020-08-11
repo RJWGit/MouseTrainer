@@ -16,7 +16,7 @@ class DeleteAccount extends React.Component {
 
         const accessToken = localStorage.getItem('accessToken');
         try {
-            let result = await fetch('http://localhost:3000/api/user/deleteaccount', {
+            let result = await fetch('/api/user/deleteaccount', {
                 method: 'POST',
                 mode: 'cors',
                 headers: {

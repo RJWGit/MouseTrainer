@@ -11,14 +11,16 @@ class LeaderBoard extends React.Component {
     componentDidMount = async () => {
         const players = await this.getLeaderboard();
 
-        this.setState({
-            scores: players,
-        });
+        if (players !== undefined) {
+            this.setState({
+                scores: players,
+            });
+        }
     };
 
     getLeaderboard = async () => {
         try {
-            const result = await fetch('http://localhost:3000/api/user/leaderboard', {
+            const result = await fetch('/api/user/leaderboard', {
                 method: 'Get',
                 mode: 'cors',
             });

@@ -63,7 +63,7 @@ class UserAccount extends React.Component {
 
     getScoreData = async name => {
         try {
-            const result = await fetch('http://localhost:3000/api/user/gethighscore', {
+            const result = await fetch('/api/user/gethighscore', {
                 method: 'Post',
                 mode: 'cors',
                 headers: {

@@ -11,17 +11,17 @@ app.use(cors({ credentials: true, origin: true }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 const authRoute = require("./routes/auth");
+if (process.env.NODE.ENV === "production") {
+  app.use(express.static(path.join(__dirname, "client/dist")));
 
-app.use(express.static(path.join(__dirname, "client/dist")));
-app.use("/api/user", authRoute);
-
-app.get("/*", (req, res) => {
-  res.sendFile(path.join(__dirname, "client/dist", "index.html"));
-});
+  app.get("/*", (req, res) => {
+    res.sendFile(path.join(__dirname, "client/dist", "index.html"));
+  });
+  app.use("/api/user", authRoute);
+}
 
 //Probably need to make this more secure?
-const uri =
-  "mongodb+srv://rodney:gkuowtYm4YES4z7X@cluster0.msl4r.mongodb.net/UserDatabase?retryWrites=true&w=majority";
+const uri = process.env.URI;
 
 // Database initialization
 mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true }, () =>

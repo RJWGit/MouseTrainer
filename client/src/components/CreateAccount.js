@@ -79,7 +79,7 @@ class CreateAccount extends React.Component {
 
     createAccountData = async () => {
         try {
-            let result = await fetch('http://localhost:3000/api/user/createaccount', {
+            let result = await fetch('/api/user/createaccount', {
                 method: 'POST',
                 mode: 'cors',
                 headers: {
