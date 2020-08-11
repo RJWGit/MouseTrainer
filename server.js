@@ -13,11 +13,11 @@ app.use(express.urlencoded({ extended: true }));
 const authRoute = require("./routes/auth");
 // if (process.env.NODE.ENV === "production") {
 app.use(express.static(path.join(__dirname, "client/dist")));
+app.use("/api/user", authRoute);
 
 app.get("/*", (req, res) => {
   res.sendFile(path.join(__dirname, "client/dist", "index.html"));
 });
-app.use("/api/user", authRoute);
 // }
 
 //Probably need to make this more secure?
