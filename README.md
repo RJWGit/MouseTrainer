@@ -7,9 +7,7 @@ Check it out at [MouseTrainer.io](MouseTrainer.io)
 ## Motivation
 
 I created this websites from the ground up with two goals in mind. First, to better understand React and modern web development, both fronted and backed. Second, to create a site to have all the features I'd want out of a "mouse clicking game".
-
-There are many mouse clicking games out there to train your hand but I was particularly inspired by and old site called [aimbooster.com](http://www.aimbooster.com/). It's a good site but it's very dated and uses flash which most browsers no longer support or plan to drop support for.
-
+ 
 ## Features
 
 - Supports three different games modes:
