@@ -2,7 +2,7 @@
 
 A website aimed at improving users mouse speed and accuracy.
 
-Check it out at [MouseTrainer.io](MouseTrainer.io)
+Check it out at [MouseTrainer.io](www.MouseTrainer.io)
 
 ## Motivation
 
