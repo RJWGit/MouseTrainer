@@ -6,7 +6,7 @@ Check it out at [MouseTrainer.io](http://mousetrainer.io/)
 
 ## Motivation
 
-I created this websites from the ground up with two goals in mind. First, to better understand React and modern web development, both fronted and backed. Second, to create a site to have all the features I'd want out of a "mouse clicking game".
+I created this website from the ground up with two goals in mind. First, to better understand React and modern web development, both fronted and backed. Second, to create a site to have all the features I'd want out of a "mouse clicking game".
  
 ## Features
 
