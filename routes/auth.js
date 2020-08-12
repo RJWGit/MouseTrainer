@@ -1,6 +1,8 @@
 const router = require("express").Router();
 const User = require("../models/User");
 const { schema } = require("../models/User");
+require("dotenv").config();
+
 const {
   registerValidation,
   loginValidation,
@@ -93,10 +95,8 @@ router.post("/token", (req, res) => {
 //RETURN LEADERBOARD SCORES
 router.get("/leaderboard", async (req, res) => {
   let highscores = [];
-  console.log("leaderboard msg");
   await User.find({}, (err, user) => {
     if (err) return res.status(404);
-    console.log("leaderboard msg2");
 
     user.map((x) =>
       highscores.push({ username: x.username, score: x.highscore })
@@ -108,7 +108,6 @@ router.get("/leaderboard", async (req, res) => {
     });
   });
 
-  console.log("leaderboard msg3");
   return res.status(200).send(highscores);
 });
 

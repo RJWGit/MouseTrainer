@@ -25,7 +25,7 @@ export async function newToken() {
                     return result;
                 }
             } catch (e) {
-                console.log('error');
+                console.log(e);
             }
         } else {
             return isValid;
@@ -49,6 +49,6 @@ async function isTokenValid() {
 
         return result;
     } catch (e) {
-        console.log('error');
+        console.log(e);
     }
 }

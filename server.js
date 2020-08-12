@@ -4,21 +4,21 @@ const passport = require("passport");
 const path = require("path");
 const cors = require("cors");
 const app = express();
+const authRoute = require("./routes/auth");
+require("dotenv").config();
 
 const port = process.env.PORT || 3000;
 
 app.use(cors({ credentials: true, origin: true }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-const authRoute = require("./routes/auth");
-// if (process.env.NODE_ENV === "production") {
 app.use(express.static(path.join(__dirname, "client/dist")));
 app.use("/api/user", authRoute);
 
+//Server static files, must rebuild client to update client changes
 app.get("/*", (req, res) => {
   res.sendFile(path.join(__dirname, "client/dist", "index.html"));
 });
-// }
 
 const uri = process.env.URI;
 

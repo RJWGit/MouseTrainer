@@ -92,7 +92,7 @@ class CreateAccount extends React.Component {
             });
             return result;
         } catch (e) {
-            console.log('error');
+            console.log(e);
         }
     };
 

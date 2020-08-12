@@ -27,7 +27,7 @@ class LeaderBoard extends React.Component {
             const users = await result.json();
             return users;
         } catch (e) {
-            console.log('error');
+            console.log(e);
         }
     };
 
