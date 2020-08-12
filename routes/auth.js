@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const User = require("../models/User");
 const { schema } = require("../models/User");
-require("dotenv").config();
+// require("dotenv").config();
 
 const {
   registerValidation,
