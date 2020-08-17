@@ -2,11 +2,11 @@
 
 A website aimed at improving users mouse speed and accuracy.
 
-Check it out at [MouseTrainer.io](MouseTrainer.io)
+Check it out at [MouseTrainer.io](https://mousetrainer.io/)
 
 ## Motivation
 
-I created this websites from the ground up with two goals in mind. First, to better understand React and modern web development, both fronted and backed. Second, to create a site to have all the features I'd want out of a "mouse clicking game".
+I created this website from the ground up with two goals in mind. First, to better understand React and modern web development, both fronted and backed. Second, to create a site to have all the features I'd want out of a "mouse clicking game".
  
 ## Features
 
