@@ -3,6 +3,12 @@ import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import { newToken } from '../apicalls/api.js';
 
 class Results extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            msg: '',
+        };
+    }
     //Update user highscore if logged in
     updateHighScore = async () => {
         if (this.props.mode == 'Ranked') {
@@ -39,6 +45,9 @@ class Results extends React.Component {
             }
         } else {
             localStorage.removeItem('score');
+            this.setState({
+                msg: '*To save and compete on the scoreboard, please create an account or login.',
+            });
         }
     };
     render() {
@@ -72,6 +81,8 @@ class Results extends React.Component {
                             </button>
                         </Link>
                     </div>
+
+                    <div className="col-12 pt-5 d-flex justify-content-around result-text">{this.state.msg}</div>
                 </div>
             </div>
         );
