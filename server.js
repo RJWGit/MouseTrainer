@@ -3,14 +3,14 @@ const mongoose = require("mongoose");
 const passport = require("passport");
 const path = require("path");
 const cors = require("cors");
+const http = require("http");
+const enforce = require("express-sslify");
 const app = express();
 const authRoute = require("./routes/auth");
 // require("dotenv").config();
 
 const port = process.env.PORT || 3000;
 
-var http = require("http");
-var enforce = require("express-sslify");
 app.use(cors({ credentials: true, origin: true }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
