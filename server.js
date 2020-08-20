@@ -9,11 +9,14 @@ const authRoute = require("./routes/auth");
 
 const port = process.env.PORT || 3000;
 
+var http = require("http");
+var enforce = require("express-sslify");
 app.use(cors({ credentials: true, origin: true }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "client/dist")));
 app.use("/api/user", authRoute);
+app.use(enforce.HTTPS());
 
 //Server static files, must rebuild client to update client changes
 app.get("/*", (req, res) => {
@@ -27,4 +30,6 @@ mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true }, () =>
   console.log("Connected to db")
 );
 
-app.listen(port, () => console.log(`App listening at port:${port}`));
+http
+  .createServer(app)
+  .listen(port, () => console.log(`App listening at port:${port}`));
