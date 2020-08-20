@@ -1,3 +1,4 @@
+import sslRedirect from "heroku-ssl-redirect";
 const express = require("express");
 const mongoose = require("mongoose");
 const passport = require("passport");
@@ -14,9 +15,10 @@ const port = process.env.PORT || 3000;
 app.use(cors({ credentials: true, origin: true }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(sslRedirect());
+app.use(enforce.HTTPS({ trustProtoHeader: true }));
 app.use(express.static(path.join(__dirname, "client/dist")));
 app.use("/api/user", authRoute);
-app.use(enforce.HTTPS({ trustProtoHeader: true }));
 
 //Server static files, must rebuild client to update client changes
 app.get("/*", (req, res) => {
