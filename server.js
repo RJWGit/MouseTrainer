@@ -4,7 +4,7 @@ const passport = require("passport");
 const path = require("path");
 const cors = require("cors");
 const http = require("http");
-const enforce = require("express-sslify");
+const enforce = require("express-sslify"); //Used to redirect from http to https
 const app = express();
 const authRoute = require("./routes/auth");
 // require("dotenv").config();
