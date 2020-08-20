@@ -1,11 +1,9 @@
 import sslRedirect from "heroku-ssl-redirect";
-const express = require("express");
+import express from "express";
 const mongoose = require("mongoose");
 const passport = require("passport");
 const path = require("path");
 const cors = require("cors");
-const http = require("http");
-const enforce = require("express-sslify");
 const app = express();
 const authRoute = require("./routes/auth");
 // require("dotenv").config();
@@ -16,7 +14,6 @@ app.use(cors({ credentials: true, origin: true }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(sslRedirect());
-app.use(enforce.HTTPS({ trustProtoHeader: true }));
 app.use(express.static(path.join(__dirname, "client/dist")));
 app.use("/api/user", authRoute);
 
@@ -32,6 +29,4 @@ mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true }, () =>
   console.log("Connected to db")
 );
 
-http
-  .createServer(app)
-  .listen(port, () => console.log(`App listening at port:${port}`));
+app.listen(port, () => console.log(`App listening at port:${port}`));
