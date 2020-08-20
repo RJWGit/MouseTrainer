@@ -16,7 +16,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "client/dist")));
 app.use("/api/user", authRoute);
-app.use(enforce.HTTPS());
+app.use(enforce.HTTPS({ trustProtoHeader: true }));
 
 //Server static files, must rebuild client to update client changes
 app.get("/*", (req, res) => {
